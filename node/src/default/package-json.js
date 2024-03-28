@@ -1,6 +1,5 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { join as joinPath } from "path";
-import clone from "lodash.clone";
 
 /** @param options {{packageManager: 'npm' | 'pnpm' | 'yarn', projectPath: string}} */
 export default async function (options) {
