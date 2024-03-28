@@ -8,5 +8,7 @@ on:
 jobs:
   publish:
     name: "Create Node Module"
-    uses: templ-project/create/.github/workflows/create-node-module.yml@${{ github.ref_name }}
+    uses: templ-project/create/.github/workflows/create-node-module.yml@main
+    with:
+      targetBranch: ${{ github.ref_name }}
     secrets: inherit
