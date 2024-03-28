@@ -6,7 +6,7 @@ export default async function (options) {
     scripts: {
       ...object.scripts,
       ca: appendRunS(object?.scripts?.ca, "ca:security"),
-      "ca:security": appendRunS(object?.scripts?.["ca:security"], "jscpd"),
+      "ca:security": appendRunS(object?.scripts?.["ca:security"], "license-check"),
       "license-check": `npx license-checker --production --json --failOn="${[
         "AGPL AGPL 1.0",
         "AGPL 3.0",
@@ -32,7 +32,7 @@ export default async function (options) {
         "LGPL 3.0",
         "Suspected Eclipse 1.0",
         "Suspected Eclipse 2.0",
-      ].join(", ")}"`,
+      ].join("; ")}"`,
     },
   }));
 }

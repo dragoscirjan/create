@@ -10,12 +10,13 @@ import install from "../default/install.js";
 export default async function (options) {
   await install(options);
 
-  const { packageManager, buildTool, testFramework, language } = options;
+  const { packageManager, buildTool, testFramework } = options;
   const pm = await import(`../util/package-manager/${packageManager}.js`);
   return pm.install(
     [
       "@babel/cli",
       "@babel/core",
+      "@babel/eslint-parser",
       "@babel/preset-env",
       "@babel/register",
       // test framework specific

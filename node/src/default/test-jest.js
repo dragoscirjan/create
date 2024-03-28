@@ -1,7 +1,7 @@
 import test from "./test.js";
 
 export default async function (options) {
-  let jsspec = `import {hello} from '../src';
+  let jsspec = `import {hello} from './index';
 
 describe('hello', () => {
   it('hello("World") to return "Hello World!"', function () {
@@ -9,19 +9,29 @@ describe('hello', () => {
   });
 });`;
 
-  let jstest = `import { writeHello } from '../src';
+  let jstest = `/* eslint-disable max-lines-per-function */
+
+import { writeHello } from '../src';
 
 describe('writeHello', () => {
-  let logSpy;
-  before(() => {
-    jest.spyOn(console, 'log').mockImplementation(() => { });
+  beforeAll(() => {
+    jest.spyOn(console, 'log').mockImplementation(() => {}); // Spy on console.log and provide a mock implementation
   });
-  after(() => {
-    logSpy.mockRestore();
-  })
-  it('writeHello("World") to return "writeHello World!"', function() {
-    expect(writeHello('World')).toHaveBeenCalled();
-    expect(writeHello('World')).toHaveBeenCalledWith('Hello, World!');
+
+  afterEach(() => {
+    // Clear mock call history after each test
+    console.log.mockClear();
+  });
+
+  afterAll(() => {
+    // Restore console.log to its original implementation after all tests
+    console.log.mockRestore();
+  });
+
+  it('writeHello("World") to return "Hello, World!"', () => {
+    writeHello('World');
+    expect(console.log).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith('Hello, World!');
   });
 });
 `;

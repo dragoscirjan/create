@@ -44,7 +44,7 @@ export default async function (options, config = eslintConfig) {
 
   const stringConfig = `// .eslintrc.js
 
-module.extends = ${JSON.stringify(config, null, 2)};`;
+module.exports = ${JSON.stringify(config, null, 2)};`;
 
   await writeFile(".eslintrc.js", stringConfig, options);
 
@@ -55,7 +55,7 @@ module.extends = ${JSON.stringify(config, null, 2)};`;
       ca: appendRunS(object?.scripts?.ca, "ca:lint"),
       "ca:lint": appendRunS(object?.scripts?.["ca:lint"], "lint"),
       lint: "run-s lint:*",
-      "lint:eslint": "eslint ./{src,test}/**/*.{js,jsx} --fix",
+      "lint:eslint": "eslint ./{src,test}/**/*.js --fix",
     },
   }));
 }

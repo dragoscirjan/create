@@ -85,7 +85,7 @@ const buildPackageList = ({ qualityTools, testFramework, buildTool, targets }) =
       qualityTools: string[]
     }} */
 export default async function (options) {
-  const { packageManager } = options;
+  const { packageManager, targets } = options;
   const pm = await import(`../util/package-manager/${packageManager}.js`);
   await pm.install(buildPackageList(options), {
     ...options,

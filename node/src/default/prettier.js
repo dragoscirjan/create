@@ -36,7 +36,7 @@ export const prettierConfig = {
 export default async function (options, config = prettierConfig) {
   const stringConfig = `// .prettierrc.js
 
-module.extends = ${JSON.stringify(config, null, 2)};`;
+module.exports = ${JSON.stringify(config, null, 2)};`;
 
   await writeFile(".prettierrc.js", stringConfig, options);
 

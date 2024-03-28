@@ -8,7 +8,7 @@ export const commitlintConfig = {
 export default async function (options) {
   const commitlintrc = `// .commitlintrc.js
 
-module.extends = ${JSON.stringify(commitlintConfig, null, 2)};`;
+module.exports = ${JSON.stringify(commitlintConfig, null, 2)};`;
 
   return writeFile(".commitlintrc.js", commitlintrc, options);
 }

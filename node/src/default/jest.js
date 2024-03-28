@@ -13,7 +13,7 @@ export const jestConfig = {
 export default async function (options, config = jestConfig) {
   const stringConfig = `// .commitlintrc.js
 
-module.extends = ${JSON.stringify(config, null, 2)};`;
+module.exports = ${JSON.stringify(config, null, 2)};`;
 
   await writeFile(".jest.config.js", stringConfig, options);
 }

@@ -8,7 +8,7 @@ export default async function (options) {
       ca: appendRunS(object?.scripts?.ca, "ca:lint"),
       "ca:lint": appendRunS(object?.scripts?.["ca:lint"], "lint"),
       lint: "run-s lint:*",
-      "lint:oxlint": "oxlint",
+      "lint:oxlint": "oxlint --jest-plugin --deny-warnings ./{src,test}/**/*.js",
     },
   }));
 }
