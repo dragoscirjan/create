@@ -55,7 +55,7 @@ module.extends = ${JSON.stringify(config, null, 2)};`;
       ca: appendRunS(object?.scripts?.ca, "ca:lint"),
       "ca:lint": appendRunS(object?.scripts?.["ca:lint"], "lint"),
       lint: "run-s lint:*",
-      "lint:eslint": 'eslint "./{src,test}/**/*.jsx?" --fix',
+      "lint:eslint": "eslint ./{src,test}/**/*.{js,jsx} --fix",
     },
   }));
 }
