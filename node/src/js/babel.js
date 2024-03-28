@@ -72,7 +72,7 @@ export default async function (options) {
     scripts: {
       ...packageObject.scripts,
       build: "run-s clean build:*",
-      ...(targets.includes("browser")
+      ...(["browser", "bun", "deno"].map((item) => targets.includes(item)).reduce((acc, cur) => acc || cur, false)
         ? {
             "build:browser": 'cross-env BUILD_ENV=browser babel src --out-dir dist/browser --extensions ".js"',
             "build:browser-bundle":
@@ -86,10 +86,10 @@ export default async function (options) {
           }
         : {}),
       ...(targets.includes("browser")
-        ? { "build:cjs": 'cross-env BUILD_ENV=node-cjs babel src --out-dir dist/cjs --extensions ".js"' }
+        ? { "build:node-cjs": 'cross-env BUILD_ENV=node-cjs babel src --out-dir dist/cjs --extensions ".js"' }
         : {}),
       ...(targets.includes("browser")
-        ? { "build:esm": 'cross-env BUILD_ENV=node-esm babel src --out-dir dist/esm --extensions ".js"' }
+        ? { "build:node-esm": 'cross-env BUILD_ENV=node-esm babel src --out-dir dist/esm --extensions ".js"' }
         : {}),
     },
   }));

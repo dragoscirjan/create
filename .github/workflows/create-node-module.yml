@@ -40,13 +40,15 @@ jobs:
           # - vitest
         build-tool:
           - ""
-          # - esbuild
+          - esbuild
           # - rollup
-          # - snowpack
           # - swc
-          # - tsc
-          # - vite
-          # - webpack
+          # - parcel # web bundler
+          # - rolldown # not mature yet
+          # - snowpack # who is this guy?
+          # - turbpack # not mature yet
+          # - vite # web bundler, using esbuild and roll*
+          # - webpack # web bundler using babel and roll*
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
