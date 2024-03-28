@@ -76,7 +76,5 @@ jobs:
           cd /tmp/test-node \
             && npm i \
             && ${{ matrix.package-manager }} run ca \
-            && ${{ matrix.package-manager }} run test
-      - name: Validate Project
-        run: |
-          cd /tmp/test-node && ${{ matrix.package-manager }} run build
+            && ${{ matrix.package-manager }} run test \
+            && ${{ matrix.package-manager }} run build

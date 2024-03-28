@@ -5,7 +5,7 @@ const allBuildTools = ["esbuild", "rollup", "swc"];
 const allLanguages = ["cofee", "js", "ts"];
 const allPackageManagers = ["npm", "pnpm", "yarn"];
 const allQualityTools = ["eslint", "oxlint", "prettier", "jscpd", "dependency-cruiser", "license-checker", "audit"];
-const allTargets = ["browser", "deno", "node-cjs", "node-esm"];
+const allTargets = ["browser", "bun", "deno", "node-cjs", "node-esm"];
 const allTestFrameworks = ["ava", "deno", "mocha", "jasmine", "jest", "vitest"];
 
 async function run(language, runner, options) {
@@ -48,7 +48,7 @@ program
       // console.log(options);
       // process.exit(0);
 
-      const { language, qualityTools, buildTool, testFramework } = options;
+      const { language, qualityTools, buildTool, testFramework, targets } = options;
 
       const runners = [
         "package-json",
@@ -63,6 +63,8 @@ program
         testFramework,
         `test-${testFramework}`,
         ...qualityTools,
+        buildTool,
+        ...targets,
         "audit",
         "license-checker",
       ];
