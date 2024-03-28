@@ -80,4 +80,4 @@ jobs:
             && ${{ matrix.package-manager }} run test
       - name: Validate Project
         run: |
-          cd /tmp/test-node && ${{ matrics.package-manager }} run build
+          cd /tmp/test-node && ${{ matrix.package-manager }} run build
