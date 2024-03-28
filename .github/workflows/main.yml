@@ -9,6 +9,4 @@ jobs:
   publish:
     name: "Create Node Module"
     uses: templ-project/create/.github/workflows/create-node-module.yml@main
-    with:
-      targetBranch: ${{ github.ref_name }}
     secrets: inherit
