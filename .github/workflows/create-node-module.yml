@@ -1,4 +1,4 @@
-name: Node.js CI
+name: "Create Node Module CICD"
 
 on:
   push:
@@ -26,10 +26,10 @@ jobs:
           # - coffee
         targets:
           - all
-          - browser
-          - deno
-          - node-cjs
-          - node-esm
+          # - browser
+          # - deno
+          # - node-cjs
+          # - node-esm
         package-manager:
           - npm
           # - pnpm
