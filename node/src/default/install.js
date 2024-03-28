@@ -109,7 +109,9 @@ export default async function (options) {
       ...packageObject.scripts,
       clean: "rimraf ./dist",
       prepare: "husky",
-      release: "release-please",
+      release: "run-s release:*",
+      "release:release-it": "release-it --ci --no-npm.publish",
+      "release:release-please": "release-please",
     },
   }));
 }
