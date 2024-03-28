@@ -43,7 +43,7 @@ program
         ...options,
         projectPath: resolve(projectPath),
         qualityTools: options.qualityTools === "all" ? allQualityTools : options.qualityTools,
-        targets: options.targets === "all" ? allTargets : options.targets,
+        targets: options.targets === "all" || options.targets?.includes("all") ? allTargets : options.targets,
       };
       // console.log(options);
       // process.exit(0);

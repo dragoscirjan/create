@@ -94,18 +94,18 @@ export default async function (options) {
 
   return updatePackageJson(options, (packageObject) => ({
     ...packageObject,
-    scripts: {
-      main: "dist/node-cjs/index.js",
-      exports: {
-        ".": {
-          ...(targets.includes("browser") ? { browser: "./dist/browser/index.js" } : {}),
-          ...(targets.includes("bun") ? { bun: "./dist/browser/index.js" } : {}),
-          ...(targets.includes("deno") ? { deno: "./dist/worker/index.js" } : {}),
-          ...(targets.includes("node-esm") ? { import: "./dist/node/node-esm/index.js" } : {}),
-          ...(targets.includes("node-cjs") ? { require: "./dist/node/node-cjs/index.js" } : {}),
-          ...(targets.includes("worker") ? { worker: "./dist/browser/index.js" } : {}),
-        },
+    main: "dist/node-cjs/index.js",
+    exports: {
+      ".": {
+        ...(targets.includes("browser") ? { browser: "./dist/browser/index.js" } : {}),
+        ...(targets.includes("bun") ? { bun: "./dist/browser/index.js" } : {}),
+        ...(targets.includes("deno") ? { deno: "./dist/worker/index.js" } : {}),
+        ...(targets.includes("node-esm") ? { import: "./dist/node/node-esm/index.js" } : {}),
+        ...(targets.includes("node-cjs") ? { require: "./dist/node/node-cjs/index.js" } : {}),
+        ...(targets.includes("worker") ? { worker: "./dist/browser/index.js" } : {}),
       },
+    },
+    scripts: {
       ...packageObject.scripts,
       clean: "rimraf ./dist",
       prepare: "husky",
