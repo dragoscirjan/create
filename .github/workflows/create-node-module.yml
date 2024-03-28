@@ -1,0 +1,83 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  #######################################################################
+  #                          BUMP VERSION                               #
+  #######################################################################
+  validate:
+    name: "Validation"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - 18.x
+          # - 20.x
+          # - 21.x
+          # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        language:
+          - js
+          # - ts
+          # - coffee
+        targets:
+          - all
+          - browser
+          - deno
+          - node-cjs
+          - node-esm
+        package-manager:
+          - npm
+          # - pnpm
+          # - yarn
+        test-framework:
+          # - ava
+          # - jasmine
+          - jest
+          # - mocha
+          # - vitest
+        build-tool:
+          - ""
+          # - esbuild
+          # - rollup
+          # - snowpack
+          # - swc
+          # - tsc
+          # - vite
+          # - webpack
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Init
+        run: |
+          npm i
+          if [ "${{ matrix.package-manager }}" != "" ]; then
+            npm i -g ${{ matrix.package-manager }}
+          fi
+      - name: Init Project
+        run: |
+          CREATE_ARGS=""
+          if [ "${{ matrix.build-tool }}" != "" ]; then
+            CREATE_ARGS="--build-tool ${{ matrix.build-tool }}"
+          fi
+          SKIP_NPM_INIT=1 node ./node/src/index.js /tmp/test-node $CREATE_ARGS \
+            --language ${{ matrix.language }} \
+            --targets ${{ matrix.targets }} \
+            --package-manager ${{ matrix.package-manager }} \
+            --test-framework ${{ matrix.test-framework }} \
+            $CREATE_ARGS
+      - name: Validate Project
+        run: |
+          cd /tmp/test-node \
+            && ${{ matrix.package-manager }} run ca \
+            && ${{ matrix.package-manager }} run test
+      - name: Validate Project
+        run: |
+          cd /tmp/test-node && ${{ matrics.package-manager }} run build

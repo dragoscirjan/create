@@ -1,0 +1,16 @@
+{
+  "name": "@templ-project/create",
+  "version": "1.0.0",
+  "description": "Create apps",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+    "node"
+  ],
+  "dependencies": {
+    "lodash.clone": "^4.5.0"
+  }
+}

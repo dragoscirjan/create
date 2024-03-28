@@ -1,0 +1,12 @@
+name: Create CICD
+
+on:
+  push: {}
+  pull_request:
+    branches: [main]
+
+jobs:
+  publish:
+    name: "Create Node Module"
+    uses: templ-project/create/.github/workflows/create-node-module.yml@${{ github.ref_name }}
+    secrets: inherit
