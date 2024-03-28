@@ -68,6 +68,7 @@ program
         "audit",
         "license-checker",
       ];
+      console.log(runners);
       for (const runner of runners) {
         await run(language, runner, options);
       }
