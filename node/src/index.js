@@ -51,24 +51,28 @@ program
       const { language, qualityTools, buildTool, testFramework, targets } = options;
 
       const runners = [
+        // project init
         "package-json",
+        // npm i
         "install",
+        // deploy code
         "code",
+        // deploy tests
+        testFramework,
+        `test-${testFramework}`,
+        // deploy validate stuff
         "commitlint",
         "editorconfig",
+        // deploy builder
         ...(language === "coffee" ? [] : []),
         ...(language === "js" ? ["babel"] : []),
         ...(language === "ts" ? ["tsconfig"] : []),
         ...(buildTool ? [buildTool] : []),
-        testFramework,
-        `test-${testFramework}`,
-        ...qualityTools,
-        buildTool,
+        // deploy target settings
         ...targets,
-        "audit",
-        "license-checker",
+        // deploy quality tools
+        ...qualityTools,
       ];
-      console.log(runners);
       for (const runner of runners) {
         await run(language, runner, options);
       }
