@@ -1,7 +1,7 @@
 // .babelrc.js
 
 //  can be 'browser', 'node-cjs', 'node-esm'
-const buildEnv = process.env.BUILD_EN || "node-esm";
+const buildEnv = process.env.BUILD_ENV || "node-esm";
 
 module.exports = function (api) {
   api.cache(true);
