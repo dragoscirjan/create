@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 
 import { writeHello } from "../src";
-import { beforeAll, afterAll, describe, it, expect, vi } from "vitest";
+import { beforeAll, afterAll, afterEach, describe, it, expect, vi } from "vitest";
 
 describe("writeHello", (t) => {
   let consoleMock;
