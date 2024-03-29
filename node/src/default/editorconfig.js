@@ -13,5 +13,8 @@ insert_final_newline = true
 trim_trailing_whitespace = false`;
 
 export default async function (options) {
+  const { logger } = options;
+  logger.verbose(`configuring .editorconfig...`);
+
   return writeFile(".editorconfig", editorConfig, options);
 }

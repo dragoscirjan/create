@@ -10,6 +10,9 @@ export const vitestConfig = {
 };
 
 export default async function (options, config = vitestConfig) {
+  const { logger, testFramework } = options;
+  logger.verbose(`configuring ${testFramework}...`);
+
   config = `// vitest.config.js
 
 import {defineConfig} from "vite";

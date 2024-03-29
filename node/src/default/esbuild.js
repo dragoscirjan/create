@@ -1,7 +1,8 @@
 import { update as updatePackageJson } from "./package-json.js";
 
 export default async function (options) {
-  const { targets } = options;
+  const { targets, logger, buildTool } = options;
+  logger.verbose(`configuring (generic) ${buildTool}...`);
 
   return updatePackageJson(options, (packageObject) => ({
     ...packageObject,

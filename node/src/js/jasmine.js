@@ -1,12 +1,10 @@
-import { readFile } from "fs/promises";
+import readRepoFile from "../util/read-repo-file.js";
 
 import jasmine from "../default/jasmine.js";
 import writeFile from "../util/write-file.js";
 
 export default async function (options) {
-  const jasmineConfig = await readFile(new URL("static/.jasmine-babel.js", import.meta.url).pathname, "utf-8").then(
-    (buffer) => buffer.toString("utf-8"),
-  );
+  const jasmineConfig = await readRepoFile("../js/static/.jasmine-babel.js");
   await writeFile(".jasmine/babel.js", jasmineConfig, options);
 
   return jasmine(options);

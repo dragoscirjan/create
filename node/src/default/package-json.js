@@ -3,14 +3,17 @@ import { join as joinPath } from "path";
 
 /** @param options {{packageManager: 'npm' | 'pnpm' | 'yarn', projectPath: string}} */
 export default async function (options) {
-  const { projectPath } = options;
+  const { projectPath, logger } = options;
 
-  console.log(`Creating folder: ${projectPath}`);
+  logger.verbose(`creating ${projectPath}...`);
   await mkdir(projectPath, { recursive: true });
 
   if (!process.env.SKIP_NPM_INIT) {
+    logger.verbose(`initializing project...`);
     const binary = await import(`../util/package-manager/${options.packageManager}.js`);
     await binary.init(options);
+  } else {
+    logger.debug(`project init skiped.`);
   }
 }
 

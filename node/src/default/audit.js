@@ -6,7 +6,8 @@ import { appendRunS, update as updatePackageJson } from "../default/package-json
     }}
  */
 export default async function (options) {
-  const { packageManager } = options;
+  const { packageManager, logger } = options;
+  logger.info("updating package.json for audit tool...");
 
   return updatePackageJson(options, (object) => ({
     ...object,

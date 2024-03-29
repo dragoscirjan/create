@@ -34,6 +34,9 @@ export const prettierConfig = {
  * @param config {object}
  */
 export default async function (options, config = prettierConfig) {
+  const { logger } = options;
+  logger.info("updating package.json for (generic) prettier tool...");
+
   const stringConfig = `// .prettierrc.js
 
 module.exports = ${JSON.stringify(config, null, 2)};`;

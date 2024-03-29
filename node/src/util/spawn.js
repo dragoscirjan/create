@@ -1,11 +1,13 @@
 import { spawn } from "child_process";
 
+import logger from "./logger.js";
+
 /**
  * @param command string[]
  * @param options {{cwd?: string}}
  */
 export default async function (command, options = {}) {
-  console.log(`Executing '${command.join(" ")}' with options '${JSON.stringify(options)}'`);
+  logger.debug(`executing '${command.join(" ")}' with options '${JSON.stringify(options)}'`);
 
   return new Promise((resolve, reject) => {
     const proc = spawn(command[0], command.length > 1 ? command.slice(1) : [], {
@@ -29,7 +31,9 @@ export default async function (command, options = {}) {
       if (code === 0) {
         resolve(stdout);
       } else {
-        reject(new Error(`'${command.join(" ")}' exited with code ${code}.Error: ${stderr} `));
+        logger.error(`'${command.join(" ")}' exited with code ${code}.`);
+        logger.debug(`error: ${stderr}`);
+        process.exit(1);
       }
     });
   });

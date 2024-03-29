@@ -1,6 +1,8 @@
 import { program } from "commander";
 import { resolve } from "path";
 
+import logger from "./util/logger.js";
+
 const allBuildTools = ["esbuild", "rollup", "swc"];
 const allLanguages = ["cofee", "js", "ts"];
 const allPackageManagers = ["npm", "pnpm", "yarn"];
@@ -10,7 +12,7 @@ const allTestFrameworks = ["ava", "deno", "mocha", "jasmine", "jest", "vitest"];
 
 async function run(language, runner, options) {
   try {
-    console.log(`Loading ./${language}/${runner}.js ...`);
+    logger.info(`resolving ${language}/${runner} ...`);
     const { default: run } = await import(`./${language}/${runner}.js`);
     await run(options);
   } catch (error) {
@@ -45,6 +47,7 @@ program
         projectPath: resolve(projectPath),
         qualityTools: options.qualityTools === "all" ? allQualityTools : options.qualityTools,
         targets: options.targets === "all" || options.targets?.includes("all") ? allTargets : options.targets,
+        logger,
       };
       // console.log(options);
       // process.exit(0);

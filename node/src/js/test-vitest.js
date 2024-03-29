@@ -1,13 +1,9 @@
-import { readFile } from "fs/promises";
+import readRepoFile from "../util/read-repo-file.js";
 
 import test from "./test.js";
 
 export default async function (options) {
-  const vitestSpec = await readFile(new URL("static/vitest.spec.js", import.meta.url).pathname, "utf-8").then(
-    (buffer) => buffer.toString("utf-8"),
-  );
-  const vitestTest = await readFile(new URL("static/vitest.test.js", import.meta.url).pathname, "utf-8").then(
-    (buffer) => buffer.toString("utf-8"),
-  );
+  const vitestSpec = await readRepoFile("../js/static/vitest.spec.js");
+  const vitestTest = await readRepoFile("../js/static/vitest.test.js");
   return test(options, vitestTest, vitestSpec);
 }

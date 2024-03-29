@@ -14,7 +14,9 @@ const noCode = "// no code";
  * @param config {object}
  */
 export default async function (options, test = noCode, spec = noCode) {
-  const { language, projectPath } = options;
+  const { language, projectPath, logger } = options;
+  logger.verbose(`writing default test files...`);
+
   const codePath = joinPath(projectPath, "test");
   try {
     const stats = await stat(codePath);

@@ -14,7 +14,11 @@ const noCode = "// no code";
  * @param config {object}
  */
 export default async function (options, code = noCode) {
-  const codePath = joinPath(options.projectPath, "src");
+  const { projectPath, logger } = options;
+
+  logger.verbose("creating src/ ...");
+
+  const codePath = joinPath(projectPath, "src");
   try {
     const stats = await stat(codePath);
     if (stats.isDirectory()) {

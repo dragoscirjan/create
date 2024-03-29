@@ -12,6 +12,9 @@ export const jestConfig = {
 
 /** @param options {{language: 'js' | 'ts' | 'coffee'}} */
 export default async function (options, config = jestConfig) {
+  const { logger, testFramework } = options;
+  logger.verbose(`configuring ${testFramework}...`);
+
   await updatePackageJson(options, (object) => ({
     ...object,
     scripts: {

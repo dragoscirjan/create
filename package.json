@@ -7,10 +7,5 @@
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
-  "workspaces": [
-    "node"
-  ],
-  "dependencies": {
-    "lodash.clone": "^4.5.0"
-  }
+  "workspaces": ["node"]
 }

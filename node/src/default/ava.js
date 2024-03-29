@@ -3,6 +3,9 @@ import { update as updatePackageJson } from "./package-json.js";
 
 /** @param options {{language: 'js' | 'ts' | 'coffee'}} */
 export default async function (options) {
+  const { logger, testFramework } = options;
+  logger.verbose(`configuring ${testFramework}...`);
+
   return updatePackageJson(options, (object) => ({
     ...object,
     scripts: {

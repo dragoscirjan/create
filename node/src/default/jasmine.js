@@ -11,6 +11,9 @@ export const jasmineConfig = {
 };
 
 export default async function (options, config = jasmineConfig) {
+  const { logger, testFramework } = options;
+  logger.verbose(`configuring ${testFramework}...`);
+
   await writeFile(".jasmine.json", JSON.stringify(jasmineConfig, null, 2), options);
 
   return updatePackageJson(options, (object) => ({

@@ -1,13 +1,9 @@
-import { readFile } from "fs/promises";
+import readRepoFile from "../util/read-repo-file.js";
 
 import test from "./test.js";
 
 export default async function (options) {
-  const jasmineSpec = await readFile(new URL("static/jasmine.spec.js", import.meta.url).pathname, "utf-8").then(
-    (buffer) => buffer.toString("utf-8"),
-  );
-  const jasmineTest = await readFile(new URL("static/jasmine.test.js", import.meta.url).pathname, "utf-8").then(
-    (buffer) => buffer.toString("utf-8"),
-  );
+  const jasmineSpec = await readRepoFile("../js/static/jasmine.spec.js");
+  const jasmineTest = await readRepoFile("../js/static/jasmine.test.js");
   return test(options, jasmineTest, jasmineSpec);
 }

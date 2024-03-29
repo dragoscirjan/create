@@ -1,15 +1,14 @@
-import { readFile } from "fs/promises";
+import readRepoFile from "../util/read-repo-file.js";
 
 import writeFile from "../util/write-file.js";
 import { update as updatePackageJson } from "../default/package-json.js";
 
 /** @param options {{targets: string[],}} */
 export default async function (options) {
-  const { targets } = options;
+  const { targets, logger } = options;
+  logger.verbose(`configuring babel...`);
 
-  const babelConfig = await readFile(new URL("static/.babelrc.js", import.meta.url).pathname, "utf-8").then((buffer) =>
-    buffer.toString("utf-8"),
-  );
+  const babelConfig = await readRepoFile("../js/static/.babelrc.js");
   await writeFile(".babelrc.js", babelConfig, options);
 
   return updatePackageJson(options, (packageObject) => ({

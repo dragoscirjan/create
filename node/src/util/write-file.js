@@ -7,7 +7,9 @@ import { dirname, join as joinPath } from "path";
  * @param {{projectPath: string}} options
  */
 export default async function (file, content, options) {
-  const filePath = joinPath(options.projectPath, file);
+  const { projectPath, logger } = options;
+
+  const filePath = joinPath(projectPath, file);
 
   try {
     const stats = await stat(dirname(filePath));
@@ -18,5 +20,12 @@ export default async function (file, content, options) {
     await mkdir(dirname(filePath), { recursive: true });
   }
 
-  return writeFile(filePath, typeof content === "string" ? content : JSON.stringify(content, null, 2));
+  logger.verbose(`writing ${filePath}...`);
+  try {
+    return writeFile(filePath, typeof content === "string" ? content : JSON.stringify(content, null, 2));
+  } catch (error) {
+    logger.error(`error writing ${filePath}`);
+    logger.debug(`error: ${error.message}\n\n ${error.stack}`);
+    process.exit(1);
+  }
 }

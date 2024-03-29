@@ -1,6 +1,9 @@
 import { appendRunS, update as updatePackageJson } from "../default/package-json.js";
 
 export default async function (options) {
+  const { logger } = options;
+  logger.info("updating package.json for oxlint tool...");
+
   return updatePackageJson(options, (object) => ({
     ...object,
     scripts: {

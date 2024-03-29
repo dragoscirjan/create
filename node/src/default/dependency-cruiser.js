@@ -5,6 +5,9 @@ import { appendRunS, update as updatePackageJson } from "../default/package-json
 import spawn from "../util/spawn.js";
 
 export default async function (options) {
+  const { logger } = options;
+  logger.info("updating package.json for dependency-cruiser tool...");
+
   try {
     const stats = await stat(joinPath(options.projectPath, ".dependency-cruiser.js"));
     if (stats.isFile()) {

@@ -1,13 +1,9 @@
-import { readFile } from "fs/promises";
+import readRepoFile from "../util/read-repo-file.js";
 
 import test from "./test.js";
 
 export default async function (options) {
-  const mochaSpec = await readFile(new URL("static/mocha.spec.js", import.meta.url).pathname, "utf-8").then((buffer) =>
-    buffer.toString("utf-8"),
-  );
-  const mochaTest = await readFile(new URL("static/mocha.test.js", import.meta.url).pathname, "utf-8").then((buffer) =>
-    buffer.toString("utf-8"),
-  );
+  const mochaSpec = await readRepoFile("../js/static/mocha.spec.js");
+  const mochaTest = await readRepoFile("../js/static/mocha.test.js");
   return test(options, mochaTest, mochaSpec);
 }

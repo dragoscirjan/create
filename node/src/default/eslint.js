@@ -36,7 +36,8 @@ export const eslintConfig = {
  * @param config {object}
  */
 export default async function (options, config = eslintConfig) {
-  const { testFramework } = options;
+  const { testFramework, logger } = options;
+  logger.info("updating package.json for (generic) eslint tool...");
 
   if (["ava", "jest", "mocha"].includes(testFramework)) {
     config.extends.push(`plugin:${testFramework}/recommended`);

@@ -12,8 +12,10 @@ export const jscpdConfig = {
 };
 
 export default async function (options, config = jscpdConfig) {
-  const stringConfig = JSON.stringify(config, null, 2);
+  const { logger } = options;
+  logger.info("updating package.json for jscpd tool...");
 
+  const stringConfig = JSON.stringify(config, null, 2);
   await writeFile(".jscpd.json", stringConfig, options);
 
   return updatePackageJson(options, (object) => ({

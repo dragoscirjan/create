@@ -85,7 +85,10 @@ const buildPackageList = ({ qualityTools, testFramework, buildTool, targets }) =
       qualityTools: string[]
     }} */
 export default async function (options) {
-  const { packageManager, targets } = options;
+  const { packageManager, logger } = options;
+
+  logger.verbose("installing default dependencies...");
+
   const { install: pmInstall } = await import(`../util/package-manager/${packageManager}.js`);
   await pmInstall(buildPackageList(options), {
     ...options,
@@ -94,17 +97,6 @@ export default async function (options) {
 
   return updatePackageJson(options, (packageObject) => ({
     ...packageObject,
-    main: "dist/node-cjs/index.js",
-    exports: {
-      ".": {
-        ...(targets.includes("browser") ? { browser: "./dist/browser/index.js" } : {}),
-        ...(targets.includes("bun") ? { bun: "./dist/browser/index.js" } : {}),
-        ...(targets.includes("deno") ? { deno: "./dist/worker/index.js" } : {}),
-        ...(targets.includes("node-esm") ? { import: "./dist/node/node-esm/index.js" } : {}),
-        ...(targets.includes("node-cjs") ? { require: "./dist/node/node-cjs/index.js" } : {}),
-        ...(targets.includes("worker") ? { worker: "./dist/browser/index.js" } : {}),
-      },
-    },
     scripts: {
       ...packageObject.scripts,
       clean: "rimraf ./dist",

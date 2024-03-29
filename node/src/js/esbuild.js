@@ -1,13 +1,14 @@
-import { readFile } from "fs/promises";
+import readRepoFile from "../util/read-repo-file.js";
 
 import esbuild from "../default/esbuild.js";
 import writeFile from "../util/write-file.js";
 
 export default async function (options) {
-  const esbuildRunner = await readFile(new URL("static/esbuild-runner.js", import.meta.url).pathname, "utf-8").then(
-    (buffer) => buffer.toString("utf-8"),
-  );
-  await writeFile(".scripts/esbuild-runner.js", esbuildRunner, options);
+  const { logger, buildTool } = options;
+  logger.verbose(`configuring (babel) ${buildTool}...`);
 
-  return esbuild(options);
+  await esbuild(options);
+
+  const esbuildRunner = await readRepoFile("../js/static/esbuild-runner.js");
+  return writeFile(".scripts/esbuild-runner.js", esbuildRunner, options);
 }

@@ -10,6 +10,9 @@ export const mochaConfig = {
 
 /** @param options {{language: 'js' | 'ts' | 'coffee'}} */
 export default async function (options, config = mochaConfig) {
+  const { logger, testFramework } = options;
+  logger.verbose(`configuring ${testFramework}...`);
+
   await updatePackageJson(options, (object) => ({
     ...object,
     scripts: {
