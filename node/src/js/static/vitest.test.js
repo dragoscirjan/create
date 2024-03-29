@@ -7,7 +7,7 @@ describe("writeHello", (t) => {
   let consoleMock;
 
   beforeAll(() => {
-    vi.spyOn(console, "log").mockImplementation(() => undefined);
+    consoleMock = vi.spyOn(console, "log").mockImplementation(() => undefined);
   });
 
   afterEach(() => {
