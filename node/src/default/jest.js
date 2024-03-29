@@ -17,7 +17,7 @@ export default async function (options, config = jestConfig) {
     scripts: {
       ...object.scripts,
       test: "cross-env NODE_ENV=test BUILD_ENV=node-cjs NO_API_DOC=1 jest --coverage --runInBand --verbose",
-      "test:jest": "npm run test:jest -- --watch",
+      "test:watch": "npm run test -- --watch",
     },
   }));
 

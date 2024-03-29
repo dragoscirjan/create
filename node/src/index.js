@@ -16,6 +16,7 @@ async function run(language, runner, options) {
   } catch (error) {
     console.log(error);
     console.error(`./${language}/${runner}.js not found`);
+    process.exit(1);
   }
 }
 

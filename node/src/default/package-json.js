@@ -48,7 +48,7 @@ export async function update(options, callback) {
     }
   }
 
-  write(options, object);
+  return write(options, object);
 }
 
 /** @param commmand {string} */

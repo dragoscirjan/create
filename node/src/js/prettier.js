@@ -4,12 +4,7 @@ import { update as updatePackageJson } from "../default/package-json.js";
 
 /** @param options {{language: 'js' | 'ts' | 'coffee'}} */
 export default async function (options) {
-  await prettier(options, {
-    ...prettierConfig,
-    parser: "babel",
-  });
-
-  return updatePackageJson(options, (object) => ({
+  await updatePackageJson(options, (object) => ({
     ...object,
     importSort: {
       ".js, .jsx": {
@@ -18,4 +13,9 @@ export default async function (options) {
       },
     },
   }));
+
+  return prettier(options, {
+    ...prettierConfig,
+    parser: "babel",
+  });
 }

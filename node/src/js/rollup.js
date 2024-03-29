@@ -5,15 +5,13 @@ import rollup from "../default/rollup.js";
 import writeFile from "../util/write-file.js";
 
 export default async function (options) {
-  await rollup(options);
-
   const rollupConfig = await readFile(new URL("static/rollup.config.js", import.meta.url).pathname, "utf-8").then(
     (buffer) => buffer.toString("utf-8"),
   );
   await writeFile("rollup.config.js", rollupConfig, options);
 
   const { targets } = options;
-  return updatePackageJson(options, (packageObject) => ({
+  await updatePackageJson(options, (packageObject) => ({
     ...packageObject,
     scripts: {
       ...packageObject.scripts,
@@ -29,4 +27,6 @@ export default async function (options) {
       ...(targets.includes("node-esm") ? { "build:node-esm": "cross-env BUILD_ENV=node-esm rollup -c" } : {}),
     },
   }));
+
+  return rollup(options);
 }

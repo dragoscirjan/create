@@ -4,10 +4,7 @@ import { join as joinPath } from "path";
 import { appendRunS, update as updatePackageJson } from "../default/package-json.js";
 import spawn from "../util/spawn.js";
 
-/** @param options {{language: 'js' | 'ts' | 'coffee', projectPath: string}} */
 export default async function (options) {
-  const { language } = options;
-
   try {
     const stats = await stat(joinPath(options.projectPath, ".dependency-cruiser.js"));
     if (stats.isFile()) {

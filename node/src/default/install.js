@@ -38,14 +38,14 @@ const buildPackageList = ({ qualityTools, testFramework, buildTool, targets }) =
       : []),
     // test frameworks
     ...(testFramework.includes("ava")
-      ? ["ava", ...(qualityTools.includes("eslint") ? ["eslint-plugin-ava"] : [])]
+      ? ["ava", "sinon", ...(qualityTools.includes("eslint") ? ["eslint-plugin-ava"] : [])]
       : []),
-    ...(testFramework.includes("jasmine") ? ["jasmine"] : []),
+    ...(testFramework.includes("jasmine") ? ["jasmine", "sinon"] : []),
     ...(testFramework.includes("jest")
       ? ["jest", ...(qualityTools.includes("eslint") ? ["eslint-plugin-jest"] : [])]
       : []),
     ...(testFramework.includes("mocha")
-      ? ["chai", "mocha", ...(qualityTools.includes("eslint") ? ["eslint-plugin-mocha"] : [])]
+      ? ["chai", "mocha", "sinon", ...(qualityTools.includes("eslint") ? ["eslint-plugin-mocha"] : [])]
       : []),
     ...(testFramework.includes("vitest") ? ["vitest"] : []),
     // languages specific
@@ -86,8 +86,8 @@ const buildPackageList = ({ qualityTools, testFramework, buildTool, targets }) =
     }} */
 export default async function (options) {
   const { packageManager, targets } = options;
-  const pm = await import(`../util/package-manager/${packageManager}.js`);
-  await pm.install(buildPackageList(options), {
+  const { install: pmInstall } = await import(`../util/package-manager/${packageManager}.js`);
+  await pmInstall(buildPackageList(options), {
     ...options,
     saveDev: true,
   });
