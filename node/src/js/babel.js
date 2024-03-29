@@ -30,10 +30,10 @@ export default async function (options) {
           }
         : {}),
       ...(targets.includes("browser")
-        ? { "build:node-cjs": 'cross-env BUILD_ENV=node-cjs babel src --out-dir dist/cjs --extensions ".js"' }
+        ? { "build:node-cjs": 'cross-env BUILD_ENV=node-cjs babel src --out-dir dist/node-cjs --extensions ".js"' }
         : {}),
       ...(targets.includes("browser")
-        ? { "build:node-esm": 'cross-env BUILD_ENV=node-esm babel src --out-dir dist/esm --extensions ".js"' }
+        ? { "build:node-esm": 'cross-env BUILD_ENV=node-esm babel src --out-dir dist/node-esm --extensions ".js"' }
         : {}),
     },
   }));
