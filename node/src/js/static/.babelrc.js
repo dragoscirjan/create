@@ -35,7 +35,7 @@ module.exports = function (api) {
           // Tells Babel to transform ES modules (import/export) into CommonJS
           // (require/module.exports). This is the critical change for making your code compatible
           // with Node.js environments that only support CommonJS module syntax.
-          ...(buildEnv === "node-cjs" ? { modules: "commonjs" } : {}),
+          ...(buildEnv === "node-cjs" && !process.env.ROLLUP_BUILD ? { modules: "commonjs" } : {}),
           ...(buildEnv === "node-esm" || buildEnv === "browser"
             ? {
                 // Tells Babel not to transform modules - thus preserving import and export statements

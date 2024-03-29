@@ -23,8 +23,10 @@ export default async function (options) {
             "build:browser": "cross-env BUILD_ENV=browser rollup -c",
           }
         : {}),
-      ...(targets.includes("browser") ? { "build:node-cjs": "cross-env BUILD_ENV=node-cjs rollup -c" } : {}),
-      ...(targets.includes("browser") ? { "build:node-esm": "cross-env BUILD_ENV=node-esm rollup -c" } : {}),
+      ...(targets.includes("node-cjs")
+        ? { "build:node-cjs": "cross-env BUILD_ENV=node-cjs ROLLUP_BUILD=1 rollup -c" }
+        : {}),
+      ...(targets.includes("node-esm") ? { "build:node-esm": "cross-env BUILD_ENV=node-esm rollup -c" } : {}),
     },
   }));
 }
