@@ -1,3 +1,5 @@
+/* eslint-disable max-lines-per-function */
+
 import { writeHello } from "../src";
 import sinon from "sinon";
 

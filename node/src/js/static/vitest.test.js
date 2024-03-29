@@ -1,8 +1,18 @@
+/* eslint-disable max-lines-per-function */
+
 import { writeHello } from "../src";
-import { afterAll, describe, it, expect, vi } from "vitest";
+import { beforeAll, afterAll, describe, it, expect, vi } from "vitest";
 
 describe("writeHello", (t) => {
-  const consoleMock = vi.spyOn(console, "log").mockImplementation(() => undefined);
+  let consoleMock;
+
+  beforeAll(() => {
+    vi.spyOn(console, "log").mockImplementation(() => undefined);
+  });
+
+  afterEach(() => {
+    consoleMock.mockClear();
+  });
 
   afterAll(() => {
     consoleMock.mockReset();

@@ -1,3 +1,5 @@
+/* eslint-disable max-lines-per-function */
+
 import test from "ava";
 import sinon from "sinon";
 
