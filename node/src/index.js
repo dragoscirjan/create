@@ -1,10 +1,12 @@
+#!/usr/bin/env node
+
 import { program } from "commander";
 import { resolve } from "path";
 
 import logger from "./util/logger.js";
 
 const allBuildTools = ["esbuild", "rollup", "swc"];
-const allLanguages = ["cofee", "js", "ts"];
+const allLanguages = [/*"cofee", */ "js", "ts"];
 const allPackageManagers = ["npm", "pnpm", "yarn"];
 const allQualityTools = ["eslint", "oxlint", "prettier", "jscpd", "dependency-cruiser", "license-checker", "audit"];
 const allTargets = ["browser", "bun", "deno", "node-cjs", "node-esm"];
