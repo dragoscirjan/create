@@ -3,14 +3,15 @@ import { join as joinPath } from "path";
 
 import spawn from "../spawn.js";
 import { whichNpm } from "../which.js";
+import continuePrompt from "../inquire-continue.js";
 
 /** @param options {{projectPath: string}} */
 export async function init(options) {
   try {
     const stats = await stat(joinPath(options.projectPath, "package.json"));
     if (stats.isFile()) {
-      console.log(`Folder already contains files; Cannot overwrite...`);
-      process.exit(0);
+      console.warn(`Folder already contains files; Cannot overwrite...`);
+      await continuePrompt();
     }
   } catch (e) {}
 

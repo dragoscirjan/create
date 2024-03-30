@@ -2,7 +2,7 @@ import { update as updatePackageJson } from "./package-json.js";
 
 export default async function (options) {
   const { logger } = options;
-  logger.info("cpdating package.json for Node.js CSJ build...");
+  logger.info("updating package.json for Node.js CSJ build...");
 
   return updatePackageJson(options, (object) => ({
     ...object,

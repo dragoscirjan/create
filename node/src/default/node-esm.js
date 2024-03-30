@@ -5,7 +5,7 @@ import { update as updatePackageJson } from "./package-json.js";
 
 export default async function (options) {
   const { logger } = options;
-  logger.info("cpdating package.json for Node.Js ESM build...");
+  logger.info("updating package.json for Node.Js ESM build...");
 
   await updatePackageJson(options, (object) => ({
     ...object,

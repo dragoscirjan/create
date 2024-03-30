@@ -52,7 +52,7 @@ export default async function (options) {
 
   const { packageManager, logger } = options;
 
-  logger.info("Installing babel dependencies...");
+  logger.info("Installing TypeScript dependencies...");
 
   const { install: pmInstall } = await import(`../util/package-manager/${packageManager}.js`);
   return pmInstall(buildPackageList(options), {
