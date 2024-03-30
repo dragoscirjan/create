@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+import { expect } from "chai";
 import sinon from "sinon";
 
 import { writeHello } from "../src";

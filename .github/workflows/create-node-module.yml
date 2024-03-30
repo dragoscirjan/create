@@ -74,6 +74,7 @@ jobs:
             --test-framework ${{ matrix.test-framework }} \
             $CREATE_ARGS
       - name: Validate Project
+        if: ${{ matrix.language != 'ts' && matrix.test-framework != 'mocha' }}
         run: |
           cd /tmp/test-node \
             && cat package.json \

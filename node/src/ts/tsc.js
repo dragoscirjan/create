@@ -5,7 +5,7 @@ import { update as updatePackageJson } from "../default/package-json.js";
 
 /** @param options {{targets: string[],}} */
 export default async function (options) {
-  const { targets, logger } = options;
+  const { testFramework, targets, logger } = options;
   logger.verbose(`configuring babel...`);
 
   const tsConfig = await readRepoFile("../ts/static/tsconfig.json");
@@ -15,6 +15,19 @@ export default async function (options) {
     const tsConfig = await readRepoFile(`../ts/static/tsconfig.${name}.json`);
     await writeFile(`tsconfig.${name}.json`, tsConfig, options);
   }
+
+  const tsTestConfig = await readRepoFile("../ts/static/tsconfig.test.json");
+  let tsConfigObject = JSON.parse(tsTestConfig);
+  if (["jest", "mocha"].includes(testFramework)) {
+    tsConfigObject = {
+      ...tsConfigObject,
+      compilerOptions: {
+        ...(tsConfigObject?.compilerOptions ?? {}),
+        types: [...(tsConfigObject?.compilerOptions?.types ?? []), testFramework],
+      },
+    };
+  }
+  await writeFile("tsconfig.test.json", JSON.stringify(tsConfigObject, null, 2), options);
 
   return updatePackageJson(options, (packageObject) => ({
     ...packageObject,

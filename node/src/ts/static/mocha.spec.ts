@@ -1,3 +1,5 @@
+import { expect } from "chai";
+
 import { hello } from "./index";
 
 describe("hello", function () {

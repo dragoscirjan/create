@@ -1,9 +1,3 @@
 {
-  "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "types": ["node", "jest"],
-    "target": "ES2022",
-    "module": "CommonJS",
-    "outDir": "../dist/node/node-cjs"
-  }
+  "extends": "./tsconfig.cjs.json"
 }
