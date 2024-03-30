@@ -6,18 +6,18 @@ on:
     branches: [main]
 
 jobs:
-  create-node-module:
-    name: "Create Node Module"
-    uses: templ-project/create/.github/workflows/create-node-module.yml@main
-    secrets: inherit
+  # create-node:
+  #   name: "Create Node Module"
+  #   uses: templ-project/create/.github/workflows/create-node.yml@main
+  #   secrets: inherit
 
   release:
     if: |
       (
         github.event_name != 'pull_request' || startsWith(github.event.pull_request.title, 'chore: release') != false
       )
-    name: "Perform Releases"
-    needs: [create-node-module]
+    # name: "Perform Releases"
+    needs: [create-node]
     uses: templ-project/create/.github/workflows/release.yml@main
     secrets: inherit
 
