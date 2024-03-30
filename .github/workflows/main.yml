@@ -18,7 +18,7 @@ jobs:
       )
     name: "Perform Releases"
     needs: [create-node-module]
-    uses: templ-project/release/.github/workflows/release.yml@main
+    uses: templ-project/create/.github/workflows/release.yml@main
     secrets: inherit
 
   # publish:
