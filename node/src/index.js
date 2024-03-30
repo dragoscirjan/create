@@ -12,19 +12,20 @@ const allTestFrameworks = ["ava", "deno", "mocha", "jasmine", "jest", "vitest"];
 
 async function run(language, runner, options) {
   try {
+    const { default: irun } = await import(`./${language}/${runner}.js`);
     logger.info(`resolving ${language}/${runner} ...`);
-    const { default: run } = await import(`./${language}/${runner}.js`);
-    await run(options);
+    return irun(options);
   } catch (error) {
-    console.log(error);
-    console.error(`./${language}/${runner}.js not found`);
-    process.exit(1);
+    logger.debug(`./${language}/${runner}.js not found`);
+    logger.debug(`error: ${error.message} \n ${error.stack}`);
+
+    return run("default", runner, options);
   }
 }
 
 program
   .argument("<projectPath>", "Project Path")
-  .option("-l, --language <language>", `Programming Language to use: ${allLanguages.join(", ")}`, "js")
+  .option("-l, --language <language>", `Programming Language to use: ${allLanguages.join(", ")}`, "ts")
   .option("-t, --targets <targets...>", `Module's target: ${allTargets.join(", ")} or all`, "all")
   .option("--package-manager <packageManger>", `Package Manager to use: ${allPackageManagers.join(", ")}`, "npm")
   .option("--test-framework <testFramework>", `Testing Framework to use: ${allTestFrameworks.join(", ")}`, "jest")
@@ -57,8 +58,10 @@ program
       const runners = [
         // project init
         "package-json",
+
         // npm i
         "install",
+
         // deploy code
         "code",
         // deploy tests
@@ -69,8 +72,8 @@ program
         "editorconfig",
         // deploy builder
         ...(language === "coffee" ? [] : []),
-        ...(language === "js" ? ["babel"] : []),
-        ...(language === "ts" ? ["tsconfig"] : []),
+        ...(language === "js" || (language === "ts" && testFramework === "jasmine") ? ["babel"] : []),
+        ...(language === "ts" ? ["tsc"] : []),
         ...(buildTool ? [buildTool] : []),
         // deploy target settings
         ...targets,

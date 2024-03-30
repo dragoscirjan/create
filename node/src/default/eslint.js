@@ -36,7 +36,7 @@ export const eslintConfig = {
  * @param config {object}
  */
 export default async function (options, config = eslintConfig) {
-  const { testFramework, logger } = options;
+  const { language, testFramework, logger } = options;
   logger.info("updating package.json for (generic) eslint tool...");
 
   if (["ava", "jest", "mocha"].includes(testFramework)) {
@@ -56,7 +56,7 @@ module.exports = ${JSON.stringify(config, null, 2)};`;
       ca: appendRunS(object?.scripts?.ca, "ca:lint"),
       "ca:lint": appendRunS(object?.scripts?.["ca:lint"], "lint"),
       lint: "run-s lint:*",
-      "lint:eslint": "eslint ./{src,test}/**/*.js --fix",
+      "lint:eslint": `eslint ./{src,test}/**/*.${language} --fix`,
     },
   }));
 }

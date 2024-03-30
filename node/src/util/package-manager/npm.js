@@ -40,6 +40,7 @@ export async function install(packages, options) {
               : [],
       ],
       ...packages,
+      "--legacy-peer-deps",
     ],
     { cwd: options.projectPath, stdio: "inherit" },
   );

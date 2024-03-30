@@ -34,7 +34,7 @@ export const prettierConfig = {
  * @param config {object}
  */
 export default async function (options, config = prettierConfig) {
-  const { logger } = options;
+  const { language, logger } = options;
   logger.info("updating package.json for (generic) prettier tool...");
 
   const stringConfig = `// .prettierrc.js
@@ -49,7 +49,7 @@ module.exports = ${JSON.stringify(config, null, 2)};`;
       ...object.scripts,
       ca: appendRunS(object?.scripts?.ca, "ca:lint"),
       "ca:lint": appendRunS(object?.scripts?.["ca:lint"], "prettier"),
-      prettier: "prettier ./{src,test*}/**/*.js --write",
+      prettier: `prettier ./{src,test*}/**/*.${language} --write`,
     },
   }));
 }

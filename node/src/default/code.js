@@ -2,9 +2,8 @@ import { mkdir, stat } from "fs/promises";
 import { join as joinPath } from "path";
 import { rimraf } from "rimraf";
 
+import readRepoFile from "../util/read-repo-file.js";
 import writeFile from "../util/write-file.js";
-
-const noCode = "// no code";
 
 /**
  * @param options {{
@@ -13,8 +12,8 @@ const noCode = "// no code";
     }}
  * @param config {object}
  */
-export default async function (options, code = noCode) {
-  const { projectPath, logger } = options;
+export default async function (options) {
+  const { language, logger, projectPath } = options;
 
   logger.verbose("creating src/ ...");
 
@@ -29,5 +28,6 @@ export default async function (options, code = noCode) {
   } catch (e) {}
   await mkdir(codePath, { recursive: true });
 
-  return writeFile(joinPath("src", "index.js"), code, options);
+  const code = await readRepoFile(`../${language}/static/index.${language}`);
+  return writeFile(joinPath("src", `index.${language}`), code, options);
 }

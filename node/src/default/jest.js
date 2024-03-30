@@ -1,19 +1,21 @@
 import writeFile from "../util/write-file.js";
 import { update as updatePackageJson } from "./package-json.js";
 
-export const jestConfig = {
+export const jestConfig = (language) => ({
   clearMocks: true,
   coverageDirectory: "coverage",
-  moduleFileExtensions: ["js", "json", "jsx"],
+  moduleFileExtensions: [...new Set(["js", language, "json", `${language}x`])],
   roots: ["."],
   testEnvironment: "node",
-  testMatch: ["**/{src,test}/**/*.{spec,test}.js"],
-};
+  testMatch: [`**/{src,test}/**/*.{spec,test}.${language}`],
+});
 
 /** @param options {{language: 'js' | 'ts' | 'coffee'}} */
-export default async function (options, config = jestConfig) {
-  const { logger, testFramework } = options;
+export default async function (options, config = null) {
+  const { language, logger, testFramework } = options;
   logger.verbose(`configuring ${testFramework}...`);
+
+  config = config || jestConfig(language);
 
   await updatePackageJson(options, (object) => ({
     ...object,

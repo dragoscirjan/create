@@ -67,13 +67,7 @@ const buildPackageList = ({ qualityTools, testFramework, buildTool, targets }) =
     // builder specific
     ...(buildTool === "esbuild" || targets.includes("browser") || targets.includes("deno") ? ["esbuild"] : []),
     ...(buildTool === "rollup" || targets.includes("browser") || targets.includes("deno") ? ["rollup"] : []),
-    ...(buildTool === "rollup"
-      ? [
-          "@rollup/plugin-commonjs",
-          "@rollup/plugin-node-resolve",
-          // ...(language === "ts" ? ["@rollup/plugin-typescript"] : []),
-        ]
-      : []),
+    ...(buildTool === "rollup" ? ["@rollup/plugin-commonjs", "@rollup/plugin-node-resolve"] : []),
     ...(buildTool === "swc" ? ["@swc/cli", "@swc/core"] : []),
   ];
 };

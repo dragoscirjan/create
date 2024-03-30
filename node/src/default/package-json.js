@@ -1,12 +1,37 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { join as joinPath } from "path";
 
+import { update as updatePackageJson } from "../default/package-json.js";
+import { requiresNyc } from "../util/test-framework.js";
+
 /** @param options {{packageManager: 'npm' | 'pnpm' | 'yarn', projectPath: string}} */
 export default async function (options) {
-  const { projectPath, logger } = options;
+  const { testFramework, projectPath, logger } = options;
 
   logger.verbose(`creating ${projectPath}...`);
   await mkdir(projectPath, { recursive: true });
+
+  await writeFile(
+    joinPath(projectPath, "package.json"),
+    JSON.stringify({
+      devDependencies: {},
+      scripts: {},
+    }),
+    options,
+  );
+
+  await updatePackageJson(options, (object) => ({
+    ...object,
+    ...(requiresNyc(testFramework)
+      ? {
+          nyc: {
+            reporter: ["html", "lcov", "text"],
+            exclude: ["test*", "dist", "*.js", ".scripts", "coverage"],
+            all: true,
+          },
+        }
+      : {}),
+  }));
 
   if (!process.env.SKIP_NPM_INIT) {
     logger.verbose(`initializing project...`);

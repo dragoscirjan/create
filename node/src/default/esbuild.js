@@ -1,8 +1,13 @@
 import { update as updatePackageJson } from "./package-json.js";
+import readRepoFile from "../util/read-repo-file.js";
+import writeFile from "../util/write-file.js";
 
 export default async function (options) {
-  const { targets, logger, buildTool } = options;
-  logger.verbose(`configuring (generic) ${buildTool}...`);
+  const { targets, language, logger, buildTool } = options;
+  logger.verbose(`configuring (${language}) ${buildTool}...`);
+
+  const esbuildRunner = await readRepoFile(`../${language}/static/esbuild-runner.js`);
+  await writeFile(".scripts/esbuild-runner.js", esbuildRunner, options);
 
   return updatePackageJson(options, (packageObject) => ({
     ...packageObject,

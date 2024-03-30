@@ -1,4 +1,5 @@
 import install from "../default/install.js";
+import { requiresSinon } from "../util/test-framework.js";
 
 /** @param options {{
       language: 'js' | 'ts' | 'coffee',
@@ -8,21 +9,34 @@ import install from "../default/install.js";
       qualityTools: string[]
     }} */
 const buildPackageList = (options) => {
-  const { packageManager, buildTool, testFramework } = options;
+  const { buildTool, testFramework, qualityTools } = options;
 
   return [
-    "@babel/cli",
-    "@babel/core",
-    "@babel/eslint-parser",
-    "@babel/preset-env",
-    "@babel/register",
-    "@babel/plugin-transform-typescript",
+    "typescript",
+    "ts-node",
+    "tslib",
+    "@types/node",
+    "@istanbuljs/nyc-config-typescript",
     // test framework specific
-    ...(testFramework === "ava" ? ["@ava/babel"] : []),
-    ...(testFramework === "jest" ? ["babel-jest"] : []),
+    ...(requiresSinon(testFramework) ? ["@types/sinon"] : []),
+    ...(testFramework === "ava" ? ["tsimp"] : []),
+    ...(testFramework === "jasmine"
+      ? [
+          "@babel/cli",
+          "@babel/core",
+          "@babel/preset-env",
+          "@babel/register",
+          "@babel/plugin-transform-typescript",
+          "jasmine",
+        ]
+      : []),
+    ...(testFramework === "jest" ? ["ts-jest", "@types/jest"] : []),
+    ...(testFramework === "mocha" ? ["@types/chai", "@types/mocha"] : []),
+    // quality tools specific
+    ...(qualityTools.includes("eslint") ? ["@typescript-eslint/eslint-plugin", "@typescript-eslint/parser"] : []),
     // builder specific
     ...(buildTool === "esbuild" ? ["esbuild-plugin-babel"] : []),
-    ...(buildTool === "rollup" ? ["@rollup/plugin-babel"] : []),
+    ...(buildTool === "rollup" ? ["@rollup/plugin-typescript"] : []),
   ];
 };
 
