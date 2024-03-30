@@ -6,7 +6,24 @@ on:
     branches: [main]
 
 jobs:
-  publish:
+  create-node-module:
     name: "Create Node Module"
     uses: templ-project/create/.github/workflows/create-node-module.yml@main
     secrets: inherit
+
+  release:
+    if: |
+      (
+        github.event_name != 'pull_request' || startsWith(github.event.pull_request.title, 'chore: release') != false
+      )
+    name: "Perform Releases"
+    needs: [create-node-module]
+    uses: templ-project/release/.github/workflows/release.yml@main
+    secrets: inherit
+
+  # publish:
+  #   if: github.event_name != 'pull_request' && needs.release.outputs.version
+  #   name: "Publish Template"
+  #   needs: [release]
+  #   uses: itmcdev/vscode-extensions/.github/workflows/publish.yml@main
+  #   secrets: inherit

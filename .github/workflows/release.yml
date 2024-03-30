@@ -1,0 +1,54 @@
+name: Bump Versions
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: "Release Tag"
+    outputs:
+      version: ${{ steps.new_releases.outputs.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+      - name: Install Dependencies
+        run: |
+          npm i
+          sudo apt-get install jq -y
+          cat release-please-config.json | jq -r .
+      - name: Create/Update Release PR
+        run: |
+          npm run release -- manifest-pr \
+            --token=${{ secrets.GH_TOKEN }} \
+            --repo-url=${{ github.repository }} \
+            --target-branch=main \
+            --config-file=release-please-config.json \
+            --manifest-file=.release-please-manifest.json
+      - name: Create Github Release
+        id: new_releases
+        run: |
+          output=$(npm run release -- github-release \
+            --token=${{ secrets.GH_TOKEN }} \
+            --repo-url=${{ github.repository }} \
+            --target-branch=main \
+            --config-file=release-please-config.json \
+            --manifest-file=.release-please-manifest.json \
+            --include-v-in-tags=false)
+
+          echo $output
+
+          # version=$(cat .release-please-manifest.json | jq -r '.["."]')
+          version=$(echo $output | grep "@templ-project/create" | awk -F ': v' '{print $2}' | awk -F "'" '{print $1}')
+
+          echo version=$version
+          echo "version=$version" >> $GITHUB_OUTPUT
+      - name: Debug
+        run: |
+          cat .release-please-manifest.json| jq -r '.["."]'
+          cat .release-please-manifest.json | jq -r .

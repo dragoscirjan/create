@@ -1,0 +1,15 @@
+{
+  "release-type": "node",
+  "packages": {
+    "node": {
+      "release-type": "node",
+      "package-name": "@templ-project/create-node",
+      "changelog-path": "CHANGELOG.md"
+    },
+    ".": {
+      "release-type": "node",
+      "package-name": "@templ-project/create",
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
+}
