@@ -50,5 +50,5 @@ jobs:
           echo "version=$version" >> $GITHUB_OUTPUT
       - name: Debug
         run: |
-          cat .release-please-manifest.json| jq -r '.["."]'
+          # cat .release-please-manifest.json| jq -r '.["."]'
           cat .release-please-manifest.json | jq -r .
