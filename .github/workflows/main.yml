@@ -1,4 +1,4 @@
-name: "Create CICD"
+name: "Create :: CICD"
 
 on:
   push: {}

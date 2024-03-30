@@ -1,4 +1,4 @@
-name: "Create Node Module CICD"
+name: "Create :: Node CICD"
 
 on:
   workflow_call: {}
