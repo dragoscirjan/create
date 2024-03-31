@@ -73,6 +73,8 @@ jobs:
           npm install
       - name: Install Dependencies
         run: |
+          set -ex
+
           for token in create-node; do
             cd packages/$token
             module=@templ-project/$token@$(node -p "require('./package.json').version")
