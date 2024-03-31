@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/templ-project/create/compare/create-v1.0.5...create-v1.0.6) (2024-03-31)
+
+
+### Bug Fixes
+
+* publish attempt - 4 ([2adb39a](https://github.com/templ-project/create/commit/2adb39a7d250062f588885f791cd974764d8da21))
+
 ## [1.0.5](https://github.com/templ-project/create/compare/create-v1.0.4...create-v1.0.5) (2024-03-31)
 
 
