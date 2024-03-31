@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/templ-project/create/compare/create-node-v1.0.2...create-node-v1.0.3) (2024-03-31)
+
+
+### Bug Fixes
+
+* possible flaw fix inside package-jsonjs ([0da602d](https://github.com/templ-project/create/commit/0da602d7923295d680937dcc0fca839a06ed35d1))
+
 ## [1.0.2](https://github.com/templ-project/create/compare/create-node-v1.0.1...create-node-v1.0.2) (2024-03-31)
 
 
