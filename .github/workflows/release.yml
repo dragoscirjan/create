@@ -65,14 +65,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18.x
+          registry-url: "https://registry.npmjs.org/"
+          scope: "@templ-project"
+          node-auth-token: ${{ secrets.NPM_TOKEN }}
       - name: Install Dependencies
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm set "//registry.npmjs.org/:_authToken=$NPM_TOKEN"
-
-          for module in create-node; do
-            cd packages/$module
-            npm view @templ-project/$module@$(cat package.json | grep -r .version) \
-              || npm publish --access public
+          npm install
+      - name: Install Dependencies
+        run: |
+          for token in create-node; do
+            cd packages/$token
+            module=@templ-project/$token@$(node -p "require('./package.json').version")
+            if ! npm view $module > /dev/null 2>&1; then
+              npm publish --access public
+            else
+              echo "> Package $module was published already"
+            fi
+            cd ../..
           done
