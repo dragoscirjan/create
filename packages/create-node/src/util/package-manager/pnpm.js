@@ -1,22 +1,10 @@
-import { stat } from "fs/promises";
-import { join as joinPath } from "path";
-
+import { init as genericInit } from "./generic.js";
 import spawn from "../spawn.js";
 import { whichPnpm } from "../which.js";
-import continuePrompt from "../inquire-continue.js";
 
 /** @param options {{projectPath: string}} */
 export async function init(options) {
-  try {
-    const stats = await stat(joinPath(options.projectPath, "package.json"));
-    if (stats.isFile()) {
-      console.warn(`Folder already contains files; Cannot overwrite...`);
-      await continuePrompt();
-    }
-  } catch (e) {}
-
-  const binary = await whichPnpm();
-  return spawn([binary, "init"], { cwd: options.projectPath, stdio: "inherit" });
+  return genericInit(options);
 }
 
 /**
@@ -39,8 +27,8 @@ export async function install(packages, options) {
 
   if (force) {
     // args.push("--force");
-    args.push("--legacy-peer-deps");
+    // args.push("--legacy-peer-deps");
   }
 
-  spawn(args, { cwd: projectPath, stdio: "inherit" });
+  return spawn(args, { cwd: projectPath, stdio: "inherit" });
 }

@@ -52,11 +52,12 @@ export default async function (options) {
 
   const { packageManager, logger } = options;
 
-  logger.info("Installing TypeScript dependencies...");
+  logger.verbose("Installing TypeScript dependencies...");
 
   const { install: pmInstall } = await import(`../util/package-manager/${packageManager}.js`);
   return pmInstall(buildPackageList(options), {
     ...options,
     saveDev: true,
+    force: true,
   });
 }

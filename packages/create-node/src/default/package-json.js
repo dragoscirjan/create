@@ -1,20 +1,8 @@
-import { mkdir, readFile, writeFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import { join as joinPath } from "path";
 
 import { update as updatePackageJson } from "../default/package-json.js";
 import { requiresNyc } from "../util/test-framework.js";
-
-const createMockPackageJson = async (options) =>
-  process.env.SKIP_NPM_INIT
-    ? writeFile(
-        joinPath(options.projectPath, "package.json"),
-        JSON.stringify({
-          devDependencies: {},
-          scripts: {},
-        }),
-        options,
-      )
-    : null;
 
 const addNycConfigToPackageJson = async (options) =>
   updatePackageJson(options, (object) => ({
@@ -42,13 +30,8 @@ const runProjectInit = async (options) => {
 
 /** @param options {{packageManager: 'npm' | 'pnpm' | 'yarn', projectPath: string}} */
 export default async function (options) {
-  const { projectPath, logger } = options;
-
-  logger.verbose(`creating ${projectPath}...`);
-  await mkdir(projectPath, { recursive: true });
-  await createMockPackageJson(options);
-  await addNycConfigToPackageJson(options);
-  return runProjectInit(options);
+  await runProjectInit(options);
+  return addNycConfigToPackageJson(options);
 }
 
 /** @param options {{projectPath: string}} */
