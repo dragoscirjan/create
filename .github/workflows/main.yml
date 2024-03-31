@@ -20,10 +20,3 @@ jobs:
     # needs: [create-node]
     uses: templ-project/create/.github/workflows/release.yml@main
     secrets: inherit
-
-  # publish:
-  #   if: github.event_name != 'pull_request' && needs.release.outputs.version
-  #   name: "Publish Template"
-  #   needs: [release]
-  #   uses: itmcdev/vscode-extensions/.github/workflows/publish.yml@main
-  #   secrets: inherit
