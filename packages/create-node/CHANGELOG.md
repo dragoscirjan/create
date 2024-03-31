@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/templ-project/create/compare/create-node-v1.0.3...create-node-v1.0.4) (2024-03-31)
+
+
+### Bug Fixes
+
+* fixed yarn and pnpm install, changed order of events on project init ([cd08e93](https://github.com/templ-project/create/commit/cd08e934a181b7d1530ef84d7bfca292b162ffe9))
+
 ## [1.0.3](https://github.com/templ-project/create/compare/create-node-v1.0.2...create-node-v1.0.3) (2024-03-31)
 
 

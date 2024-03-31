@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.11](https://github.com/templ-project/create/compare/create-v1.0.10...create-v1.0.11) (2024-03-31)
+
+
+### Bug Fixes
+
+* fixed yarn and pnpm install, changed order of events on project init ([cd08e93](https://github.com/templ-project/create/commit/cd08e934a181b7d1530ef84d7bfca292b162ffe9))
+
 ## [1.0.10](https://github.com/templ-project/create/compare/create-v1.0.9...create-v1.0.10) (2024-03-31)
 
 
