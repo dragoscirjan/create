@@ -81,6 +81,7 @@ program
         ...targets,
         // deploy quality tools
         ...qualityTools,
+        "husky",
       ];
       for (const runner of runners) {
         await run(language, runner, options);
