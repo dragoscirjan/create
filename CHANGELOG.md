@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.9](https://github.com/templ-project/create/compare/create-v1.0.8...create-v1.0.9) (2024-03-31)
+
+
+### Bug Fixes
+
+* added support for pnpm and yarn ([c97daf5](https://github.com/templ-project/create/commit/c97daf5daa7f8a522a75aa1fe62a5e1d26ea7842))
+
 ## [1.0.8](https://github.com/templ-project/create/compare/create-v1.0.7...create-v1.0.8) (2024-03-31)
 
 
