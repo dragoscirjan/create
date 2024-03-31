@@ -7,9 +7,7 @@
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
-  "workspaces": [
-    "node"
-  ],
+  "workspaces": ["packages/create-node"],
   "dependencies": {
     "release-please": "^16.10.1"
   }

@@ -1,7 +1,7 @@
 {
   "release-type": "node",
   "packages": {
-    "node": {
+    "packages/create-node": {
       "release-type": "node",
       "package-name": "@templ-project/create-node",
       "changelog-path": "CHANGELOG.md"
