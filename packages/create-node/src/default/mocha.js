@@ -22,7 +22,7 @@ export default async function (options, config = null) {
       ...object.scripts,
       test: `npm run test:single`,
       // BUILD_ENV is for babel
-      "test:single": `cross-env NODE_ENV=test ${language === "js" ? "BUILD_ENV=node-cjs" : 'TS_NODE_PROJECT="./tsconfig.test.json"'} nyc mocha --forbid-only`,
+      "test:single": `cross-env NODE_ENV=test ${language === "js" ? "BUILD_ENV=node-cjs" : ""} nyc mocha --forbid-only`,
       "test:watch": "npm run test -- --watch",
     },
   }));

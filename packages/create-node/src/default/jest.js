@@ -21,7 +21,7 @@ export default async function (options, config = null) {
     ...object,
     scripts: {
       ...object.scripts,
-      test: `cross-env NODE_ENV=test ${language === "js" ? "BUILD_ENV=node-cjs" : 'TS_NODE_PROJECT="./tsconfig.test.json"'} NO_API_DOC=1 jest --coverage --runInBand --verbose`,
+      test: `cross-env NODE_ENV=test ${language === "js" ? "BUILD_ENV=node-cjs" : ""} NO_API_DOC=1 jest --coverage --runInBand --verbose`,
       "test:watch": "npm run test -- --watch",
     },
   }));

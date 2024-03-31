@@ -9,15 +9,7 @@ export default async function (options) {
   logger.verbose(`configuring babel...`);
 
   const tsConfig = await readRepoFile("../ts/static/tsconfig.json");
-  await writeFile("tsconfig.json", tsConfig, options);
-
-  for (const name of ["base", "browser", "types", "cjs", "esm"]) {
-    const tsConfig = await readRepoFile(`../ts/static/tsconfig.${name}.json`);
-    await writeFile(`tsconfig.${name}.json`, tsConfig, options);
-  }
-
-  const tsTestConfig = await readRepoFile("../ts/static/tsconfig.test.json");
-  let tsConfigObject = JSON.parse(tsTestConfig);
+  let tsConfigObject = JSON.parse(tsConfig);
   if (["jest", "mocha"].includes(testFramework)) {
     tsConfigObject = {
       ...tsConfigObject,
@@ -27,7 +19,12 @@ export default async function (options) {
       },
     };
   }
-  await writeFile("tsconfig.test.json", JSON.stringify(tsConfigObject, null, 2), options);
+  await writeFile("tsconfig.json", JSON.stringify(tsConfigObject, null, 2), options);
+
+  for (const name of ["base", "browser", "types", "cjs", "esm"]) {
+    const tsConfig = await readRepoFile(`../ts/static/tsconfig.${name}.json`);
+    await writeFile(`tsconfig.${name}.json`, tsConfig, options);
+  }
 
   return updatePackageJson(options, (packageObject) => ({
     ...packageObject,
