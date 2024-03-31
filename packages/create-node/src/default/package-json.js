@@ -4,27 +4,22 @@ import { join as joinPath } from "path";
 import { update as updatePackageJson } from "../default/package-json.js";
 import { requiresNyc } from "../util/test-framework.js";
 
-/** @param options {{packageManager: 'npm' | 'pnpm' | 'yarn', projectPath: string}} */
-export default async function (options) {
-  const { testFramework, projectPath, logger } = options;
+const createMockPackageJson = async (options) =>
+  process.env.SKIP_NPM_INIT
+    ? writeFile(
+        joinPath(options.projectPath, "package.json"),
+        JSON.stringify({
+          devDependencies: {},
+          scripts: {},
+        }),
+        options,
+      )
+    : null;
 
-  logger.verbose(`creating ${projectPath}...`);
-  await mkdir(projectPath, { recursive: true });
-
-  if (process.env.SKIP_NPM_INIT) {
-    await writeFile(
-      joinPath(projectPath, "package.json"),
-      JSON.stringify({
-        devDependencies: {},
-        scripts: {},
-      }),
-      options,
-    );
-  }
-
-  await updatePackageJson(options, (object) => ({
+const addNycConfigToPackageJson = async (options) =>
+  updatePackageJson(options, (object) => ({
     ...object,
-    ...(requiresNyc(testFramework)
+    ...(requiresNyc(options.testFramework)
       ? {
           nyc: {
             reporter: ["html", "lcov", "text"],
@@ -35,20 +30,32 @@ export default async function (options) {
       : {}),
   }));
 
+const runProjectInit = async (options) => {
+  const { logger } = options;
   if (!process.env.SKIP_NPM_INIT) {
     logger.verbose(`initializing project...`);
-    const binary = await import(`../util/package-manager/${options.packageManager}.js`);
-    await binary.init(options);
+    return import(`../util/package-manager/${options.packageManager}.js`).then((binary) => binary.init(options));
   } else {
     logger.debug(`project init skiped.`);
   }
+};
+
+/** @param options {{packageManager: 'npm' | 'pnpm' | 'yarn', projectPath: string}} */
+export default async function (options) {
+  const { projectPath, logger } = options;
+
+  logger.verbose(`creating ${projectPath}...`);
+  await mkdir(projectPath, { recursive: true });
+  await createMockPackageJson(options);
+  await addNycConfigToPackageJson(options);
+  return runProjectInit(options);
 }
 
 /** @param options {{projectPath: string}} */
 export async function read(options) {
   const { projectPath } = options;
 
-  return await readFile(joinPath(projectPath, "package.json"), "utf-8").then((buffer) =>
+  return readFile(joinPath(projectPath, "package.json"), "utf-8").then((buffer) =>
     JSON.parse(buffer.toString("utf-8")),
   );
 }
@@ -65,20 +72,18 @@ export async function write(options, object) {
  * @param callable {object | function}
  */
 export async function update(options, callback) {
-  let object = await read(options);
-
-  if (typeof callback === "function") {
-    object = callback(object);
-  } else {
-    if (typeof callback === "object") {
-      object = {
-        ...object,
-        ...callback,
-      };
-    }
-  }
-
-  return write(options, object);
+  return read(options)
+    .then((object) => ({
+      ...(typeof callback === "function"
+        ? callback(object)
+        : typeof callback === "object"
+          ? {
+              ...object,
+              ...callback,
+            }
+          : {}),
+    }))
+    .then((object) => write(options, object));
 }
 
 /** @param commmand {string} */

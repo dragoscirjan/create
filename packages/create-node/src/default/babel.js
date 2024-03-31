@@ -3,15 +3,9 @@ import readRepoFile from "../util/read-repo-file.js";
 import writeFile from "../util/write-file.js";
 import { update as updatePackageJson } from "../default/package-json.js";
 
-/** @param options {{targets: string[],}} */
-export default async function (options) {
-  const { targets, logger } = options;
-  logger.verbose(`configuring babel...`);
-
-  const babelConfig = await readRepoFile("../default/static/.babelrc.js");
-  await writeFile(".babelrc.js", babelConfig, options);
-
-  return updatePackageJson(options, (packageObject) => ({
+const updatePackageJsonScripts =
+  ({ targets }) =>
+  (packageObject) => ({
     ...packageObject,
     scripts: {
       ...packageObject.scripts,
@@ -36,5 +30,15 @@ export default async function (options) {
         ? { "build:node-esm": 'cross-env BUILD_ENV=node-esm babel src --out-dir dist/node-esm --extensions ".js"' }
         : {}),
     },
-  }));
+  });
+
+/** @param options {{targets: string[],}} */
+export default async function (options) {
+  const { logger } = options;
+  logger.verbose(`configuring babel...`);
+
+  await readRepoFile("../default/static/.babelrc.js").then((babelConfig) =>
+    writeFile(".babelrc.js", babelConfig, options),
+  );
+  return updatePackageJson(options, updatePackageJsonScripts(options));
 }
