@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.10](https://github.com/templ-project/create/compare/create-v1.0.9...create-v1.0.10) (2024-03-31)
+
+
+### Bug Fixes
+
+* possible flaw fix inside package-jsonjs ([0da602d](https://github.com/templ-project/create/commit/0da602d7923295d680937dcc0fca839a06ed35d1))
+
 ## [1.0.9](https://github.com/templ-project/create/compare/create-v1.0.8...create-v1.0.9) (2024-03-31)
 
 
