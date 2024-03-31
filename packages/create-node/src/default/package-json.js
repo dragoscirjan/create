@@ -11,14 +11,16 @@ export default async function (options) {
   logger.verbose(`creating ${projectPath}...`);
   await mkdir(projectPath, { recursive: true });
 
-  await writeFile(
-    joinPath(projectPath, "package.json"),
-    JSON.stringify({
-      devDependencies: {},
-      scripts: {},
-    }),
-    options,
-  );
+  if (process.env.SKIP_NPM_INIT) {
+    await writeFile(
+      joinPath(projectPath, "package.json"),
+      JSON.stringify({
+        devDependencies: {},
+        scripts: {},
+      }),
+      options,
+    );
+  }
 
   await updatePackageJson(options, (object) => ({
     ...object,
