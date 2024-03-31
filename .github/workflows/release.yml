@@ -67,7 +67,7 @@ jobs:
           node-version: 18.x
       - name: Install Dependencies
         env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" ~/.npmrc
 
