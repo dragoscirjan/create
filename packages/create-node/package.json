@@ -1,7 +1,7 @@
 {
   "name": "@templ-project/create-node",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create Node.js Module",
   "main": "src/index.js",
   "scripts": {

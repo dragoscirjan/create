@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/templ-project/create/compare/create-v1.0.2...create-v1.0.3) (2024-03-31)
+
+
+### Bug Fixes
+
+* fixed jest and mocha and also added husky config ([d9f7154](https://github.com/templ-project/create/commit/d9f7154d7b1bc8f92a090b939b8aa4acd97536cb))
+
 ## [1.0.2](https://github.com/templ-project/create/compare/create-v1.0.1...create-v1.0.2) (2024-03-31)
 
 
