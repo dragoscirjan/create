@@ -1,13 +1,15 @@
 {
   "name": "@templ-project/create",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create apps",
   "scripts": {
     "release": "release-please"
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
-  "workspaces": ["packages/create-node"],
+  "workspaces": [
+    "packages/create-node"
+  ],
   "dependencies": {
     "release-please": "^16.10.1"
   }
