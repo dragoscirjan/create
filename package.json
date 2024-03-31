@@ -1,6 +1,6 @@
 {
   "name": "@templ-project/create",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Create apps",
   "scripts": {
     "release": "release-please"
