@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/templ-project/create/compare/create-v1.0.1...create-v1.0.2) (2024-03-31)
+
+
+### Bug Fixes
+
+* should publish packages now ([ccf43e5](https://github.com/templ-project/create/commit/ccf43e5a436d09eb346bdd5b2f2db28c0075efbc))
+
 ## [1.0.1](https://github.com/templ-project/create/compare/create-v1.0.0...create-v1.0.1) (2024-03-31)
 
 
