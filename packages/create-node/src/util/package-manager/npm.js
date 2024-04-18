@@ -14,7 +14,7 @@ export async function init(options) {
 export async function install(packages, options) {
   const { force, projectPath, save, saveDev } = options;
   const binary = await whichNpm();
-  const args = [binary, "add"];
+  const args = [binary, "i"];
 
   if (save) {
     args.push("-S");

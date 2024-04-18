@@ -1,4 +1,4 @@
-import { update as updatePackageJson } from "../default/package-json.js";
+import { update as updatePackageJson, write } from "../default/package-json.js";
 
 /** @param options {{
       packageManager: 'npm' | 'pnpm' | 'yarn',
@@ -28,13 +28,13 @@ const buildPackageList = ({ qualityTools, testFramework, buildTool, targets }) =
     ...(qualityTools.includes("oxlint") ? ["oxlint"] : []),
     ...(qualityTools.includes("prettier")
       ? [
-          "import-sort-style-module",
-          "prettier",
-          "prettier-plugin-import-sort",
-          ...(qualityTools.includes("eslint")
-            ? ["eslint-config-prettier", "eslint-plugin-import", "eslint-plugin-prettier"]
-            : []),
-        ]
+        "import-sort-style-module",
+        "prettier",
+        "prettier-plugin-import-sort",
+        ...(qualityTools.includes("eslint")
+          ? ["eslint-config-prettier", "eslint-plugin-import", "eslint-plugin-prettier"]
+          : []),
+      ]
       : []),
     // test frameworks
     ...(testFramework.includes("ava")
@@ -78,9 +78,8 @@ const buildPackageList = ({ qualityTools, testFramework, buildTool, targets }) =
       testFramework: 'ava' | 'deno' | 'mocha' | 'jasmine' | 'jest' | 'vitest',
       qualityTools: string[]
     }} */
-export default async function (options) {
+export default async function(options) {
   const { packageManager, logger } = options;
-
   logger.verbose("installing default dependencies...");
 
   const { install: pmInstall } = await import(`../util/package-manager/${packageManager}.js`);

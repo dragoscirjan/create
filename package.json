@@ -8,7 +8,8 @@
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
   "workspaces": [
-    "packages/create-node"
+    "packages/create-node",
+    "packages/create-node-nestjs"
   ],
   "dependencies": {
     "release-please": "^16.10.1"
