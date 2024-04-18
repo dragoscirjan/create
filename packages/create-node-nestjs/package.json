@@ -1,0 +1,24 @@
+{
+  "name": "@templ-project/create-node-nestjs",
+  "type": "module",
+  "version": "1.0.4",
+  "description": "Create Node.js Module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "bin": {
+    "create-node-nestjs": "./bin/create-node-nestjs"
+  },
+  "dependencies": {
+    "@nestjs/cli": "^10.3.2",
+    "@templ-project/create-node": "^1.0.4",
+    "commander": "^12.0.0",
+    "import-meta-resolve": "^4.0.0",
+    "inquirer": "^9.2.17",
+    "rimraf": "^5.0.5",
+    "winston": "^3.13.0"
+  }
+}
