@@ -4,6 +4,7 @@ import { program } from "commander";
 import { resolve } from "path";
 
 import logger from "../src/util/logger.js";
+import readFile from "../src/util/read-file.js";
 import defaultAction, {
   allBuildTools,
   allLanguages,
@@ -12,6 +13,7 @@ import defaultAction, {
   allQualityTools,
   allTargets,
 } from "../src/commands/default.js";
+import buildAction from "../src/commands/build.js";
 
 program
   .argument("<projectPath>", "Project Path")
@@ -68,6 +70,33 @@ program
     return defaultAction(projectPath, options);
   });
 
-program.command("build").description("Build the project");
+program
+  .command("build")
+  .description("Build the project")
+  .option("--build-tool <buildTool>", `Build Tool to use: ${allBuildTools.join(", ")}`)
+  .action(async (options) => {
+    const projectPath = process.cwd();
+
+    options = {
+      ...options,
+      projectPath,
+      logger,
+    };
+
+    await readFile(".createrc", options).then((data) => {
+      const json = JSON.parse(data);
+      options = {
+        ...options,
+        ...json,
+        // TODO: coffee not supported yet
+        buildTool: options.buildTool || json.language === "ts" ? "tsc" : "babel",
+      };
+    });
+
+    // console.log(options);
+    // process.exit(0);
+
+    return buildAction(projectPath, options);
+  });
 
 program.parse();

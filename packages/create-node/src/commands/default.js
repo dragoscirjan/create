@@ -58,7 +58,12 @@ export default async function (_projectPath, options) {
 
     // deploy quality tools
     ...qualityTools.map((qt) => `quality-tools/${qt}`),
+
+    // git
     "husky",
+
+    // create
+    "createrc",
   ];
   for (const runner of runners) {
     await run(language, runner, options);

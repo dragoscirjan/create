@@ -14,9 +14,13 @@
   },
   "dependencies": {
     "commander": "^12.0.0",
+    "esbuild": "^0.20.2",
+    "esbuild-plugin-babel": "^0.2.3",
     "import-meta-resolve": "^4.0.0",
     "inquirer": "^9.2.17",
     "rimraf": "^5.0.5",
+    "swc": "^1.0.11",
+    "typescript": "^5.4.5",
     "winston": "^3.13.0"
   }
 }

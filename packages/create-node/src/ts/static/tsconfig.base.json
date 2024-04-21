@@ -1,14 +1,23 @@
 {
   "files": ["./src/index.ts"],
   "compilerOptions": {
+    "types": ["node"],
+
+    // Enable latest features
     "lib": ["ES2020", "DOM", "DOM.iterable"],
-    "types": [],
+
+    // Bundler mode
+
+    // Best practices
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "sourceMap": false,
+    "forceConsistentCasingInFileNames": true,
     "removeComments": true,
-    "verbatimModuleSyntax": false
-  }
+    "verbatimModuleSyntax": false,
+
+    // Some stricter flags
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }
