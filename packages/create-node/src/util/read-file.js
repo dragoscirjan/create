@@ -3,15 +3,14 @@ import { join as joinPath } from "path";
 
 /**
  * @param {string} file
- * @param {string} content
  * @param {{projectPath: string}} options
  */
-export default async function (file, content, options) {
+export default async function (file, options) {
   const { projectPath, logger } = options;
 
   const filePath = joinPath(projectPath, file);
 
-  logger.reading(`writing ${filePath}...`);
+  logger.debug(`reading ${filePath}...`);
   try {
     return readFile(filePath).then((buffer) => buffer.toString());
   } catch (error) {

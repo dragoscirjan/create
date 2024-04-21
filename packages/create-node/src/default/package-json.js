@@ -1,8 +1,9 @@
-import { readFile, writeFile } from "fs/promises";
 import { join as joinPath } from "path";
 
 import { update as updatePackageJson } from "../default/package-json.js";
 import { requiresNyc } from "../util/test-framework.js";
+import readFile from "../util/read-file.js";
+import writeFile from "../util/write-file.js";
 
 const addNycConfigToPackageJson = async (options) =>
   updatePackageJson(options, (object) => ({
@@ -24,6 +25,11 @@ const runProjectInit = async (options) => {
     logger.verbose(`initializing project...`);
     return import(`../util/package-manager/${options.packageManager}.js`).then((binary) => binary.init(options));
   } else {
+    try {
+      await updatePackageJson(options, (object) => object);
+    } catch (e) {
+      await writeFile("package.json", "{}", options);
+    }
     logger.debug(`project init skiped.`);
   }
 };
@@ -36,18 +42,12 @@ export default async function (options) {
 
 /** @param options {{projectPath: string}} */
 export async function read(options) {
-  const { projectPath } = options;
-
-  return readFile(joinPath(projectPath, "package.json"), "utf-8").then((buffer) =>
-    JSON.parse(buffer.toString("utf-8")),
-  );
+  return readFile("package.json", options).then((buffer) => JSON.parse(buffer.toString("utf-8")));
 }
 
 /** @param options {{projectPath: string}} */
 export async function write(options, object) {
-  const { projectPath } = options;
-
-  return writeFile(joinPath(projectPath, "package.json"), JSON.stringify(object, null, 2));
+  return writeFile("package.json", JSON.stringify(object, null, 2), options);
 }
 
 /**

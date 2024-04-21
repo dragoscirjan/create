@@ -3,16 +3,25 @@
 import { program } from "commander";
 import { resolve } from "path";
 import logger from "@templ-project/create-node/src/util/logger.js";
-import { allBuildTools, allLanguages, allPackageManagers, allQualityTools, allTargets } from "@templ-project/create-node/src/index.js";
+import {
+  allBuildTools,
+  allLanguages,
+  allPackageManagers,
+  allQualityTools,
+  allTargets,
+} from "@templ-project/create-node/src/index.js";
 import { run } from "../src/index.js";
 
-allTargets.shift('browser')
+allBuildTools.unshift("nest");
 
 program
   .argument("<projectPath>", "Project Path")
-  .option("-l, --language <language>", `Programming Language to use: ${allLanguages.filter(l => l != 'coffee').join(", ")}`, "ts")
+  .option(
+    "-l, --language <language>",
+    `Programming Language to use: ${allLanguages.filter((l) => l != "coffee").join(", ")}`,
+    "ts",
+  )
   // TODO: whether to support all targets (don't think it's possible)
-  .option("-t, --targets <targets...>", `Module's target: ${allTargets.join(", ")} or all`, "all")
   .option("--package-manager <packageManger>", `Package Manager to use: ${allPackageManagers.join(", ")}`, "npm")
   .option("--quality-tools <qualityTools...>", `Quality Tools to use: ${allQualityTools.join(", ")} or all`, "all")
   // TODO: whether to support all build tools (not sure it's possible)
@@ -34,33 +43,30 @@ program
         ...options,
         projectPath: resolve(projectPath),
         qualityTools: options.qualityTools === "all" ? allQualityTools : options.qualityTools,
-        targets: options.targets === "all" || options.targets?.includes("all") ? allTargets : options.targets,
-        testFramework: '',
+        targets: [],
+        testFramework: "",
         logger,
       };
       // console.log(options);
       // process.exit(0);
 
-      const { language, qualityTools, buildTool, testFramework, targets } = options;
+      const { language, buildTool } = options;
 
       const runners = [
         // project init
         "nest-create",
-
         // npm i
         "install",
-
         // deploy validate stuff
         "commitlint",
         "editorconfig",
-        /*         ...(language === "ts" ? ["tsc"] : []),
-                 ...(buildTool ? [buildTool] : []),
-        */
-        // deploy target settings
-        ...targets,
+        ...(language === "ts" ? ["tsc"] : []),
+        ...(buildTool ? [buildTool] : []),
+
+        /*
         // deploy quality tools
         ...qualityTools,
-        "husky",
+        "husky",*/
       ];
       for (const runner of runners) {
         await run(language, runner, options);
@@ -68,4 +74,3 @@ program
     },
   )
   .parse();
-

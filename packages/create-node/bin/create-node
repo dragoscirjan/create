@@ -2,8 +2,16 @@
 
 import { program } from "commander";
 import { resolve } from "path";
+
 import logger from "../src/util/logger.js";
-import { allBuildTools, allLanguages, allPackageManagers, allTestFrameworks, allQualityTools, allTargets, run } from "../src/index.js";
+import defaultAction, {
+  allBuildTools,
+  allLanguages,
+  allPackageManagers,
+  allTestFrameworks,
+  allQualityTools,
+  allTargets,
+} from "../src/commands/default.js";
 
 program
   .argument("<projectPath>", "Project Path")
@@ -13,60 +21,53 @@ program
   .option("--test-framework <testFramework>", `Testing Framework to use: ${allTestFrameworks.join(", ")}`, "jest")
   .option("--quality-tools <qualityTools...>", `Quality Tools to use: ${allQualityTools.join(", ")} or all`, "all")
   .option("--build-tool <buildTool>", `Build Tool to use: ${allBuildTools.join(", ")}`)
-  .action(
-    /**
-     * @param projectPath {string}
-     * @param options {{
-          language: 'js' | 'ts' | 'coffee',
-          packageManager: 'npm' | 'pnpm' | 'yarn',
-          targets: string[],
-          testFramework: 'ava' | 'deno' | 'mocha' | 'jasmine' | 'jest' | 'vitest',
-          qualityTools: string[],
-          projectPath: string
-        }}
-     */
-    async (projectPath, options) => {
-      options = {
-        ...options,
-        projectPath: resolve(projectPath),
-        qualityTools: options.qualityTools === "all" ? allQualityTools : options.qualityTools,
-        targets: options.targets === "all" || options.targets?.includes("all") ? allTargets : options.targets,
-        logger,
-      };
-      // console.log(options);
-      // process.exit(0);
+  .action(async (projectPath, options) => {
+    options = {
+      ...options,
+      projectPath: resolve(projectPath),
+      qualityTools: options.qualityTools === "all" ? allQualityTools : options.qualityTools,
+      targets: options.targets === "all" || options.targets?.includes("all") ? allTargets : options.targets,
+      logger,
+    };
+    // console.log(options);
+    // process.exit(0);
 
-      const { language, qualityTools, buildTool, testFramework, targets } = options;
+    const { language, qualityTools, buildTool, packageManager, testFramework, targets } = options;
 
-      const runners = [
-        // project init
-        "package-json",
+    const testsAndMessages = [
+      [!allLanguages.includes(language), `Invalid language '${language}'. Accepted: ${allLanguages.join(", ")}`],
+      [
+        !targets.map((t) => allTargets.includes(t)).reduce((a, c) => a && c, true),
+        `Invalid targets '${targets.join(", ")}'. Accepted: ${allTargets.join(", ")}`,
+      ],
+      [
+        !allPackageManagers.includes(packageManager),
+        `Invalid language '${packageManager}'. Accepted: ${allPackageManagers.join(", ")}`,
+      ],
+      [
+        !allTestFrameworks.includes(testFramework),
+        `Invalid test frame '${testFramework}'. Accepted: ${allTestFrameworks.join(", ")}`,
+      ],
+      [
+        !qualityTools.map((qt) => allQualityTools.includes(qt)).reduce((a, c) => a && c, true),
+        `Invalid targets '${qualityTools.join(", ")}'. Accepted: ${allQualityTools.join(", ")}`,
+      ],
+      [
+        ![undefined, ...allBuildTools].includes(buildTool),
+        `Invalid build tool '${buildTool}'. Accepted: ${allBuildTools.join(", ")}`,
+      ],
+    ];
 
-        // npm i
-        "install",
-
-        // deploy code
-        "code",
-        // deploy tests
-        testFramework,
-        `test-${testFramework}`,
-        // deploy validate stuff
-        "commitlint",
-        "editorconfig",
-        // deploy builder
-        ...(language === "coffee" ? [] : []),
-        ...(language === "js" || (language === "ts" && testFramework === "jasmine") ? ["babel"] : []),
-        ...(language === "ts" ? ["tsc"] : []),
-        ...(buildTool ? [buildTool] : []),
-        // deploy target settings
-        ...targets,
-        // deploy quality tools
-        ...qualityTools,
-        "husky",
-      ];
-      for (const runner of runners) {
-        await run(language, runner, options);
+    for (const [test, message] of testsAndMessages) {
+      if (test) {
+        logger.warn(message);
+        process.exit(1);
       }
-    },
-  )
-  .parse();
+    }
+
+    return defaultAction(projectPath, options);
+  });
+
+program.command("build").description("Build the project");
+
+program.parse();
