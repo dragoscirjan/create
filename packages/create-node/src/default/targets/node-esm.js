@@ -1,7 +1,7 @@
-import readRepoFile from "../../util/read-repo-file.js";
+import readRepoFile from "../../util/read-repo-file";
 
-import writeFile from "../../util/write-file.js";
-import { update as updatePackageJson } from "../package-json.js";
+import writeFile from "../../util/write-file";
+import { update as updatePackageJson } from "../package-json";
 
 export default async function (options) {
   const { logger } = options;
@@ -19,12 +19,14 @@ export default async function (options) {
     scripts: {
       ...object.scripts,
       "build:node-esm":
-        object.scripts?.["build:node-esm"]?.replace(/\s?&& node .scripts\/esm-module.js/gi, "") +
-        " && node .scripts/esm-module.js",
+        object.scripts?.["build:node-esm"]?.replace(
+          /\s?&& node .scripts\/esm-module.js/gi,
+          ""
+        ) + " && node .scripts/esm-module.js",
     },
   }));
 
   await readRepoFile("../default/static/esm-module.js").then((esmComplete) =>
-    writeFile(".scripts/esm-module.js", esmComplete, options),
+    writeFile(".scripts/esm-module.js", esmComplete, options)
   );
 }

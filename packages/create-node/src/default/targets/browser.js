@@ -1,4 +1,4 @@
-import { update as updatePackageJson } from "../package-json.js";
+import { update as updatePackageJson } from "../package-json";
 
 export default async function (options) {
   const { logger } = options;
@@ -17,8 +17,10 @@ export default async function (options) {
     scripts: {
       ...object.scripts,
       "build:node-esm":
-        object.scripts?.["build:node-esm"]?.replace(/\s?&& node .scripts\/esm-module.js/gi, "") +
-        " && node .scripts/esm-module.js",
+        object.scripts?.["build:node-esm"]?.replace(
+          /\s?&& node .scripts\/esm-module.js/gi,
+          ""
+        ) + " && node .scripts/esm-module.js",
     },
   }));
 }

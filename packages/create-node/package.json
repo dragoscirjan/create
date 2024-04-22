@@ -1,6 +1,5 @@
 {
   "name": "@templ-project/create-node",
-  "type": "module",
   "version": "1.0.4",
   "description": "Create Node.js Module",
   "main": "src/index.js",
@@ -17,10 +16,13 @@
     "esbuild": "^0.20.2",
     "esbuild-plugin-babel": "^0.2.3",
     "import-meta-resolve": "^4.0.0",
-    "inquirer": "^9.2.17",
+    "inquirer": "^8.2.6",
     "rimraf": "^5.0.5",
     "swc": "^1.0.11",
     "typescript": "^5.4.5",
     "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7"
   }
 }
