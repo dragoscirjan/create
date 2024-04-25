@@ -3,7 +3,13 @@ import readFile from "../../util/read-file";
 import writeFile from "../../util/write-file";
 import { CreateCommandOptions, GenericCommandOptions } from "../../types";
 
+export type PackageJsonExports = {
+  ["."]: Record<string, string>;
+  [key: string]: string | Record<string, string>;
+};
+
 export type PackageJsonOptions = {
+  exports?: PackageJsonExports;
   scripts: Record<string, string>;
   dependencies: Record<string, string>;
   devDependencies: Record<string, string>;

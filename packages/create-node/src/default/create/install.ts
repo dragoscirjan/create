@@ -1,5 +1,8 @@
 import { CreateCommandOptions } from "../../types";
-import { update as updatePackageJson } from "./package-json";
+import {
+  PackageJsonOptions,
+  update as updatePackageJson,
+} from "./package-json";
 
 const buildPackageList = <T extends CreateCommandOptions>({
   qualityTools,
@@ -119,18 +122,15 @@ export default async function <T extends CreateCommandOptions>(
     saveDev: true,
   });
 
-  return updatePackageJson(
-    options,
-    (packageObject: Record<string, unknown>) => ({
-      ...packageObject,
-      scripts: {
-        ...(packageObject as any).scripts,
-        clean: "rimraf ./dist",
-        prepare: "husky",
-        release: "run-s release:*",
-        "release:release-it": "release-it --ci --no-npm.publish",
-        "release:release-please": "release-please",
-      },
-    })
-  );
+  return updatePackageJson(options, (packageObject: PackageJsonOptions) => ({
+    ...packageObject,
+    scripts: {
+      ...(packageObject as any).scripts,
+      clean: "rimraf ./dist",
+      prepare: "husky",
+      release: "run-s release:*",
+      "release:release-it": "release-it --ci --no-npm.publish",
+      "release:release-please": "release-please",
+    },
+  }));
 }

@@ -74,11 +74,11 @@ export default async function (options: CreateCommandOptions) {
   const { language, qualityTools, buildTool, testFramework, targets } = options;
 
   const runners = [
-    // // project init
-    // "create/package-json",
+    // project init
+    "create/package-json",
 
-    // // npm i
-    // "create/install",
+    // npm i
+    "create/install",
 
     // deploy code
     "code",
@@ -99,8 +99,8 @@ export default async function (options: CreateCommandOptions) {
     ...(language === "ts" ? ["build-tool/tsc"] : []),
     ...(buildTool ? [`build-tool/${buildTool}`] : []),
 
-    // // deploy target settings
-    // ...(targets ? targets.map((t) => `targets/${t}`) : []),
+    // deploy target settings
+    ...(targets ? targets.map((t) => `targets/${t}`) : []),
 
     // deploy quality tools
     ...qualityTools.map((qt) => `quality-tools/${qt}`),

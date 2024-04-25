@@ -1,8 +1,9 @@
-import { update as updatePackageJson } from "../package-json";
+import { CreateCommandOptions } from "../../types";
+import { update as updatePackageJson } from "../create/package-json";
 
-export default async function (options) {
+export default async function (options: CreateCommandOptions) {
   const { logger } = options;
-  logger.info("updating package.json for browser build...");
+  logger?.info("updating package.json for deno build...");
 
   return updatePackageJson(options, (object) => ({
     ...object,
@@ -10,8 +11,7 @@ export default async function (options) {
       ...(object.exports || {}),
       ".": {
         ...(object.exports?.["."] || {}),
-        browser: "./dist/browser/index.js",
-        worker: "./dist/browser/index.js",
+        deno: "./dist/worker/index.js",
       },
     },
     scripts: {

@@ -29,16 +29,18 @@ export type GenericCommandOptions = {
   language?: ProgrammingLanguage;
   logger?: Logger;
   projectPath?: string;
-  targets?: BuildTarget[];
 };
 
 export type BuildCommandOptions = GenericCommandOptions & {
   buildTool: BuildTool;
+  outDir: string;
+  target: BuildTarget;
 };
 
 export type CreateCommandOptions = GenericCommandOptions & {
   buildTool?: string;
   packageManager: PackageManager;
   qualityTools: QualityTool[];
+  targets?: BuildTarget[];
   testFramework: TestFramework;
 };

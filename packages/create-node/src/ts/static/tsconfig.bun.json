@@ -1,4 +1,5 @@
 {
+  // TODO: This config is not used yet
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     // Enable latest features

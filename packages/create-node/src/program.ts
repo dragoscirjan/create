@@ -92,6 +92,12 @@ program
     "--build-tool <buildTool>",
     `Build Tool to use: ${allBuildTools.join(", ")}`
   )
+  .option(
+    "--target <target>",
+    `Module's target: ${allTargets.join(", ")}`,
+    "node-cjs"
+  )
+  .option("--out-dir <outDir>", `Folder to compile to:`, "./dist")
   .action(async (options: BuildCommandOptions) => {
     const projectPath = process.cwd();
 

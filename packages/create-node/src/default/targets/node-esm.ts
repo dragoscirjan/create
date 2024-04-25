@@ -1,11 +1,12 @@
+import { CreateCommandOptions } from "../../types";
 import readRepoFile from "../../util/read-repo-file";
 
 import writeFile from "../../util/write-file";
-import { update as updatePackageJson } from "../package-json";
+import { update as updatePackageJson } from "../create/package-json";
 
-export default async function (options) {
+export default async function (options: CreateCommandOptions) {
   const { logger } = options;
-  logger.info("updating package.json for Node.Js ESM build...");
+  logger?.info("updating package.json for Node.Js ESM build...");
 
   await updatePackageJson(options, (object) => ({
     ...object,
@@ -26,7 +27,7 @@ export default async function (options) {
     },
   }));
 
-  await readRepoFile("../default/static/esm-module.js").then((esmComplete) =>
-    writeFile(".scripts/esm-module.js", esmComplete, options)
+  await readRepoFile("../default/static/esm-module.js", options).then(
+    (esmComplete) => writeFile(".scripts/esm-module.js", esmComplete, options)
   );
 }
