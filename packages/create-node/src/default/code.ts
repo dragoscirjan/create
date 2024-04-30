@@ -1,13 +1,14 @@
 import { mkdir, stat } from "fs/promises";
 import { join as joinPath } from "path";
 import { rimraf } from "rimraf";
-import { GenericCommandOptions } from "../types";
 
-import readRepoFile from "../util/read-repo-file";
+import { GenericCommandOptions } from "../types";
 import writeFile from "../util/write-file";
+import { codeJs } from "../constants";
 
 export default async function <T extends GenericCommandOptions>(
-  options: T
+  options: T,
+  code = codeJs
 ): Promise<void> {
   const { language, logger, projectPath } = options;
 
@@ -24,9 +25,5 @@ export default async function <T extends GenericCommandOptions>(
   } catch (e: any) {}
   await mkdir(codePath, { recursive: true });
 
-  const code = await readRepoFile(
-    `../${language}/static/index.${language}`,
-    options
-  );
   return writeFile(joinPath("src", `index.${language}`), code, options);
 }

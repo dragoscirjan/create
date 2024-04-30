@@ -14,13 +14,5 @@ export default async function (options: CreateCommandOptions) {
         bun: "./dist/browser/index.js",
       },
     },
-    scripts: {
-      ...object.scripts,
-      "build:node-esm":
-        object.scripts?.["build:node-esm"]?.replace(
-          /\s?&& node .scripts\/esm-module.js/gi,
-          ""
-        ) + " && node .scripts/esm-module.js",
-    },
   }));
 }

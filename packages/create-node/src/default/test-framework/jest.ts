@@ -1,6 +1,8 @@
 import { CreateCommandOptions, ProgrammingLanguage } from "../../types";
-import writeFile from "../../util/write-file";
+import { jestSpecJs, jestTestJs } from "../../constants";
 import { update as updatePackageJson } from "../create/package-json";
+import writeFile from "../../util/write-file";
+import writeTestFiles from "./write-test-files";
 
 export type JestConfig = {
   clearMocks: boolean;
@@ -23,7 +25,9 @@ export const jestConfig = (language: ProgrammingLanguage): JestConfig => ({
 
 export default async function (
   options: CreateCommandOptions,
-  config?: JestConfig
+  config?: JestConfig,
+  spec = jestSpecJs,
+  test = jestTestJs
 ) {
   const { language, logger, testFramework } = options;
   logger?.verbose(`configuring ${testFramework}...`);
@@ -45,5 +49,7 @@ export default async function (
 
 module.exports = ${JSON.stringify(config, null, 2)};`;
 
-  return writeFile("jest.config.js", stringConfig, options);
+  await writeFile("jest.config.js", stringConfig, options);
+
+  return writeTestFiles(options, test, spec);
 }

@@ -1,14 +1,14 @@
 import { Command } from "commander";
 import { resolve } from "path";
-import logger from "../src/util/logger";
-import readFile from "../src/util/read-file";
-import createAction, { createOptionsValidate } from "../src/commands/create";
-import buildAction from "../src/commands/build";
+import logger from "./util/logger";
+import readFile from "./util/read-file";
+import createAction, { createOptionsValidate } from "./commands/create";
+import buildAction from "./commands/build";
 import {
   BuildCommandOptions,
   CreateCommandOptions,
   QualityTool,
-} from "../src/types";
+} from "./types";
 
 import {
   allBuildTools,
@@ -52,6 +52,10 @@ program
     "--build-tool <buildTool>",
     `Build Tool to use: ${allBuildTools.join(", ")}`
   )
+  .option(
+    "--use-default-commands",
+    "Use the default build commands instead of `create-node build`"
+  )
   .action(
     async (
       projectPath: string,
@@ -89,22 +93,19 @@ program
   .command("build")
   .description("Build the project")
   .option(
-    "--build-tool <buildTool>",
-    `Build Tool to use: ${allBuildTools.join(", ")}`
-  )
-  .option(
     "--target <target>",
     `Module's target: ${allTargets.join(", ")}`,
     "node-cjs"
   )
   .option("--out-dir <outDir>", `Folder to compile to:`, "./dist")
-  .action(async (options: BuildCommandOptions) => {
+  .action(async (options: BuildCommandOptions, command: Command) => {
     const projectPath = process.cwd();
 
     options = {
       ...options,
       projectPath,
       logger,
+      buildTool: command?.parent?.["_optionValues"]?.buildTool,
     };
 
     await readFile(".createrc", options).then((data) => {
@@ -114,7 +115,9 @@ program
         ...json,
         // TODO: coffee not supported yet
         buildTool:
-          options.buildTool || json.language === "ts" ? "tsc" : "babel",
+          options.buildTool ||
+          json.buildTool ||
+          (json.language === "ts" ? "tsc" : "babel"),
       };
     });
 

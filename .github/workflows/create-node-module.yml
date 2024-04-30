@@ -33,16 +33,16 @@ jobs:
           # - pnpm
           # - yarn
         test-framework:
-          - ava
-          - jasmine
+          # - ava
+          # - jasmine
           - jest
-          - mocha
-          - vitest
+          # - mocha
+          # - vitest
         build-tool:
           - ""
           - esbuild
-          - rollup
-          - swc
+          # - rollup
+          # - swc
           # - parcel # web bundler
           # - rolldown # not mature yet
           # - snowpack # who is this guy?

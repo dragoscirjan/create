@@ -2,10 +2,11 @@ import {
   appendRunS,
   update as updatePackageJson,
 } from "../../default/create/package-json";
+import { CreateCommandOptions } from "../../types";
 
-export default async function (options) {
+export default async function (options: CreateCommandOptions) {
   const { logger } = options;
-  logger.info("updating package.json for license-checker tool...");
+  logger?.info("updating package.json for license-checker tool...");
 
   return updatePackageJson(options, (object) => ({
     ...object,

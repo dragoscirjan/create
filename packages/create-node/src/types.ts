@@ -43,4 +43,5 @@ export type CreateCommandOptions = GenericCommandOptions & {
   qualityTools: QualityTool[];
   targets?: BuildTarget[];
   testFramework: TestFramework;
+  useDefaultCommands: boolean;
 };

@@ -85,7 +85,6 @@ export default async function (options: CreateCommandOptions) {
 
     // deploy tests
     `test-framework/${testFramework}`,
-    `test-framework/test-${testFramework}`,
 
     // deploy validate stuff
     "commitlint",

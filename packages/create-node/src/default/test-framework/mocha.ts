@@ -1,6 +1,8 @@
+import { mochaSpecJs, mochaTestJs } from "../../constants";
 import { CreateCommandOptions, ProgrammingLanguage } from "../../types";
 import writeFile from "../../util/write-file";
 import { update as updatePackageJson } from "../create/package-json";
+import writeTestFiles from "./write-test-files";
 
 export type MochaConfig = {
   extensions: string[];
@@ -27,7 +29,9 @@ export const mochaConfig = (language: ProgrammingLanguage): MochaConfig => ({
 
 export default async function (
   options: CreateCommandOptions,
-  config?: MochaConfig
+  config?: MochaConfig,
+  spec = mochaSpecJs,
+  test = mochaTestJs
 ) {
   const { language, logger, testFramework } = options;
   config = config || mochaConfig(language!);
@@ -50,5 +54,7 @@ export default async function (
 
 module.exports = ${JSON.stringify(config, null, 2)};`;
 
-  return writeFile(".mocharc.js", stringConfig, options);
+  await writeFile(".mocharc.js", stringConfig, options);
+
+  return writeTestFiles(options, test, spec);
 }

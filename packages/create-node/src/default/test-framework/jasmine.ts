@@ -1,7 +1,9 @@
 import writeFile from "../../util/write-file";
-
 import { update as updatePackageJson } from "../../default/create/package-json";
 import { CreateCommandOptions, ProgrammingLanguage } from "../../types";
+
+import writeTestFiles from "./write-test-files";
+import { jasmineSpecJs, jasmineTestJs } from "../../constants";
 
 export type JasmineConfig = {
   spec_dir: string[];
@@ -24,7 +26,9 @@ export const jasmineConfig = (
 
 export default async function (
   options: CreateCommandOptions,
-  config?: JasmineConfig
+  config?: JasmineConfig,
+  spec = jasmineSpecJs,
+  test = jasmineTestJs
 ) {
   const { language, logger, testFramework } = options;
   logger?.verbose(`configuring ${testFramework}...`);
@@ -35,7 +39,7 @@ export default async function (
     options
   );
 
-  return updatePackageJson(options, (object) => ({
+  await updatePackageJson(options, (object) => ({
     ...object,
     scripts: {
       ...(object as any).scripts,
@@ -44,4 +48,6 @@ export default async function (
         'nodemon --exec "npm run test" --watch src --watch test --ext js',
     },
   }));
+
+  return writeTestFiles(options, test, spec);
 }

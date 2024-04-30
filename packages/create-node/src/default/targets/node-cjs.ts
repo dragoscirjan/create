@@ -15,13 +15,5 @@ export default async function (options: CreateCommandOptions) {
         require: "./dist/node/node-cjs/index.js",
       },
     },
-    scripts: {
-      ...object.scripts,
-      "build:node-esm":
-        object.scripts?.["build:node-esm"]?.replace(
-          /\s?&& node .scripts\/esm-module.js/gi,
-          ""
-        ) + " && node .scripts/esm-module.js",
-    },
   }));
 }

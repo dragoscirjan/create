@@ -5,9 +5,8 @@ import { GenericCommandOptions } from "../types";
 export default async function <T extends GenericCommandOptions>(
   file: string,
   content: string | Record<string, unknown>,
-  options: T
+  { projectPath, logger }: T
 ) {
-  const { projectPath, logger } = options;
   const filePath = joinPath(projectPath!, file);
 
   try {

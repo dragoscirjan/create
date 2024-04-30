@@ -1,7 +1,8 @@
 {
-  "files": ["src/**/*"],
   "compilerOptions": {
     "types": ["node"],
+    "outDir": "./dist",
+    "baseUrl": "./",
 
     // Enable latest features
     "lib": ["ES2020", "DOM", "DOM.iterable"],
@@ -17,7 +18,11 @@
 
     // Some stricter flags
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "paths": {
+      "undici-types": ["./node_modules/undici-types/index.d.ts"]
+    }
   },
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }

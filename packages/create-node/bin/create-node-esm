@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-
-import("../dist/node-esm/program").then(({ default: program }) =>
-  program.parse()
-);

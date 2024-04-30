@@ -1,3 +1,4 @@
+import { mochaSpecTs, mochaTestTs } from "../../constants";
 import mocha, { mochaConfig } from "../../default/test-framework/mocha";
 import { CreateCommandOptions } from "../../types";
 import continuePrompt from "../../util/inquire-continue";
@@ -11,8 +12,13 @@ export default async function (options: CreateCommandOptions) {
   );
   await continuePrompt();
 
-  return mocha(options, {
-    ...config,
-    require: ["ts-node/register", ...config.require],
-  });
+  return mocha(
+    options,
+    {
+      ...config,
+      require: ["ts-node/register", ...config.require],
+    },
+    mochaSpecTs,
+    mochaTestTs
+  );
 }

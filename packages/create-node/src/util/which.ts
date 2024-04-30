@@ -10,9 +10,9 @@ import logger from "./logger";
 /** @param binary string */
 export default async function which(binary: string): Promise<string> {
   if (platform() === "win32") {
-    return spawn(["where", binary]).then((b) => b!.trim());
+    return spawn(["where", binary]).then((b: string) => b!.trim());
   }
-  return spawn(["which", binary]).then((b) => b!.trim());
+  return spawn(["which", binary]).then((b: string) => b!.trim());
 }
 
 export const whichNode = () => which("node");

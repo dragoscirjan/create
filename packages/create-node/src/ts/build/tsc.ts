@@ -1,23 +1,16 @@
-import { join as joinPath } from "path";
 import { BuildCommandOptions } from "../../types";
 import {
   CompilerHost,
   CompilerOptions,
   createProgram,
   Diagnostic,
-  flattenDiagnosticMessageText,
-  getLineAndCharacterOfPosition,
   getPreEmitDiagnostics,
-  parseConfigFileTextToJson,
   parseJsonConfigFileContent,
   Program,
   readConfigFile,
   sys,
-  WriteFileCallback,
 } from "typescript";
-import { readFile } from "fs/promises";
-import { merge as assign } from "lodash";
-import globby from "globby";
+import { writeEsmPackageJson } from "../../default/build/babel";
 
 export interface PartialTsConfig {
   compilerOptions?: Record<string, unknown>;
@@ -119,11 +112,12 @@ function treatDiagnostics(
 }
 
 /**/
-export function compile(
-  { logger, projectPath }: BuildCommandOptions,
-  program: Program
-) {
-  logger?.info("Compilation started");
+export function compile(options: BuildCommandOptions, program: Program) {
+  const { logger, projectPath } = options;
+
+  logger?.info("Compiling files...");
+  const time = Date.now();
+
   const config = program.getCompilerOptions();
 
   config.listFiles = true;
@@ -156,13 +150,15 @@ export function compile(
     allDiagnostics
   );
 
+  writeEsmPackageJson(options);
+
   if (allDiagnostics.length && emitSkipped) {
     logger?.warn(`Compilation done with ${allDiagnostics.length} errors`);
   } else {
     logger?.info(
       `Successfully compiled ${
         emittedFiles?.length ?? program.getRootFileNames().length
-      } file(s)`
+      } file(s) in ${Date.now() - time}ms`
     );
   }
 }
@@ -175,7 +171,7 @@ export default async function (options: BuildCommandOptions) {
     configFilePath: `tsconfig.${target.replace("node-", "")}.json`,
     compilerOptions: {
       rootDir: "src",
-      outDir: "dist",
+      outDir: `dist/${target}`,
       declaration: true,
       skipLibCheck: true,
     },
