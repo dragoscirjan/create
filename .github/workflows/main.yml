@@ -6,10 +6,10 @@ on:
     branches: [main]
 
 jobs:
-  # create-node:
-  #   name: "Create Node Module"
-  #   uses: templ-project/create/.github/workflows/create-node.yml@main
-  #   secrets: inherit
+  create-node:
+    name: "Create Node Module"
+    uses: templ-project/create/.github/workflows/create-node.yml@main
+    secrets: inherit
 
   release:
     if: |
