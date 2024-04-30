@@ -67,18 +67,22 @@ jobs:
           if [ "${{ matrix.build-tool }}" != "" ]; then
             CREATE_ARGS="--build-tool ${{ matrix.build-tool }}"
           fi
-          SKIP_NPM_INIT=1 node ./node/src/index.js /tmp/test-node $CREATE_ARGS \
+          SKIP_NPM_INIT=1 node ./packages/create-node/src/index.js /tmp/test-node $CREATE_ARGS \
             --language ${{ matrix.language }} \
             --targets ${{ matrix.targets }} \
             --package-manager ${{ matrix.package-manager }} \
             --test-framework ${{ matrix.test-framework }} \
             $CREATE_ARGS
+
+          npm run build -w @templ-project/create-node
       - name: Validate Project
         if: ${{ matrix.language != 'ts' && matrix.test-framework != 'mocha' }}
         run: |
+          project_path=$(pwd)
           cd /tmp/test-node \
             && cat package.json \
             && npm i \
+            && npm i -S $project_path --legacy-peer-deps \
             && ${{ matrix.package-manager }} run ca \
             && ${{ matrix.package-manager }} run test \
             && ${{ matrix.package-manager }} run build
