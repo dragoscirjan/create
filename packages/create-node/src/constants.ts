@@ -16,7 +16,7 @@ export const allLanguages: ProgrammingLanguage[] = ["js", "ts" /*, "coffee" */];
 export const allBuildTools: BuildTool[] = [
   "babel",
   "esbuild",
-  // "rollup",
+  "rollup",
   "swc",
   "tsc",
 ];

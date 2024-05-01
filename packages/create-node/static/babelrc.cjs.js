@@ -8,7 +8,7 @@ module.exports = {
     [
       ...babelrc.presets[0],
       {
-        targets: { node: "current" },
+        targets: { node: "16" },
         // `useBuildIns` and `corejs` configure Babel to only include polyfills for features
         // used in your code that are missing in the target environment.
         // Will require core-js@3
