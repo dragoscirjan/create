@@ -17,7 +17,7 @@ export const allBuildTools: BuildTool[] = [
   "babel",
   "esbuild",
   // "rollup",
-  // "swc",
+  "swc",
   "tsc",
 ];
 

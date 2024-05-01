@@ -1,5 +1,4 @@
 import readRepoFile from "../../util/read-repo-file";
-
 import writeFile from "../../util/write-file";
 import {
   PackageJsonOptions,
@@ -7,6 +6,7 @@ import {
 } from "../../default/create/package-json";
 import { CreateCommandOptions, BuildTarget } from "../../types";
 import { getBuildableTargets } from "../targets";
+import { generateBuildCommand } from ".";
 
 export const babelConfig = {
   plugins: ["@babel/plugin-transform-typescript"],
@@ -104,21 +104,24 @@ const updatePackageJsonScripts =
       ...packageObject.scripts,
       build: "run-s clean build:*",
       ...getBuildableTargets(targets)
-        .map((target) => ({
+        .map((target: BuildTarget) => ({
           [`build:${target}`]: useDefaultCommands
             ? `babel src --config-file ./.babelrc.${target.replace(
                 "node-",
                 ""
               )}.js --out-dir dist/${target} --extensions ".js"`
-            : `create-node build --target ${target}`,
+            : generateBuildCommand({
+                target,
+                buildTool: "babel",
+              }),
         }))
         .reduce((acc, cur) => ({ ...acc, ...cur }), {}),
     },
   });
 
 export default async function (options: CreateCommandOptions) {
-  const { logger, targets } = options;
-  logger?.verbose(`configuring babel...`);
+  const { buildTool, logger, targets } = options;
+  logger?.verbose(`configuring (js) ${buildTool}...`);
 
   // TODO: must find a better way to apply this filter
   for (const target of [

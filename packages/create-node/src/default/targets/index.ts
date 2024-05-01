@@ -1,3 +1,5 @@
+import { BuildTarget } from "src/types";
+
 const has = (targets: string[], target: string) => targets.includes(target);
 
 export const hasBrowser = (targets: string[]) => has(targets, "browser");
@@ -10,8 +12,9 @@ export const hasBrowserBunOrDeno = (targets: string[]) =>
 export const hasCjs = (targets: string[]) => has(targets, "node-cjs");
 export const hasEsm = (targets: string[]) => has(targets, "node-esm");
 
-export const getBuildableTargets = (targets: string[]) => [
-  ...(hasBrowserBunOrDeno(targets) ? ["browser"] : []),
-  ...(hasCjs(targets) ? ["node-cjs"] : []),
-  ...(hasEsm(targets) ? ["node-esm"] : []),
-];
+export const getBuildableTargets = (targets: BuildTarget[]) =>
+  [
+    ...(hasBrowserBunOrDeno(targets) ? ["browser"] : []),
+    ...(hasCjs(targets) ? ["node-cjs"] : []),
+    ...(hasEsm(targets) ? ["node-esm"] : []),
+  ] as BuildTarget[];

@@ -104,7 +104,7 @@ const buildPackageList = <T extends CreateCommandOptions>({
     ...(buildTool === "rollup"
       ? ["@rollup/plugin-commonjs", "@rollup/plugin-node-resolve"]
       : []),
-    ...(buildTool === "swc" ? ["@swc/cli", "@swc/core"] : []),
+    ...(buildTool === "swc" ? ["@swc/cli", "@swc/core", "browserslist"] : []),
   ];
 };
 

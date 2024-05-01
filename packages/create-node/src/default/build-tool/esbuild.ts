@@ -1,8 +1,7 @@
 import { update as updatePackageJson } from "../create/package-json";
-import readRepoFile from "../../util/read-repo-file";
-import writeFile from "../../util/write-file";
 import { BuildTarget, CreateCommandOptions } from "../../types";
 import { getBuildableTargets } from "../targets";
+import { generateBuildCommand } from ".";
 
 export default async function (options: CreateCommandOptions) {
   const { targets, language, logger, buildTool, useDefaultCommands } = options;
@@ -14,13 +13,14 @@ export default async function (options: CreateCommandOptions) {
       ...packageObject.scripts,
       build: "run-s clean build:*",
       ...getBuildableTargets(targets)
-        .map((target) => ({
+        .map((target: BuildTarget) => ({
           [`build:${target}`]: useDefaultCommands
-            ? `babel src --config-file ./.babelrc.${target.replace(
-                "node-",
-                ""
-              )}.js --out-dir dist/${target} --extensions ".js"`
-            : `create-node build --target ${target} --build-tool ${buildTool}`,
+            ? `esbuild src/**/*.js --outdir=dist/${target} --target="es2020,${
+                target !== "browser"
+                  ? "node16"
+                  : "chrome58,edge16,firefox57,safari11"
+              }" --format=${target === "node-cjs" ? "cjs" : "esm"}`
+            : generateBuildCommand({ target, buildTool: "esbuild" }),
         }))
         .reduce((acc, cur) => ({ ...acc, ...cur }), {}),
     },

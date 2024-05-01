@@ -32,6 +32,11 @@ export async function compile(options: BuildCommandOptions) {
             esbuild.transform(code, {
               // @see https://esbuild.github.io/api/#format
               format: target === "node-cjs" ? "cjs" : "esm",
+              // @see https://esbuild.github.io/api/#target
+              target:
+                target !== "browser"
+                  ? "es2020,node16"
+                  : "es2020,chrome58,edge16,firefox57,safari11",
               // @see https://esbuild.github.io/api/#sourcemap
               sourcemap: true,
               // TODO: should I use babel plugin here?
