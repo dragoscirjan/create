@@ -24,15 +24,15 @@ jobs:
           # - coffee
         targets:
           - all
-          # - browser
-          # - bun
-          # # - deno
-          # - node-cjs
-          # - node-esm
+          - browser
+          - bun
+          # - deno
+          - node-cjs
+          - node-esm
         package-manager:
           - npm
-          # - pnpm
-          # - yarn
+          - pnpm
+          - yarn
         test-framework:
           # - ava
           # - jasmine
