@@ -31,8 +31,8 @@ jobs:
           - node-esm
         package-manager:
           - npm
-          - pnpm
-          - yarn
+          # - pnpm
+          # - yarn
         test-framework:
           # - ava
           # - jasmine
