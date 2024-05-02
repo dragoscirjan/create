@@ -104,12 +104,36 @@ export async function handleCompiledFile(
     projectPath,
     target,
   }: Pick<BuildCommandOptions, "logger" | "projectPath" | "target">
-) {
+): Promise<string> {
   const distPath = file
     .replace(projectPath, "")
     .replace(/^\/src/, joinPath(".", "dist", target));
 
-  writeFile(distPath, code, {
+  await writeFile(distPath, code, {
+    logger,
+    projectPath,
+  });
+
+  return distPath;
+}
+
+export async function handleCompiledFileAndMap(
+  code: string,
+  map: string,
+  file: string,
+  {
+    logger,
+    projectPath,
+    target,
+  }: Pick<BuildCommandOptions, "logger" | "projectPath" | "target">
+) {
+  const distPath = await handleCompiledFile(code, file, {
+    logger,
+    projectPath,
+    target,
+  });
+
+  await writeFile(`${distPath}.map`, map, {
     logger,
     projectPath,
   });
