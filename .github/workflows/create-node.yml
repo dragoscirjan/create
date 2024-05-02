@@ -35,11 +35,11 @@ jobs:
           # - pnpm
           # - yarn
         test-framework:
-          # - ava
-          # - jasmine
+          - ava
+          - jasmine
           - jest
-          # - mocha
-          # - vitest
+          - mocha
+          - vitest
         build-tool:
           - ""
           - esbuild
