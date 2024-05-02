@@ -8,7 +8,7 @@ on:
 jobs:
   create-node:
     name: "Create Node Module"
-    uses: templ-project/create/.github/workflows/create-node.yml@main
+    uses: templ-project/create/.github/workflows/create-node-module.yml@main
     secrets: inherit
 
   release:
