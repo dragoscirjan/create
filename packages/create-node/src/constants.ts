@@ -34,7 +34,7 @@ export const allQualityTools: QualityTool[] = [
 ];
 
 export const allTargets: BuildTarget[] = [
-  // "browser",
+  "browser",
   "bun",
   // "deno",
   "node-cjs",

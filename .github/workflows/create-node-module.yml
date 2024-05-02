@@ -69,7 +69,7 @@ jobs:
           if [ "${{ matrix.build-tool }}" != "" ]; then
             CREATE_ARGS="--build-tool ${{ matrix.build-tool }}"
           fi
-          SKIP_NPM_INIT=1 ./packages/create-node/bin/create-node.ts /tmp/test-node \
+          LOG_LEVEL=debug SKIP_NPM_INIT=1 ./packages/create-node/bin/create-node.ts /tmp/test-node \
             --language ${{ matrix.language }} \
             --targets ${{ matrix.targets }} \
             --package-manager ${{ matrix.package-manager }} \
@@ -83,6 +83,7 @@ jobs:
           project_path=$(pwd)
           cd /tmp/test-node \
             && cat package.json \
+            && cat .eslintrc.js \
             && npm i \
             && npm i -S axios --legacy-peer-deps \
             && npm i -D $project_path/packages/create-node --legacy-peer-deps \
