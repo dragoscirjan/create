@@ -64,6 +64,7 @@ jobs:
           npm i -g ts-node
       - name: Init Project
         run: |
+          set -ex
           CREATE_ARGS=""
           if [ "${{ matrix.build-tool }}" != "" ]; then
             CREATE_ARGS="--build-tool ${{ matrix.build-tool }}"
