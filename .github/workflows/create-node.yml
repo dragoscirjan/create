@@ -25,7 +25,8 @@ jobs:
         targets:
           - all
           # - browser
-          # - deno
+          # - bun
+          # # - deno
           # - node-cjs
           # - node-esm
         package-manager:
@@ -40,9 +41,9 @@ jobs:
           # - vitest
         build-tool:
           - ""
-          # - esbuild
-          # - rollup
-          # - swc
+          - esbuild
+          - rollup
+          - swc
           # - parcel # web bundler
           # - rolldown # not mature yet
           # - snowpack # who is this guy?
