@@ -1,3 +1,3 @@
 // .babelrc.js
 
-module.exports = require("./.babelrc.cjs");
+module.exports = require("./.babelrc.base");
