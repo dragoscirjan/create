@@ -17,6 +17,6 @@ jobs:
         github.event_name != 'pull_request' || startsWith(github.event.pull_request.title, 'chore: release') != false
       )
     name: "Perform Releases"
-    # needs: [create-node]
+    needs: [create-node]
     uses: templ-project/create/.github/workflows/release.yml@main
     secrets: inherit

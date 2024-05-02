@@ -123,17 +123,16 @@ export default async function (options: CreateCommandOptions) {
   const { buildTool, logger, targets } = options;
   logger?.verbose(`configuring (js) ${buildTool}...`);
 
-  // TODO: must find a better way to apply this filter
-  for (const target of [
-    "base",
-    ...targets.filter((t) => !["bun", "deno"].includes(t)),
-    ...(targets.includes("deno") || targets.includes("bun") ? ["browser"] : []),
-  ]) {
+  for (const target of ["base", ...getBuildableTargets(targets)]) {
     const fileName = getTargetedBabelRcName(target as BuildTarget);
     await readRepoFile(`../../static/${fileName.slice(1)}`, options).then(
       (config) => writeFile(fileName, config, options)
     );
   }
+
+  await readRepoFile(`../../static/babelrc.js`, options).then((config) =>
+    writeFile(".babelrc.js", config, options)
+  );
 
   return updatePackageJson(options, updatePackageJsonScripts(options));
 }
