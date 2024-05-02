@@ -35,16 +35,16 @@ export default async function (options: CreateCommandOptions) {
     options
   );
 
-  for (const name of [
-    "base",
-    "types",
-    ...[hasBrowserBunOrDeno(targets) ? "browser" : ""],
-    ...targets
-      .filter((t) => t.startsWith("node-"))
-      .map((t) => t.replace("node-", "")),
-  ]) {
-    await readRepoFile(`../../static/tsconfig.${name}.json`, options).then(
-      (tsConfig) => writeFile(`tsconfig.${name}.json`, tsConfig, options)
+  for (const target of ["base", "types", ...getBuildableTargets(targets)]) {
+    await readRepoFile(
+      `../../static/tsconfig.${target.replace("node-", "")}.json`,
+      options
+    ).then((tsConfig) =>
+      writeFile(
+        `tsconfig.${target.replace("node-", "")}.json`,
+        tsConfig,
+        options
+      )
     );
   }
 

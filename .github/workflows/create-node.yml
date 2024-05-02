@@ -70,6 +70,8 @@ jobs:
       - name: Init Project
         run: |
           set -ex
+          npm run build -w @templ-project/create-node
+
           CREATE_ARGS=""
           if [ "${{ matrix.build-tool }}" != "" ]; then
             CREATE_ARGS="$CREATE_ARGS --build-tool ${{ matrix.build-tool }}"
@@ -77,14 +79,12 @@ jobs:
           if [ "${{ matrix.default-command }}" == "true" ]; then
             CREATE_ARGS="$CREATE_ARGS --use-default-commands"
           fi
-          LOG_LEVEL=debug SKIP_NPM_INIT=1 ./packages/create-node/bin/create-node.ts /tmp/test-node \
+          LOG_LEVEL=debug SKIP_NPM_INIT=1 ./packages/create-node/bin/create-node /tmp/test-node \
             --language ${{ matrix.language }} \
             --targets ${{ matrix.targets }} \
             --package-manager ${{ matrix.package-manager }} \
             --test-framework ${{ matrix.test-framework }} \
             $CREATE_ARGS
-
-          npm run build -w @templ-project/create-node
       - name: Validate Project
         if: ${{ matrix.language != 'ts' && matrix.test-framework != 'mocha' }}
         run: |
