@@ -49,6 +49,9 @@ jobs:
           # - turbpack # not mature yet
           # - vite # web bundler, using esbuild and roll*
           # - webpack # web bundler using babel and roll*
+        default-command:
+          - "true"
+          - "false"
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -67,7 +70,10 @@ jobs:
           set -ex
           CREATE_ARGS=""
           if [ "${{ matrix.build-tool }}" != "" ]; then
-            CREATE_ARGS="--build-tool ${{ matrix.build-tool }}"
+            CREATE_ARGS="$CREATE_ARGS --build-tool ${{ matrix.build-tool }}"
+          fi
+          if [ "${{ matrix.default-command }}" == "true" ]; then
+            CREATE_ARGS="$CREATE_ARGS --use-default-command"
           fi
           LOG_LEVEL=debug SKIP_NPM_INIT=1 ./packages/create-node/bin/create-node.ts /tmp/test-node \
             --language ${{ matrix.language }} \
