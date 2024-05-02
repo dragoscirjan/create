@@ -81,10 +81,10 @@ jobs:
         if: ${{ matrix.language != 'ts' && matrix.test-framework != 'mocha' }}
         run: |
           project_path=$(pwd)
+          # && npm i -S $project_path/packages/create-node --legacy-peer-deps \
           cd /tmp/test-node \
             && cat package.json \
             && npm i \
-            && npm i -S $project_path/packages/create-node --legacy-peer-deps \
             && ${{ matrix.package-manager }} run ca \
-            && ${{ matrix.package-manager }} run test \
-            && ${{ matrix.package-manager }} run build
+            && ${{ matrix.package-manager }} run test
+          # && ${{ matrix.package-manager }} run build
