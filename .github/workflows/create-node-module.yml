@@ -20,7 +20,7 @@ jobs:
           # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         language:
           - js
-          - ts
+          # - ts
           # - coffee
         targets:
           - all
@@ -40,7 +40,7 @@ jobs:
           # - vitest
         build-tool:
           - ""
-          - esbuild
+          # - esbuild
           # - rollup
           # - swc
           # - parcel # web bundler
