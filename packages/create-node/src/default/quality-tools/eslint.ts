@@ -20,7 +20,7 @@ export const eslintConfig = {
     "plugin:sonarjs/recommended",
     "prettier",
   ],
-  plugins: ["prettier", "sonar", "sonarjs"],
+  plugins: ["prettier", /*"sonar",*/ "sonarjs"],
   root: true,
   rules: {
     "consistent-return": 2,
