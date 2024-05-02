@@ -16,7 +16,7 @@ export const eslintConfig = {
 
   // uncomment for eslint rules
   extends: [
-    "plugin:sonar/recommended",
+    // "plugin:sonar/recommended",
     "plugin:sonarjs/recommended",
     "prettier",
   ],
