@@ -69,7 +69,7 @@ jobs:
           if [ "${{ matrix.build-tool }}" != "" ]; then
             CREATE_ARGS="--build-tool ${{ matrix.build-tool }}"
           fi
-          SKIP_NPM_INIT=1 node ./packages/create-node/bin/create-node.ts /tmp/test-node $CREATE_ARGS \
+          SKIP_NPM_INIT=1 ./packages/create-node/bin/create-node.ts /tmp/test-node \
             --language ${{ matrix.language }} \
             --targets ${{ matrix.targets }} \
             --package-manager ${{ matrix.package-manager }} \
