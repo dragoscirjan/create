@@ -61,13 +61,14 @@ jobs:
           if [ "${{ matrix.package-manager }}" != "" ]; then
             npm i -g ${{ matrix.package-manager }}
           fi
+          npm i -g ts-node
       - name: Init Project
         run: |
           CREATE_ARGS=""
           if [ "${{ matrix.build-tool }}" != "" ]; then
             CREATE_ARGS="--build-tool ${{ matrix.build-tool }}"
           fi
-          SKIP_NPM_INIT=1 node ./packages/create-node/src/index.js /tmp/test-node $CREATE_ARGS \
+          SKIP_NPM_INIT=1 node ./packages/create-node/bin/create-node.ts /tmp/test-node $CREATE_ARGS \
             --language ${{ matrix.language }} \
             --targets ${{ matrix.targets }} \
             --package-manager ${{ matrix.package-manager }} \
