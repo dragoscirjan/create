@@ -17,12 +17,8 @@ jobs:
         language:
           - js
           - ts
-          # - coffee
         targets:
           - all
-          - browser
-          - node-cjs
-          - node-esm
         package-manager:
           - npm
         test-framework:
@@ -33,12 +29,6 @@ jobs:
           - esbuild
           - rollup
           - swc
-          # - parcel # web bundler
-          # - rolldown # not mature yet
-          # - snowpack # who is this guy?
-          # - turbpack # not mature yet
-          # - vite # web bundler, using esbuild and roll*
-          # - webpack # web bundler using babel and roll*
     uses: templ-project/create/.github/workflows/create-node-single.yml@main
     secrets: inherit
     with:

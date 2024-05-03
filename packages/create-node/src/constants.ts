@@ -555,12 +555,12 @@ describe("writeHello", function () {
 });
 `;
 
-export const vitestSpecJs = /*js-*/ `import { test } from "vitest";
+export const vitestSpecJs = /*js-*/ `import {test, expect} from 'vitest';
 
-import { hello } from "./index";
+import {hello} from './index';
 
-test("hello('World') should return 'Hello, World!'", (t) => {
-  t.assert.equal(hello("World"), "Hello, World!");
+test("hello('World') should return 'Hello, World!'", () => {
+  expect(hello('World')).toBe('Hello, World!');
 });
 `;
 

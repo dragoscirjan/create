@@ -31,6 +31,7 @@ on:
   workflow_dispatch:
     inputs:
       Language:
+        default: ts
         description: "Project's Programming Language: js, ts"
         options:
           - js
@@ -38,6 +39,7 @@ on:
         required: true
         type: choice
       Targets:
+        default: npm-cjs
         description: "Targets: all, browser, bun, node-cjs, node-esm"
         options:
           - all
@@ -49,6 +51,7 @@ on:
         required: true
         type: choice
       PackageManager:
+        default: npm
         description: "Package Manager: npm, pnpm, yarn"
         options:
           - npm
@@ -57,6 +60,7 @@ on:
         required: true
         type: choice
       TestFramework:
+        default: jest
         description: "Test Framework: ava, jasmine, jest, mocha, vitest"
         options:
           - ava
@@ -67,6 +71,7 @@ on:
         required: true
         type: choice
       BuildTools:
+        default: ""
         description: "Build Tool: empty for default, esbuild, rollup, swc"
         options:
           - ""
@@ -97,8 +102,8 @@ jobs:
       matrix:
         node-version:
           - 18.x
-          - 20.x
-          - 21.x
+          #   - 20.x
+          #   - 21.x
           - 22.x
           # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
