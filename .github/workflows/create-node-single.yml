@@ -1,4 +1,4 @@
-name: "Create :: Node CICD"
+name: "Create :: Configurable Node CICD"
 
 on:
   workflow_call:
@@ -31,24 +31,55 @@ on:
     inputs:
       Language:
         description: "Project's Programming Language: js, ts"
+        options:
+          - js
+          - ts
         required: true
-        type: string
+        type: choice
       Targets:
         description: "Targets: all, browser, bun, node-cjs, node-esm"
+        options:
+          - all
+          - browser
+          - bun
+          #   - deno
+          - node-cjs
+          - node-esm
         required: true
-        type: string
+        type: choice
       PackageManager:
         description: "Package Manager: npm, pnpm, yarn"
+        options:
+          - npm
+          - pnpm
+          - yarn
         required: true
-        type: string
+        type: choice
       TestFramework:
         description: "Test Framework: ava, jasmine, jest, mocha, vitest"
+        options:
+          - ava
+          - jasmine
+          - jest
+          - mocha
+          - vitest
         required: true
-        type: string
+        type: choice
       BuildTools:
         description: "Build Tool: empty for default, esbuild, rollup, swc"
+        options:
+          - ""
+          - esbuild
+          - rollup
+          - swc
+          # - parcel # web bundler
+          # - rolldown # not mature yet
+          # - snowpack # who is this guy?
+          # - turbpack # not mature yet
+          # - vite # web bundler, using esbuild and roll*
+          # - webpack # web bundler using babel and roll*
         required: true
-        type: string
+        type: choice
       UseDefaultCommand:
         description: "Use Default Command"
         required: true
@@ -65,45 +96,10 @@ jobs:
       matrix:
         node-version:
           - 18.x
-          # - 20.x
-          # - 21.x
-          # - 22.x
+          - 20.x
+          - 21.x
+          - 22.x
           # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        language:
-          - js
-          - ts
-          # - coffee
-        targets:
-          - all
-          - browser
-          - bun
-          # - deno
-          - node-cjs
-          - node-esm
-        package-manager:
-          - npm
-          # - pnpm
-          # - yarn
-        test-framework:
-          - ava
-          - jasmine
-          - jest
-          - mocha
-          - vitest
-        build-tool:
-          - ""
-          - esbuild
-          - rollup
-          - swc
-          # - parcel # web bundler
-          # - rolldown # not mature yet
-          # - snowpack # who is this guy?
-          # - turbpack # not mature yet
-          # - vite # web bundler, using esbuild and roll*
-          # - webpack # web bundler using babel and roll*
-        default-command:
-          - "true"
-          - "false"
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -113,8 +109,8 @@ jobs:
       - name: Init
         run: |
           npm i
-          if [ "${{ matrix.package-manager }}" != "" ]; then
-            npm i -g ${{ matrix.package-manager }}
+          if [ "${{ github.event.inputs.PackageManager }}" != "npm" ]; then
+            npm i -g ${{ github.event.inputs.PackageManager }}
           fi
           npm i -g ts-node
       - name: Init Project
@@ -123,27 +119,43 @@ jobs:
           npm run build -w @templ-project/create-node
 
           CREATE_ARGS=""
-          if [ "${{ matrix.build-tool }}" != "" ]; then
-            CREATE_ARGS="$CREATE_ARGS --build-tool ${{ matrix.build-tool }}"
+          if [ "${{ github.event.inputs.BuildTool }}" != "" ]; then
+            CREATE_ARGS="$CREATE_ARGS --build-tool ${{ github.event.inputs.BuildTool }}"
           fi
-          if [ "${{ matrix.default-command }}" == "true" ]; then
+          if [ "${{ github.event.inputs.UseDefaultCommand }}" == "true" ]; then
             CREATE_ARGS="$CREATE_ARGS --use-default-commands"
           fi
           LOG_LEVEL=debug SKIP_NPM_INIT=1 ./packages/create-node/bin/create-node /tmp/test-node \
-            --language ${{ matrix.language }} \
-            --targets ${{ matrix.targets }} \
-            --package-manager ${{ matrix.package-manager }} \
-            --test-framework ${{ matrix.test-framework }} \
+            --language ${{ github.event.inputs.Language }} \
+            --targets ${{ github.event.inputs.Targets }} \
+            --package-manager ${{ github.event.inputs.PackageManager }} \
+            --test-framework ${{ github.event.inputs.TestFramework }} \
             $CREATE_ARGS
       - name: Validate Project
-        if: ${{ matrix.language != 'ts' && matrix.test-framework != 'mocha' }}
+        if: ${{ github.event.inputs.Language != 'ts' && github.event.inputs.TestFramework != 'mocha' }}
         run: |
+          install_command="npm i"
+          install_prd_command="npm i -S"
+          install_dev_command="npm i -D"
+          run_command="npm"
+          if [ "${{ github.event.inputs.PackageManager }}" == "pnpm" ]; then
+            install_command="pnpm i"
+            install_prd_command="pnpm i"
+            install_dev_command="pnpm i -D"
+            run_command="pnpm"
+          elif [ "${{ github.event.inputs.PackageManager }}" == "yarn" ]; then
+            install_command="yarn"
+            install_prd_command="yarn add"
+            install_dev_command="yarn add --dev"
+            run_command="yarn"
+          fi
+
           project_path=$(pwd)
           cd /tmp/test-node \
             && cat package.json \
-            && npm i \
-            && npm i -S axios --legacy-peer-deps \
-            && npm i -D $project_path/packages/create-node --legacy-peer-deps \
-            && ${{ matrix.package-manager }} run ca \
-            && ${{ matrix.package-manager }} run test \
-            && ${{ matrix.package-manager }} run build
+            && $install_command \
+            && $install_prd_command axios --legacy-peer-deps \
+            && $install_dev_command $project_path/packages/create-node --legacy-peer-deps \
+            && $run_command run ca \
+            && $run_command run test \
+            && $run_command run build
