@@ -1,4 +1,5 @@
 name: "Create :: Configurable Node CICD"
+run-name: "create-node --language ${{ inputs.Language }} --targets ${{ inputs.Targets }} --package-manager ${{ inputs.PackageManager }} --test-framework ${{ inputs.TestFramework }} --use-default-commands ${{ inputs.UseDefaultCommand }}"
 
 on:
   workflow_call:
@@ -109,8 +110,8 @@ jobs:
       - name: Init
         run: |
           npm i
-          if [ "${{ github.event.inputs.PackageManager }}" != "npm" ]; then
-            npm i -g ${{ github.event.inputs.PackageManager }}
+          if [ "${{ inputs.PackageManager }}" != "npm" ]; then
+            npm i -g ${{ inputs.PackageManager }}
           fi
           npm i -g ts-node
       - name: Init Project
@@ -119,31 +120,31 @@ jobs:
           npm run build -w @templ-project/create-node
 
           CREATE_ARGS=""
-          if [ "${{ github.event.inputs.BuildTool }}" != "" ]; then
-            CREATE_ARGS="$CREATE_ARGS --build-tool ${{ github.event.inputs.BuildTool }}"
+          if [ "${{ inputs.BuildTool }}" != "" ]; then
+            CREATE_ARGS="$CREATE_ARGS --build-tool ${{ inputs.BuildTool }}"
           fi
-          if [ "${{ github.event.inputs.UseDefaultCommand }}" == "true" ]; then
+          if [ "${{ inputs.UseDefaultCommand }}" == "true" ]; then
             CREATE_ARGS="$CREATE_ARGS --use-default-commands"
           fi
           LOG_LEVEL=debug SKIP_NPM_INIT=1 ./packages/create-node/bin/create-node /tmp/test-node \
-            --language ${{ github.event.inputs.Language }} \
-            --targets ${{ github.event.inputs.Targets }} \
-            --package-manager ${{ github.event.inputs.PackageManager }} \
-            --test-framework ${{ github.event.inputs.TestFramework }} \
+            --language ${{ inputs.Language }} \
+            --targets ${{ inputs.Targets }} \
+            --package-manager ${{ inputs.PackageManager }} \
+            --test-framework ${{ inputs.TestFramework }} \
             $CREATE_ARGS
       - name: Validate Project
-        if: ${{ github.event.inputs.Language != 'ts' && github.event.inputs.TestFramework != 'mocha' }}
+        if: ${{ inputs.Language != 'ts' && inputs.TestFramework != 'mocha' }}
         run: |
           install_command="npm i"
           install_prd_command="npm i -S"
           install_dev_command="npm i -D"
           run_command="npm"
-          if [ "${{ github.event.inputs.PackageManager }}" == "pnpm" ]; then
+          if [ "${{ inputs.PackageManager }}" == "pnpm" ]; then
             install_command="pnpm i"
             install_prd_command="pnpm i"
             install_dev_command="pnpm i -D"
             run_command="pnpm"
-          elif [ "${{ github.event.inputs.PackageManager }}" == "yarn" ]; then
+          elif [ "${{ inputs.PackageManager }}" == "yarn" ]; then
             install_command="yarn"
             install_prd_command="yarn add"
             install_dev_command="yarn add --dev"
