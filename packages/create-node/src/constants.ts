@@ -52,6 +52,28 @@ export const allTestFrameworks: TestFramework[] = [
 ];
 
 /*******************************************************************************
+ * Node Module Version Limitations
+ */
+
+// TODO: Upgrade to ^1.0.0 once the following issue is solved
+// ESLint: 8.57.0
+
+// Error: ESLint configuration in .eslintrc.js » plugin:sonarjs/recommended is invalid:
+//         - Property "plugins" is the wrong type (expected array but got `{"sonarjs":{"rules":{"cognitive-complexity":{"defaultOptions":[],"meta":{"messages":{"refactorFunction":"Refactor this function to reduce its Cognitive Complexity from {{complexityAmount}} to the {{threshold}} allowed.","sonarRuntime":"{{sonarRuntimeData}}","fileComplexity":"{{complexityAmount}}"},"type":"suggestion","docs":{"description":"Cognitive Complexity of functions should not be too high","url":"https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/cognitive-complexity.md"},"schema":[{"type":"integer","minimum":0},..."docs":{"description":"A \"while\" loop should be used instead of a \"for\" loop","recommended":"recommended","url":"https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-while.md"},"fixable":"code"}}}}}}`).
+
+// Referenced from: /Users/dragoscirjan/ws/github.com-templ-project/test-create-node/.eslintrc.js
+//     at ConfigValidator.validateConfigSchema (/Users/dragoscirjan/ws/github.com-templ-project/test-create-node/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:2177:19)
+//     at ConfigArrayFactory._normalizeConfigData (/Users/dragoscirjan/ws/github.com-templ-project/test-create-node/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3019:19)
+//     ...
+//     at _normalizeObjectConfigData.next (<anonymous>)
+//     at ConfigArrayFactory.loadInDirectory (/Users/dragoscirjan/ws/github.com-templ-project/test-create-node/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:2886:28)
+//     at CascadingConfigArrayFactory._loadConfigInAncestors (/Users/dragoscirjan/ws/github.com-templ-project/test-create-node/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3871:46)
+// export const EslintPluginSonarjsVersion = "latest";
+export const EslintPluginSonarjsVersion = "~0.25.1";
+
+export const TypeScriptVersion = "~5.3";
+
+/*******************************************************************************
  * Code Static Stuff
  */
 
@@ -569,7 +591,7 @@ import { beforeAll, afterAll, afterEach, describe, it, expect, vi } from "vitest
 
 import { writeHello } from "../src";
 
-describe("writeHello", (t) => {
+describe("writeHello", () => {
   let consoleMock;
 
   beforeAll(() => {

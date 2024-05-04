@@ -6,7 +6,7 @@ export default async function (options) {
   logger.info("updating package.json for (babel) eslint tool...");
 
   return eslint(options, {
-    parser: "@babel/eslint-parser",
+    parser: "@typescript-eslint/parser",
     parserOptions: { ecmaVersion: 2020, sourceType: "module" },
     ...eslintConfig,
   } as any);

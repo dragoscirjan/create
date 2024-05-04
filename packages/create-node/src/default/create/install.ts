@@ -1,3 +1,4 @@
+import { EslintPluginSonarjsVersion, TypeScriptVersion } from "../../constants";
 import { CreateCommandOptions } from "../../types";
 import {
   PackageJsonOptions,
@@ -29,7 +30,16 @@ const buildPackageList = <T extends CreateCommandOptions>({
       ? ["dependency-cruiser"]
       : []),
     ...(qualityTools.includes("eslint")
-      ? ["eslint", "eslint-plugin-sonar", "eslint-plugin-sonarjs"]
+      ? [
+          "eslint",
+          "eslint-plugin-sonar",
+          `eslint-plugin-sonarjs@${EslintPluginSonarjsVersion}`,
+        ]
+      : []),
+    // because of esling-plugin-sonarjs@1.0.0, eslint will require
+    // @typescript-eslint/parser even for babel
+    ...(qualityTools.includes("eslint")
+      ? ["typescript-eslint", `typescript@${TypeScriptVersion}`]
       : []),
     ...(qualityTools.includes("jscpd")
       ? ["jscpd", "@jscpd/badge-reporter"]
@@ -74,23 +84,6 @@ const buildPackageList = <T extends CreateCommandOptions>({
         ]
       : []),
     ...(testFramework.includes("vitest") ? ["vitest"] : []),
-    // languages specific
-    // ...(language === "coffee" ? [] : []),
-    // ...(language === "ts"
-    //   ? [
-    //       "typescript",
-    //       "ts-node",
-    //       "tslib",
-    //       "@types/node",
-    //       "@istanbuljs/nyc-config-typescript",
-    //       ...(testFramework.includes("eslint")
-    //         ? ["@typescript-eslint/eslint-plugin", "@typescript-eslint/parser"]
-    //         : []),
-    //       ...(testFramework.includes("jest") ? ["ts-jest", "@types/jest"] : []),
-    //       ...(testFramework.includes("mocha") ? ["@types/chai", "@types/mocha"] : []),
-    //     ]
-    //   : []),
-    // builder specific
     ...(buildTool === "esbuild" ||
     targets?.includes("browser") ||
     targets?.includes("deno")

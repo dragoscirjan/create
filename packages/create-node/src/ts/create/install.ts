@@ -1,6 +1,7 @@
 import install from "../../default/create/install";
 import { requiresSinon } from "../../util/test-framework";
 import { CreateCommandOptions } from "../../types";
+import { TypeScriptVersion } from "../../constants";
 
 const buildPackageList = <T extends CreateCommandOptions>({
   qualityTools,
@@ -8,7 +9,7 @@ const buildPackageList = <T extends CreateCommandOptions>({
   buildTool,
 }: T): string[] => {
   return [
-    "typescript",
+    `typescript@${TypeScriptVersion}`,
     "ts-node",
     "tslib",
     "@types/node",
@@ -29,9 +30,7 @@ const buildPackageList = <T extends CreateCommandOptions>({
     ...(testFramework === "jest" ? ["ts-jest", "@types/jest"] : []),
     ...(testFramework === "mocha" ? ["@types/chai", "@types/mocha"] : []),
     // quality tools specific
-    ...(qualityTools.includes("eslint")
-      ? ["@typescript-eslint/eslint-plugin", "@typescript-eslint/parser"]
-      : []),
+    ...(qualityTools.includes("eslint") ? ["typescript-eslint"] : []),
     // builder specific
     ...(buildTool === "esbuild" ? ["esbuild-plugin-babel"] : []),
     ...(buildTool === "rollup" ? ["@rollup/plugin-typescript"] : []),
@@ -53,6 +52,6 @@ export default async function <T extends CreateCommandOptions>(
   return pmInstall(buildPackageList(options), {
     ...options,
     saveDev: true,
-    force: true,
+    // force: true,
   });
 }
