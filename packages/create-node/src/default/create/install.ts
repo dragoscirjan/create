@@ -31,10 +31,10 @@ const buildPackageList = <T extends CreateCommandOptions>({
       : []),
     ...(qualityTools.includes("eslint")
       ? [
-        "eslint",
-        "eslint-plugin-sonar",
-        `eslint-plugin-sonarjs@${EslintPluginSonarjsVersion}`,
-      ]
+          "@eslint/js",
+          "eslint-plugin-sonar",
+          `eslint-plugin-sonarjs@${EslintPluginSonarjsVersion}`,
+        ]
       : []),
     // because of esling-plugin-sonarjs@1.0.0, eslint will require
     // @typescript-eslint/parser even for babel
@@ -48,40 +48,40 @@ const buildPackageList = <T extends CreateCommandOptions>({
     ...(qualityTools.includes("oxlint") ? ["oxlint"] : []),
     ...(qualityTools.includes("prettier")
       ? [
-        "import-sort-style-module",
-        "prettier",
-        "prettier-plugin-import-sort",
-        ...(qualityTools.includes("eslint")
-          ? [
-            "eslint-config-prettier",
-            "eslint-plugin-import",
-            "eslint-plugin-prettier",
-          ]
-          : []),
-      ]
+          "import-sort-style-module",
+          "prettier",
+          "prettier-plugin-import-sort",
+          ...(qualityTools.includes("eslint")
+            ? [
+                "eslint-config-prettier",
+                "eslint-plugin-import",
+                "eslint-plugin-prettier",
+              ]
+            : []),
+        ]
       : []),
     // test frameworks
     ...(testFramework.includes("ava")
       ? [
-        "ava",
-        "sinon",
-        ...(qualityTools.includes("eslint") ? ["eslint-plugin-ava"] : []),
-      ]
+          "ava",
+          "sinon",
+          ...(qualityTools.includes("eslint") ? ["eslint-plugin-ava"] : []),
+        ]
       : []),
     ...(testFramework.includes("jasmine") ? ["jasmine", "sinon"] : []),
     ...(testFramework.includes("jest")
       ? [
-        "jest",
-        ...(qualityTools.includes("eslint") ? ["eslint-plugin-jest"] : []),
-      ]
+          "jest",
+          ...(qualityTools.includes("eslint") ? ["eslint-plugin-jest"] : []),
+        ]
       : []),
     ...(testFramework.includes("mocha")
       ? [
-        "chai",
-        "mocha",
-        "sinon",
-        ...(qualityTools.includes("eslint") ? ["eslint-plugin-mocha"] : []),
-      ]
+          "chai",
+          "mocha",
+          "sinon",
+          ...(qualityTools.includes("eslint") ? ["eslint-plugin-mocha"] : []),
+        ]
       : []),
     ...(testFramework.includes("vitest") ? ["vitest"] : []),
     ...(buildTool === "esbuild" ||
@@ -102,7 +102,7 @@ const buildPackageList = <T extends CreateCommandOptions>({
 };
 
 export default async function <T extends CreateCommandOptions>(
-  options: T,
+  options: T
 ): Promise<void> {
   const { packageManager, logger } = options;
   logger?.verbose("installing default dependencies...");
