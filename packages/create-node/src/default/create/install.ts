@@ -31,6 +31,7 @@ const buildPackageList = <T extends CreateCommandOptions>({
       : []),
     ...(qualityTools.includes("eslint")
       ? [
+          "eslint",
           "@eslint/js",
           "eslint-plugin-sonar",
           `eslint-plugin-sonarjs@${EslintPluginSonarjsVersion}`,
