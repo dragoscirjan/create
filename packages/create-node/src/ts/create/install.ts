@@ -1,7 +1,7 @@
+/* eslint-disable max-lines-per-function */
 import install from "../../default/create/install";
 import { requiresSinon } from "../../util/test-framework";
 import { CreateCommandOptions } from "../../types";
-import { TypeScriptVersion } from "../../constants";
 
 const buildPackageList = <T extends CreateCommandOptions>({
   qualityTools,
@@ -9,7 +9,7 @@ const buildPackageList = <T extends CreateCommandOptions>({
   buildTool,
 }: T): string[] => {
   return [
-    `typescript@${TypeScriptVersion}`,
+    `typescript`,
     "ts-node",
     "tslib",
     "@types/node",

@@ -55,10 +55,13 @@ export const allTestFrameworks: TestFramework[] = [
  * Node Module Version Limitations
  */
 
-// TODO: 1.0.0 and above appear to work with eslint.config.js instead of .eslintrc.js; not supporting this too soon since other eslint plugins do not support it yet (see import)
+/**
+ * TODO: Unable to install latest version because we still use old .eslintrc.js configuration
+ * Latest eslint-plugin-sonarjs version is compatible with eslint 9.x which uses eslint.config.json, 
+ * while the new config file is not supported yet by eslint-plugin-import.
+ */
 export const EslintPluginSonarjsVersion = "~0.25.1";
 
-export const TypeScriptVersion = "latest";
 
 /*******************************************************************************
  * Code Static Stuff

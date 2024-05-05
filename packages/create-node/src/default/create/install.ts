@@ -1,4 +1,5 @@
-import { EslintPluginSonarjsVersion, TypeScriptVersion } from "../../constants";
+/* eslint-disable max-lines-per-function */
+import { EslintPluginSonarjsVersion } from "../../constants";
 import { CreateCommandOptions } from "../../types";
 import {
   PackageJsonOptions,
@@ -32,15 +33,18 @@ const buildPackageList = <T extends CreateCommandOptions>({
     ...(qualityTools.includes("eslint")
       ? [
           "eslint",
-          "@eslint/js",
-          "eslint-plugin-sonar",
+          // TODO: whether we should stop using eslint-plugin-sonar for now...
+          "eslint-plugin-sonar", // will install @typescript-eslint/* as well with version 6.2.*
           `eslint-plugin-sonarjs@${EslintPluginSonarjsVersion}`,
         ]
       : []),
     // because of esling-plugin-sonarjs@1.0.0, eslint will require
     // @typescript-eslint/parser even for babel
     ...(qualityTools.includes("eslint")
-      ? ["typescript-eslint", `typescript@${TypeScriptVersion}`]
+      ? [
+          // "typescript-eslint", 
+          `typescript`,
+        ]
       : []),
     ...(qualityTools.includes("jscpd")
       ? ["jscpd", "@jscpd/badge-reporter"]
