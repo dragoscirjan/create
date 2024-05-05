@@ -2,7 +2,7 @@ import { GenericCommandOptions } from "../types";
 import writeFile from "../util/write-file";
 
 export default async function <T extends GenericCommandOptions>(
-  options: T
+  options: T,
 ): Promise<void> {
   const createRc = {
     ...options,

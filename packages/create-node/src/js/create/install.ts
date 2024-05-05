@@ -22,7 +22,7 @@ const buildPackageList = <T extends CreateCommandOptions>({
 };
 
 export default async function <T extends CreateCommandOptions>(
-  options: T
+  options: T,
 ): Promise<void> {
   await install(options);
 

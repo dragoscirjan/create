@@ -5,7 +5,7 @@ import { GenericCommandOptions } from "../types";
 
 export default async function <T extends GenericCommandOptions>(
   file: string,
-  options: T
+  options: T,
 ): Promise<string> {
   const filePath = pathJoin(__dirname, file);
   const { logger } = options;

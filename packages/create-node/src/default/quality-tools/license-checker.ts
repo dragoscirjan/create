@@ -15,7 +15,7 @@ export default async function (options: CreateCommandOptions) {
       ca: appendRunS((object?.scripts as any)?.ca, "ca:security"),
       "ca:security": appendRunS(
         object?.scripts?.["ca:security"],
-        "license-check"
+        "license-check",
       ),
       "license-check": `npx license-checker --production --json --failOn="${[
         "AGPL AGPL 1.0",

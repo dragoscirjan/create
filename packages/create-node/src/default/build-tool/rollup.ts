@@ -8,7 +8,7 @@ export default async function (options: CreateCommandOptions) {
   logger?.verbose(`configuring ${buildTool}...`);
 
   await readRepoFile(`../../static/${language}/rollup.config.js`, options).then(
-    (rollupConfig) => writeFile("rollup.config.js", rollupConfig, options)
+    (rollupConfig) => writeFile("rollup.config.js", rollupConfig, options),
   );
 
   return updatePackageJson(options, (packageObject) => ({
@@ -20,14 +20,14 @@ export default async function (options: CreateCommandOptions) {
         .map((item) => targets?.includes(item))
         .reduce((acc, cur) => acc || cur, false)
         ? {
-            "build:browser": "cross-env BUILD_TARGET=browser rollup -c",
-          }
+          "build:browser": "cross-env BUILD_TARGET=browser rollup -c",
+        }
         : {}),
       ...(targets?.includes("node-cjs")
         ? {
-            "build:node-cjs":
+          "build:node-cjs":
               "cross-env BUILD_TARGET=node-cjs ROLLUP_BUILD=1 rollup -c",
-          }
+        }
         : {}),
       ...(targets?.includes("node-esm")
         ? { "build:node-esm": "cross-env BUILD_TARGET=node-esm rollup -c" }

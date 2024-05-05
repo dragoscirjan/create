@@ -31,7 +31,7 @@ export default async function (
   options: CreateCommandOptions,
   config?: MochaConfig,
   spec = mochaSpecJs,
-  test = mochaTestJs
+  test = mochaTestJs,
 ) {
   const { language, logger, testFramework } = options;
   config = config || mochaConfig(language!);

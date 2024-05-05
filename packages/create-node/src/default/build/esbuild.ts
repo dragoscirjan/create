@@ -11,7 +11,7 @@ import * as esbuild from "esbuild";
 import { join as joinPath } from "path";
 
 export const esbuildTransformOptions = (
-  options: BuildCommandOptions
+  options: BuildCommandOptions,
 ): esbuild.TransformOptions => {
   const { language, target } = options;
 
@@ -53,7 +53,7 @@ export async function compile(options: BuildCommandOptions) {
         await readFile(file, "utf-8")
           .then((code) =>
             // @see https://esbuild.github.io/api/#transform
-            esbuild.transform(code, esbuildTransformOptions(options))
+            esbuild.transform(code, esbuildTransformOptions(options)),
           )
           .then((result) => {
             handleCompiledFileAndMap(
@@ -64,7 +64,7 @@ export async function compile(options: BuildCommandOptions) {
                 logger,
                 projectPath,
                 target,
-              }
+              },
             );
           })
           .catch(async (error: esbuild.TransformFailure) => {

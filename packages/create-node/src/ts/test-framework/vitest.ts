@@ -11,6 +11,6 @@ export default async function (options: CreateCommandOptions) {
       testMatch: ["**/*.spec.ts", "**/*.test.ts"],
     },
     vitestSpecJs,
-    vitestTestJs
+    vitestTestJs,
   );
 }

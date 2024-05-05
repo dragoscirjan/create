@@ -6,8 +6,13 @@ export type SpawnOptions = CPSpawnOptions & {
   cwd?: string;
 };
 
-export default async function (command: string[], options?: SpawnOptions): Promise<void | string> {
-  logger.debug(`executing '${command.join(" ")}' with options '${JSON.stringify(options)}'`);
+export default async function (
+  command: string[],
+  options?: SpawnOptions,
+): Promise<void | string> {
+  logger.debug(
+    `executing '${command.join(" ")}' with options '${JSON.stringify(options)}'`,
+  );
 
   return new Promise((resolve, reject) => {
     const proc = spawn(command[0], command.length > 1 ? command.slice(1) : [], {

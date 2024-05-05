@@ -20,7 +20,7 @@ export async function readLocalSwcConfig({
 >): Promise<SwcOptions> {
   const localPath = joinPath(
     projectPath,
-    `.swcrc.${target.replace("node-", "")}.json`
+    `.swcrc.${target.replace("node-", "")}.json`,
   );
   logger?.debug(`Reading local ${localPath}`);
 
@@ -28,7 +28,7 @@ export async function readLocalSwcConfig({
     return readFile(localPath, "utf-8").then((content) => JSON.parse(content));
   } catch (e) {
     logger?.debug(
-      `Error reading local ${localPath.replace(projectPath!, "")}: ${e}`
+      `Error reading local ${localPath.replace(projectPath!, "")}: ${e}`,
     );
   }
   logger?.debug(`No local ${localPath} found`);
@@ -46,7 +46,7 @@ export async function generateSwcConfig({
   BuildCommandOptions,
   "logger" | "projectPath" | "target"
 >): Promise<SwcOptions> {
-  let codeConfig: SwcOptions = buildSwcConfig(target);
+  const codeConfig: SwcOptions = buildSwcConfig(target);
 
   const localConfig = await readLocalSwcConfig({
     logger,
@@ -107,7 +107,7 @@ export async function compile(options: BuildCommandOptions) {
     process.exit(1);
   }
   logger?.info(
-    `Successfully compiled ${fileCount} file(s) in ${Date.now() - time}ms`
+    `Successfully compiled ${fileCount} file(s) in ${Date.now() - time}ms`,
   );
 }
 

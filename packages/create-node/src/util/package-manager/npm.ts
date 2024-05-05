@@ -7,14 +7,14 @@ import spawn from "../spawn";
 import { whichNpm } from "../which";
 
 export async function init<T extends PackageManagerInitOptions>(
-  options: T
+  options: T,
 ): Promise<void> {
   return genericInit(options);
 }
 
 export async function install<T extends PackageManagerInstallOptions>(
   packages: string[],
-  options: T
+  options: T,
 ): Promise<void> {
   const { force, projectPath, save, saveDev } = options;
   const binary = await whichNpm();

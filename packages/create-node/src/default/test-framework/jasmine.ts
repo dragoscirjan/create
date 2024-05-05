@@ -15,7 +15,7 @@ export type JasmineConfig = {
 };
 
 export const jasmineConfig = (
-  language: ProgrammingLanguage
+  language: ProgrammingLanguage,
 ): JasmineConfig => ({
   spec_dir: ["."],
   spec_files: [`src/**/*.spec.${language}`, `test/**/*.test.${language}`],
@@ -28,7 +28,7 @@ export default async function (
   options: CreateCommandOptions,
   config?: JasmineConfig,
   spec = jasmineSpecJs,
-  test = jasmineTestJs
+  test = jasmineTestJs,
 ) {
   const { language, logger, testFramework } = options;
   logger?.verbose(`configuring ${testFramework}...`);
@@ -36,7 +36,7 @@ export default async function (
   await writeFile(
     ".jasmine.json",
     JSON.stringify(config || jasmineConfig(language!), null, 2),
-    options
+    options,
   );
 
   await updatePackageJson(options, (object) => ({

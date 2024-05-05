@@ -24,7 +24,7 @@ export default async function <T extends CreateCommandOptions>(
   options: T,
   config = vitestConfig,
   spec = vitestSpecJs,
-  test = vitestTestJs
+  test = vitestTestJs,
 ) {
   const { logger, testFramework } = options;
   logger?.verbose(`configuring ${testFramework}...`);

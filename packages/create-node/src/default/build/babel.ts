@@ -14,34 +14,34 @@ import mergeWith from "lodash.mergewith";
 
 export const mergeConfigs = (...configs: Record<string, unknown>[]) => {
   switch (configs.length) {
-    case 0:
-      return {};
-    case 1:
-      return configs[0];
-    default:
-      const config1 = configs.shift();
-      const config2 = configs.shift();
-      Object.keys(config2).forEach((key) => {
-        if (Array.isArray(config1?.[key]) && Array.isArray(config2[key])) {
-          config1[key] = [
-            ...new Set([
-              ...(config1[key] as unknown[]),
-              ...(config2[key] as unknown[]),
-            ]),
-          ];
-        } else if (
-          typeof config1[key] === "object" &&
+  case 0:
+    return {};
+  case 1:
+    return configs[0];
+  default:
+    const config1 = configs.shift();
+    const config2 = configs.shift();
+    Object.keys(config2).forEach((key) => {
+      if (Array.isArray(config1?.[key]) && Array.isArray(config2[key])) {
+        config1[key] = [
+          ...new Set([
+            ...(config1[key] as unknown[]),
+            ...(config2[key] as unknown[]),
+          ]),
+        ];
+      } else if (
+        typeof config1[key] === "object" &&
           typeof config2[key] === "object"
-        ) {
-          config1[key] = mergeConfigs(
+      ) {
+        config1[key] = mergeConfigs(
             config1[key] as Record<string, unknown>,
-            config2[key] as Record<string, unknown>
-          );
-        } else {
-          config1[key] = config2[key];
-        }
-      });
-      return mergeConfigs(config1, ...configs);
+            config2[key] as Record<string, unknown>,
+        );
+      } else {
+        config1[key] = config2[key];
+      }
+    });
+    return mergeConfigs(config1, ...configs);
   }
 };
 
@@ -82,8 +82,8 @@ export async function buildBabelConfig({
     target === "node-cjs"
       ? babelConfigCjs
       : target === "node-esm"
-      ? babelConfigEsm
-      : babelConfigBrowser;
+        ? babelConfigEsm
+        : babelConfigBrowser;
 
   const localConfig = await readLocalBabelConfig({
     logger,
@@ -103,7 +103,7 @@ export async function handleCompiledFile(
     logger,
     projectPath,
     target,
-  }: Pick<BuildCommandOptions, "logger" | "projectPath" | "target">
+  }: Pick<BuildCommandOptions, "logger" | "projectPath" | "target">,
 ): Promise<string> {
   const distPath = file
     .replace(projectPath, "")
@@ -125,7 +125,7 @@ export async function handleCompiledFileAndMap(
     logger,
     projectPath,
     target,
-  }: Pick<BuildCommandOptions, "logger" | "projectPath" | "target">
+  }: Pick<BuildCommandOptions, "logger" | "projectPath" | "target">,
 ) {
   const distPath = await handleCompiledFile(code, file, {
     logger,
@@ -170,12 +170,12 @@ export async function compile(options: BuildCommandOptions) {
               logger,
               projectPath,
               target,
-            })
+            }),
           )
           .catch((error) => {
             console.error(`${error.reasonCode}: ${error.message}`);
             logger?.warn(
-              `Error compiling ${file}:${error.loc.line}:${error.loc.column}`
+              `Error compiling ${file}:${error.loc.line}:${error.loc.column}`,
             );
             errorCount++;
           });
@@ -189,7 +189,7 @@ export async function compile(options: BuildCommandOptions) {
     process.exit(1);
   }
   logger?.info(
-    `Successfully compiled ${fileCount} file(s) in ${Date.now() - time}ms`
+    `Successfully compiled ${fileCount} file(s) in ${Date.now() - time}ms`,
   );
 }
 

@@ -39,7 +39,7 @@ export const prettierConfig = {
  */
 export default async function (
   options: CreateCommandOptions,
-  config = prettierConfig
+  config = prettierConfig,
 ) {
   const { language, logger } = options;
   logger?.info("updating package.json for (generic) prettier tool...");

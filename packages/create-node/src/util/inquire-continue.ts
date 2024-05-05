@@ -1,5 +1,5 @@
 export default async function (
-  message = "Do you wish to continue?"
+  message = "Do you wish to continue?",
 ): Promise<void> {
   return import("inquirer")
     .then(({ default: inquirer }) =>
@@ -9,7 +9,7 @@ export default async function (
           name: "continue",
           message,
         },
-      ])
+      ]),
     )
     .then((answers) => {
       if (!answers.continue) {

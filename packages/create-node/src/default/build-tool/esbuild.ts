@@ -16,12 +16,12 @@ export default async function (options: CreateCommandOptions) {
         .map((target: BuildTarget) => ({
           [`build:${target}`]: useDefaultCommands
             ? `esbuild src/**/*.js ${
-                language === "ts" ? "--loader=ts" : ""
-              } --outdir=dist/${target} --target="es2020,${
-                target !== "browser"
-                  ? "node16"
-                  : "chrome58,edge16,firefox57,safari11"
-              }" --format=${target === "node-cjs" ? "cjs" : "esm"}`
+              language === "ts" ? "--loader=ts" : ""
+            } --outdir=dist/${target} --target="es2020,${
+              target !== "browser"
+                ? "node16"
+                : "chrome58,edge16,firefox57,safari11"
+            }" --format=${target === "node-cjs" ? "cjs" : "esm"}`
             : generateBuildCommand({ target, buildTool: "esbuild" }),
         }))
         .reduce((acc, cur) => ({ ...acc, ...cur }), {}),

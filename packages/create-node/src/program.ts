@@ -26,35 +26,35 @@ program
   .option(
     "-l, --language <language>",
     `Programming Language to use: ${allLanguages.join(", ")}`,
-    "ts"
+    "ts",
   )
   .option(
     "-t, --targets <targets...>",
     `Module's target: ${allTargets.join(", ")} or all`,
-    "all"
+    "all",
   )
   .option(
     "--package-manager <packageManger>",
     `Package Manager to use: ${allPackageManagers.join(", ")}`,
-    "npm"
+    "npm",
   )
   .option(
     "--test-framework <testFramework>",
     `Testing Framework to use: ${allTestFrameworks.join(", ")}`,
-    "jest"
+    "jest",
   )
   .option(
     "--quality-tools <qualityTools...>",
     `Quality Tools to use: ${allQualityTools.join(", ")} or all`,
-    "all"
+    "all",
   )
   .option(
     "--build-tool <buildTool>",
-    `Build Tool to use: ${allBuildTools.join(", ")}`
+    `Build Tool to use: ${allBuildTools.join(", ")}`,
   )
   .option(
     "--use-default-commands",
-    "Use the default build commands instead of `create-node build`"
+    "Use the default build commands instead of `create-node build`",
   )
   .action(
     async (
@@ -62,7 +62,7 @@ program
       options: CreateCommandOptions & {
         qualityTools: QualityTool[] | string;
         targets: string[] | string;
-      }
+      },
     ) => {
       options = {
         ...options,
@@ -86,7 +86,7 @@ program
       logger.debug(`Creating project at ${projectPath} with options:`, options);
 
       return createAction(options);
-    }
+    },
   );
 
 program
@@ -95,7 +95,7 @@ program
   .option(
     "--target <target>",
     `Module's target: ${allTargets.join(", ")}`,
-    "node-cjs"
+    "node-cjs",
   )
   .option("--out-dir <outDir>", `Folder to compile to:`, "./dist")
   .action(async (options: BuildCommandOptions, command: Command) => {

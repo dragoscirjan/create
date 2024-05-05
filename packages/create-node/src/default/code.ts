@@ -8,7 +8,7 @@ import { codeJs } from "../constants";
 
 export default async function <T extends GenericCommandOptions>(
   options: T,
-  code = codeJs
+  code = codeJs,
 ): Promise<void> {
   const { language, logger, projectPath } = options;
 

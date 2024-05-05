@@ -8,7 +8,7 @@ export default async function (options: CreateCommandOptions) {
   const config = mochaConfig(language!);
 
   logger?.warn(
-    `Current issues with running mocha with TypeScript. Please upgrade '@templ-project/create-node' or use a different test runner.`
+    `Current issues with running mocha with TypeScript. Please upgrade '@templ-project/create-node' or use a different test runner.`,
   );
   await continuePrompt();
 
@@ -19,6 +19,6 @@ export default async function (options: CreateCommandOptions) {
       require: ["ts-node/register", ...config.require],
     },
     mochaSpecTs,
-    mochaTestTs
+    mochaTestTs,
   );
 }

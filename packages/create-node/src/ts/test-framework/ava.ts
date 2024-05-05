@@ -8,7 +8,7 @@ import { avaSpecJs, avaTestTs } from "../../constants";
 export default async function (options: CreateCommandOptions) {
   const avaConfig = await readRepoFile(
     "../../static/ts/ava.config.js",
-    options
+    options,
   );
   await writeFile("ava.config.js", avaConfig, options);
 

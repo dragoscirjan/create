@@ -90,26 +90,26 @@ export const getTargetedBabelRcName = (target: BuildTarget) =>
 
 const updatePackageJsonScripts =
   ({ targets, useDefaultCommands }: CreateCommandOptions) =>
-  (packageObject: PackageJsonOptions) => ({
-    ...packageObject,
-    scripts: {
-      ...packageObject.scripts,
-      build: "run-s clean build:*",
-      ...getBuildableTargets(targets)
-        .map((target: BuildTarget) => ({
-          [`build:${target}`]: useDefaultCommands
-            ? `babel src --config-file ./.babelrc.${target.replace(
+    (packageObject: PackageJsonOptions) => ({
+      ...packageObject,
+      scripts: {
+        ...packageObject.scripts,
+        build: "run-s clean build:*",
+        ...getBuildableTargets(targets)
+          .map((target: BuildTarget) => ({
+            [`build:${target}`]: useDefaultCommands
+              ? `babel src --config-file ./.babelrc.${target.replace(
                 "node-",
-                ""
+                "",
               )}.js --out-dir dist/${target} --extensions ".js"`
-            : generateBuildCommand({
+              : generateBuildCommand({
                 target,
                 buildTool: "babel",
               }),
-        }))
-        .reduce((acc, cur) => ({ ...acc, ...cur }), {}),
-    },
-  });
+          }))
+          .reduce((acc, cur) => ({ ...acc, ...cur }), {}),
+      },
+    });
 
 export default async function (options: CreateCommandOptions) {
   const { buildTool, logger, targets } = options;
@@ -118,12 +118,12 @@ export default async function (options: CreateCommandOptions) {
   for (const target of ["base", ...getBuildableTargets(targets)]) {
     const fileName = getTargetedBabelRcName(target as BuildTarget);
     await readRepoFile(`../../static/${fileName.slice(1)}`, options).then(
-      (config) => writeFile(fileName, config, options)
+      (config) => writeFile(fileName, config, options),
     );
   }
 
   await readRepoFile(`../../static/babelrc.js`, options).then((config) =>
-    writeFile(".babelrc.js", config, options)
+    writeFile(".babelrc.js", config, options),
   );
 
   return updatePackageJson(options, updatePackageJsonScripts(options));

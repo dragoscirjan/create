@@ -19,13 +19,13 @@ const buildPackageList = <T extends CreateCommandOptions>({
     ...(testFramework === "ava" ? ["tsimp"] : []),
     ...(testFramework === "jasmine"
       ? [
-          "@babel/cli",
-          "@babel/core",
-          "@babel/preset-env",
-          "@babel/register",
-          "@babel/plugin-transform-typescript",
-          "jasmine",
-        ]
+        "@babel/cli",
+        "@babel/core",
+        "@babel/preset-env",
+        "@babel/register",
+        "@babel/plugin-transform-typescript",
+        "jasmine",
+      ]
       : []),
     ...(testFramework === "jest" ? ["ts-jest", "@types/jest"] : []),
     ...(testFramework === "mocha" ? ["@types/chai", "@types/mocha"] : []),
@@ -38,7 +38,7 @@ const buildPackageList = <T extends CreateCommandOptions>({
 };
 
 export default async function <T extends CreateCommandOptions>(
-  options: T
+  options: T,
 ): Promise<void> {
   await install(options);
 

@@ -12,6 +12,6 @@ export default async function (options: CreateCommandOptions) {
       transform: { "^.+\\.ts$": "ts-jest" },
     },
     jestSpecJs,
-    jestTestTs
+    jestTestTs,
   );
 }

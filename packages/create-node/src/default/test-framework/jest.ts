@@ -27,7 +27,7 @@ export default async function (
   options: CreateCommandOptions,
   config?: JestConfig,
   spec = jestSpecJs,
-  test = jestTestJs
+  test = jestTestJs,
 ) {
   const { language, logger, testFramework } = options;
   logger?.verbose(`configuring ${testFramework}...`);

@@ -6,7 +6,7 @@ import writeFile from "../util/write-file";
 import { GenericCommandOptions } from "../types";
 
 export const configureCommitLint = async <T extends GenericCommandOptions>(
-  options: T
+  options: T,
 ): Promise<void> => {
   const commitLintPath = joinPath(".husky", "_", "commit-msg");
   let commitLint = `#!/bin/sh
@@ -14,7 +14,7 @@ export const configureCommitLint = async <T extends GenericCommandOptions>(
 
   try {
     commitLint = await readFile(commitLintPath, options).then((buffer) =>
-      buffer.toString()
+      buffer.toString(),
     );
   } catch (e) {}
   await writeFile(
@@ -22,12 +22,12 @@ export const configureCommitLint = async <T extends GenericCommandOptions>(
     `${commitLint}
 
 echo npx commitlint --edit $1`,
-    options
+    options,
   );
 };
 
 export const configurePreCommit = async <T extends GenericCommandOptions>(
-  options: T
+  options: T,
 ): Promise<void> => {
   const preCommitPath = joinPath(".husky", "_", "pre-commit");
   let preCommit = `#!/bin/sh
@@ -35,7 +35,7 @@ export const configurePreCommit = async <T extends GenericCommandOptions>(
 
   try {
     preCommit = await readFile(preCommitPath, options).then((buffer) =>
-      buffer.toString()
+      buffer.toString(),
     );
   } catch (e) {}
   await writeFile(
@@ -47,12 +47,12 @@ npm run test
 npm run build
 
 git add -u`,
-    options
+    options,
   );
 };
 
 const ensureGitFolder = async <T extends GenericCommandOptions>(
-  options: T
+  options: T,
 ): Promise<void> => {
   return spawn(["git", "init"], {
     cwd: options.projectPath,
@@ -61,7 +61,7 @@ const ensureGitFolder = async <T extends GenericCommandOptions>(
 };
 
 export default async function <T extends GenericCommandOptions>(
-  options: T
+  options: T,
 ): Promise<void> {
   const { projectPath } = options;
 

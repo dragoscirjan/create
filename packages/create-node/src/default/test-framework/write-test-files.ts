@@ -10,7 +10,7 @@ const noCode = "// no code";
 export default async function <T extends CreateCommandOptions>(
   options: T,
   test = noCode,
-  spec = noCode
+  spec = noCode,
 ) {
   const { language, projectPath, logger } = options;
   logger?.verbose(`writing default test files...`);

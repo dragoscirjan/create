@@ -12,7 +12,7 @@ export async function init<T extends PackageManagerInitOptions>(options: T) {
 
 export async function install<T extends PackageManagerInstallOptions>(
   packages: string[],
-  options: T
+  options: T,
 ): Promise<void> {
   const { force, projectPath, saveDev } = options;
   const binary = await whichYarn();

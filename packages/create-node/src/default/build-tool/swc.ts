@@ -80,7 +80,7 @@ export default async function (options: CreateCommandOptions) {
     await writeFile(
       `.${fileName}`,
       buildSwcConfig(target) as Record<string, unknown>,
-      options
+      options,
     );
   }
 
@@ -93,9 +93,9 @@ export default async function (options: CreateCommandOptions) {
         .map((target: BuildTarget) => ({
           [`build:${target}`]: useDefaultCommands
             ? `swc src -d dist/${target} -s true --config-file .swcrc.${target.replace(
-                "node-",
-                ""
-              )}.json --extensions .js --ignore src/**/*.spec.js`
+              "node-",
+              "",
+            )}.json --extensions .js --ignore src/**/*.spec.js`
             : generateBuildCommand({ target, buildTool: "swc" }),
         }))
         .reduce((acc, cur) => ({ ...acc, ...cur }), {}),

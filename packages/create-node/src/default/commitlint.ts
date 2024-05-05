@@ -6,7 +6,7 @@ export const commitlintConfig = {
 };
 
 export default async function <T extends GenericCommandOptions>(
-  options: T
+  options: T,
 ): Promise<void> {
   const { logger } = options;
   logger?.verbose(`configuring commitlint...`);

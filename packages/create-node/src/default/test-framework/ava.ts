@@ -6,7 +6,7 @@ import writeTestFiles from "./write-test-files";
 export default async function (
   options: CreateCommandOptions,
   spec = avaSpecJs,
-  test = avaTestJs
+  test = avaTestJs,
 ) {
   const { logger, testFramework } = options;
   logger?.verbose(`configuring ${testFramework}...`);

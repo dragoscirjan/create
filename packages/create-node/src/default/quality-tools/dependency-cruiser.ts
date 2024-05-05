@@ -32,7 +32,7 @@ export default async function (options: CreateCommandOptions) {
       ca: appendRunS((object?.scripts as any)?.ca, "ca:quality"),
       "ca:quality": appendRunS(
         (object?.scripts as any)?.["ca:quality"],
-        "depcruise"
+        "depcruise",
       ),
       depcruise: "depcruise --config .dependency-cruiser.js src",
     },

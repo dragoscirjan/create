@@ -14,7 +14,7 @@ insert_final_newline = true
 trim_trailing_whitespace = false`;
 
 export default async function <T extends GenericCommandOptions>(
-  options: T
+  options: T,
 ): Promise<void> {
   const { logger } = options;
   logger?.verbose(`configuring .editorconfig...`);

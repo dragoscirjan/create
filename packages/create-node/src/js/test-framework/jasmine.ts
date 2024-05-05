@@ -7,7 +7,7 @@ import { CreateCommandOptions } from "../../types";
 export default async function (options: CreateCommandOptions) {
   const jasmineConfig = await readRepoFile(
     "../../js/static/.jasmine-babel.js",
-    options
+    options,
   );
   await writeFile(".jasmine/babel.js", jasmineConfig, options);
 

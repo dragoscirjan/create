@@ -5,7 +5,7 @@ export default async function run<T extends GenericCommandOptions>(
   language: string,
   runner: string,
   options: T,
-  count = 0
+  count = 0,
 ) {
   try {
     const { default: irun } = await import(`./${language}/${runner}`);

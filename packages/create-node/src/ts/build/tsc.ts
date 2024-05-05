@@ -40,7 +40,7 @@ export function createProgramFromConfig(
     extends: extend, // cuz keyword
     references,
     host,
-  }: CreateProgramFromConfigOptions
+  }: CreateProgramFromConfigOptions,
 ): Program {
   logger?.debug(`Reading tsconfig from ${configFilePath}`);
   const readResult = readConfigFile(configFilePath!, sys.readFile);
@@ -56,13 +56,23 @@ export function createProgramFromConfig(
   config.compilerOptions = Object.assign(
     {},
     config.compilerOptions,
-    compilerOptions
+    compilerOptions,
   );
-  if (include) config.include = include;
-  if (exclude) config.exclude = exclude;
-  if (files) config.files = files;
-  if (extend) config.extends = extend;
-  if (references) config.references = references;
+  if (include) {
+    config.include = include;
+  }
+  if (exclude) {
+    config.exclude = exclude;
+  }
+  if (files) {
+    config.files = files;
+  }
+  if (extend) {
+    config.extends = extend;
+  }
+  if (references) {
+    config.references = references;
+  }
 
   const { options, fileNames, projectReferences, errors } =
     parseJsonConfigFileContent(
@@ -70,7 +80,7 @@ export function createProgramFromConfig(
       sys,
       projectPath!,
       undefined,
-      configFilePath
+      configFilePath,
     );
 
   if (errors && errors.length) {
@@ -95,7 +105,7 @@ function treatDiagnostics(
   { logger, projectPath }: BuildCommandOptions,
   { noEmit }: CompilerOptions,
   emitSkipped: boolean,
-  diagnostics: Diagnostic[]
+  diagnostics: Diagnostic[],
 ) {
   if (!noEmit && emitSkipped && diagnostics.length) {
     logger?.error(`Compilation done with ${diagnostics.length} errors`);
@@ -105,8 +115,8 @@ function treatDiagnostics(
           typeof d.messageText === "string"
             ? d.messageText
             : JSON.stringify(d.messageText)
-        } at ${d.file?.fileName?.replace(projectPath!, "")}:${d.start}`
-      )
+        } at ${d.file?.fileName?.replace(projectPath!, "")}:${d.start}`,
+      ),
     );
   }
 }
@@ -127,16 +137,16 @@ export function compile(options: BuildCommandOptions, program: Program) {
         program
           .getRootFileNames()
           .map((f) => "." + f.replace(projectPath!, ""))
-          .join(" ")
+          .join(" "),
     );
   }
   // tslint:disable-next-line: prefer-const
-  let { diagnostics, emitSkipped, emittedFiles } = program.emit();
+  const { diagnostics, emitSkipped, emittedFiles } = program.emit();
 
   if (config.listEmittedFiles && emittedFiles) {
     logger?.debug(
       "Emitted files: " +
-        emittedFiles.map((f) => "." + f.replace(projectPath!, "")).join(" ")
+        emittedFiles.map((f) => "." + f.replace(projectPath!, "")).join(" "),
     );
   }
 
@@ -147,7 +157,7 @@ export function compile(options: BuildCommandOptions, program: Program) {
     { logger, projectPath } as BuildCommandOptions,
     program.getCompilerOptions(),
     emitSkipped,
-    allDiagnostics
+    allDiagnostics,
   );
 
   writeEsmPackageJson(options);
@@ -158,7 +168,7 @@ export function compile(options: BuildCommandOptions, program: Program) {
     logger?.info(
       `Successfully compiled ${
         emittedFiles?.length ?? program.getRootFileNames().length
-      } file(s) in ${Date.now() - time}ms`
+      } file(s) in ${Date.now() - time}ms`,
     );
   }
 }

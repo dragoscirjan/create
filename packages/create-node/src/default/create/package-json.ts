@@ -18,18 +18,18 @@ export type PackageJsonOptions = {
 };
 
 const addNycConfigToPackageJson = async (
-  options: CreateCommandOptions
+  options: CreateCommandOptions,
 ): Promise<void> =>
   update(options, (object: PackageJsonOptions) => ({
     ...object,
     ...(requiresNyc(options.testFramework)
       ? {
-          nyc: {
-            reporter: ["html", "lcov", "text"],
-            exclude: ["test*", "dist", "*", ".scripts", "coverage"],
-            all: true,
-          },
-        }
+        nyc: {
+          reporter: ["html", "lcov", "text"],
+          exclude: ["test*", "dist", "*", ".scripts", "coverage"],
+          all: true,
+        },
+      }
       : {}),
   }));
 
@@ -38,16 +38,15 @@ const runProjectInit = async (options: CreateCommandOptions): Promise<void> => {
   if (!process.env.SKIP_NPM_INIT) {
     logger?.verbose(`initializing project...`);
     return import(`../util/package-manager/${options.packageManager}`).then(
-      (binary) => binary.init(options)
+      (binary) => binary.init(options),
     );
-  } else {
-    try {
-      await update(options, (object) => object);
-    } catch (e) {
-      await writeFile("package.json", "{}", options);
-    }
-    logger?.debug(`project init skiped.`);
   }
+  try {
+    await update(options, (object) => object);
+  } catch (e) {
+    await writeFile("package.json", "{}", options);
+  }
+  logger?.debug(`project init skiped.`);
 };
 
 export default async function (options: CreateCommandOptions): Promise<void> {
@@ -56,16 +55,16 @@ export default async function (options: CreateCommandOptions): Promise<void> {
 }
 
 export async function read<T extends GenericCommandOptions>(
-  options: T
+  options: T,
 ): Promise<PackageJsonOptions> {
   return readFile("package.json", options).then(
-    (json) => JSON.parse(json) as PackageJsonOptions
+    (json) => JSON.parse(json) as PackageJsonOptions,
   );
 }
 
 export async function write<T extends GenericCommandOptions>(
   options: T,
-  object: PackageJsonOptions
+  object: PackageJsonOptions,
 ): Promise<void> {
   return writeFile("package.json", object, options);
 }
@@ -74,7 +73,7 @@ export async function update<T extends GenericCommandOptions>(
   options: T,
   callback:
     | PackageJsonOptions
-    | ((object: PackageJsonOptions) => PackageJsonOptions)
+    | ((object: PackageJsonOptions) => PackageJsonOptions),
 ): Promise<void> {
   return read(options)
     .then(
@@ -83,12 +82,12 @@ export async function update<T extends GenericCommandOptions>(
           ...(typeof callback === "function"
             ? callback(object)
             : typeof callback === "object"
-            ? {
+              ? {
                 ...object,
                 ...callback,
               }
-            : {}),
-        } as PackageJsonOptions)
+              : {}),
+        }) as PackageJsonOptions,
     )
     .then((object) => write(options, object));
 }

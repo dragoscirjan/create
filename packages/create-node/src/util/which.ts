@@ -1,11 +1,6 @@
 import { platform } from "os";
-import { resolve } from "import-meta-resolve";
-import { stat } from "fs/promises";
-import { Stats } from "fs";
-import { dirname, join as pathJoin } from "path";
 
 import spawn from "./spawn";
-import logger from "./logger";
 
 /** @param binary string */
 export default async function which(binary: string): Promise<string> {

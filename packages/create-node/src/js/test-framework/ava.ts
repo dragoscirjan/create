@@ -7,7 +7,7 @@ import { CreateCommandOptions } from "../../types";
 export default async function (options: CreateCommandOptions) {
   const avaConfig = await readRepoFile(
     "../../js/static/ava.config.js",
-    options
+    options,
   );
   await writeFile("ava.config.js", avaConfig, options);
 

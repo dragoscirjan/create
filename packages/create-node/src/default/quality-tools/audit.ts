@@ -20,16 +20,16 @@ export default async function (options: CreateCommandOptions) {
       ca: appendRunS((object?.scripts as any)?.ca, "ca:security"),
       "ca:security": appendRunS(
         object?.scripts?.["ca:security"],
-        "audit-modules"
+        "audit-modules",
       ),
       "audit-modules":
         packageManager === "npm"
           ? "npm audit"
           : packageManager === "pnpm"
-          ? "pnpm audit"
-          : packageManager === "yarn"
-          ? "yarn audit --groups=dependencies"
-          : 'echo "Unknown package manager for audit"',
+            ? "pnpm audit"
+            : packageManager === "yarn"
+              ? "yarn audit --groups=dependencies"
+              : 'echo "Unknown package manager for audit"',
     },
   }));
 }

@@ -17,7 +17,7 @@ export const jscpdConfig = {
 
 export default async function (
   options: CreateCommandOptions,
-  config = jscpdConfig
+  config = jscpdConfig,
 ) {
   const { logger } = options;
   logger?.info("updating package.json for jscpd tool...");
@@ -32,7 +32,7 @@ export default async function (
       ca: appendRunS((object?.scripts as any)?.ca, "ca:quality"),
       "ca:quality": appendRunS(
         (object?.scripts as any)?.["ca:quality"],
-        "jscpd"
+        "jscpd",
       ),
       "jscpd:html": "npm run jscpd -- --reporters html",
       jscpd: "jscpd ./src --blame",

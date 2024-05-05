@@ -8,17 +8,17 @@ import continuePrompt from "../inquire-continue";
 import { GenericCommandOptions, PackageManager } from "../../types";
 
 const createMockPackageJson = async <T extends GenericCommandOptions>(
-  options: T
+  options: T,
 ): Promise<void> =>
   process.env.SKIP_NPM_INIT
     ? writeFile(
-        joinPath(options.projectPath!, "package.json"),
-        JSON.stringify({
-          devDependencies: {},
-          scripts: {},
-        }),
-        options
-      )
+      joinPath(options.projectPath!, "package.json"),
+      JSON.stringify({
+        devDependencies: {},
+        scripts: {},
+      }),
+      options,
+    )
     : undefined;
 
 export type PackageManagerInitOptions = GenericCommandOptions & {
@@ -33,7 +33,7 @@ export type PackageManagerInstallOptions = GenericCommandOptions & {
 };
 
 export async function init<T extends PackageManagerInitOptions>(
-  options: T
+  options: T,
 ): Promise<void> {
   const { projectPath, logger } = options;
 

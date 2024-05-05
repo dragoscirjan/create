@@ -5,7 +5,7 @@ import { GenericCommandOptions } from "../types";
 export default async function <T extends GenericCommandOptions>(
   file: string,
   content: string | Record<string, unknown>,
-  { projectPath, logger }: T
+  { projectPath, logger }: T,
 ) {
   const filePath = joinPath(projectPath!, file);
 
@@ -22,7 +22,7 @@ export default async function <T extends GenericCommandOptions>(
   try {
     return writeFile(
       filePath,
-      typeof content === "string" ? content : JSON.stringify(content, null, 2)
+      typeof content === "string" ? content : JSON.stringify(content, null, 2),
     );
   } catch (error: any) {
     logger?.error(`error writing ${filePath}`);

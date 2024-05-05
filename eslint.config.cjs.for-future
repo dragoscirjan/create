@@ -1,0 +1,58 @@
+// @ts-check
+
+const eslintConfig = require("@eslint/js");
+const { default: tsEslintConfig } = require("typescript-eslint");
+
+const prettierPluginRecommended = require("eslint-plugin-prettier/recommended");
+const sonarjsPlugin = require("eslint-plugin-sonarjs");
+// TODO: not sure how to configure it under esling.config.js
+// const sonarPlugin = require("eslint-plugin-sonar");
+const importPlugin = require("eslint-plugin-import");
+
+// console.log(importPlugin);
+// process.exit(0);
+
+const config = [
+  {
+    languageOptions: {
+      parser: tsEslintConfig.parser,
+    },
+    plugins: {
+      import: importPlugin,
+    },
+  },
+  prettierPluginRecommended,
+  sonarjsPlugin.configs.recommended,
+  importPlugin.configs.recommended,
+  importPlugin.configs.warnings,
+  {
+    files: ["packages/**/src/**/*.{js,ts}"],
+    rules: {
+      ...eslintConfig.configs.recommended.rules,
+      "consistent-return": 2,
+      "max-len": ["error", 120],
+      "max-lines-per-function": ["error", 20],
+      "max-params": ["error", 3],
+      "no-else-return": 1,
+      "sonar/no-invalid-await": 0,
+      "space-unary-ops": 2,
+      curly: ["error", "all"],
+      indent: [1, 2],
+      semi: [1, "always"],
+    },
+  },
+  {
+    files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"].map(
+      (f) => `packages/**/src/${f}`
+    ),
+    ...tsEslintConfig.configs.recommended.find(
+      (rule) => rule.name === "typescript-eslint/base"
+    ),
+    ...tsEslintConfig.configs.recommended.find(
+      (rule) => rule.name === "typescript-eslint/recommended"
+    ),
+    ...importPlugin.configs.typescript,
+  },
+];
+
+module.exports = config;

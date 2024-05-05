@@ -9,19 +9,35 @@ import { CreateCommandOptions } from "../../types";
 export const eslintConfig = {
   env: {
     browser: true,
-    es6: true,
     node: true,
-    mocha: true,
+    es2022: true,
   },
-
   // uncomment for eslint rules
   extends: [
-    "plugin:sonar/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:sonarjs/recommended",
-    "prettier",
+    "plugin:sonar/recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/recommended",
+    "plugin:import/warnings",
   ],
-  plugins: ["sonar", "sonarjs", "prettier"],
-  root: true,
+  plugins: ["@typescript-eslint", "sonarjs", "sonar", "prettier", "import"],
+  overrides: [
+    {
+      env: {
+        node: true,
+      },
+      files: [".eslintrc.{js,cjs}"],
+      parserOptions: {
+        sourceType: "script",
+      },
+    },
+  ],
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: "latest",
+  },
   rules: {
     "consistent-return": 2,
     "max-len": ["error", 120],

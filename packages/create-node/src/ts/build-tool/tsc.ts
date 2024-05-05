@@ -32,19 +32,19 @@ export default async function (options: CreateCommandOptions) {
   await writeFile(
     "tsconfig.json",
     JSON.stringify(tsConfigObject, null, 2),
-    options
+    options,
   );
 
   for (const target of ["base", "types", ...getBuildableTargets(targets)]) {
     await readRepoFile(
       `../../static/tsconfig.${target.replace("node-", "")}.json`,
-      options
+      options,
     ).then((tsConfig) =>
       writeFile(
         `tsconfig.${target.replace("node-", "")}.json`,
         tsConfig,
-        options
-      )
+        options,
+      ),
     );
   }
 

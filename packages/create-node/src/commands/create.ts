@@ -31,19 +31,19 @@ export const createOptionsValidate = (options: CreateCommandOptions): void => {
         .map((t) => allTargets.includes(t))
         .reduce((a, c) => a && c, true),
       `Invalid targets '${targets?.join(", ")}'. Accepted: ${allTargets.join(
-        ", "
+        ", ",
       )}`,
     ],
     [
       !allPackageManagers.includes(packageManager),
       `Invalid language '${packageManager}'. Accepted: ${allPackageManagers.join(
-        ", "
+        ", ",
       )}`,
     ],
     [
       !allTestFrameworks.includes(testFramework),
       `Invalid test frame '${testFramework}'. Accepted: ${allTestFrameworks.join(
-        ", "
+        ", ",
       )}`,
     ],
     [
@@ -51,13 +51,13 @@ export const createOptionsValidate = (options: CreateCommandOptions): void => {
         .map((qt) => allQualityTools.includes(qt))
         .reduce((a, c) => a && c, true),
       `Invalid targets '${qualityTools.join(
-        ", "
+        ", ",
       )}'. Accepted: ${allQualityTools.join(", ")}`,
     ],
     [
       ![undefined, ...allBuildTools].includes(buildTool as BuildTool),
       `Invalid build tool '${buildTool}'. Accepted: ${allBuildTools.join(
-        ", "
+        ", ",
       )}`,
     ],
   ];

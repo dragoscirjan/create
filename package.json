@@ -3,6 +3,10 @@
   "version": "1.0.11",
   "description": "Create apps",
   "scripts": {
+    "lint": "run-s lint:*",
+    "lint:manypkg": "manypkg fix",
+    "lint:eslint": "eslint ./packages/create-node/src/**/*.ts --fix",
+    "--lint:oxlint": "oxlint ./packages/create-node/src/**/*.ts --fix",
     "release": "release-please"
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
@@ -12,6 +16,18 @@
     "packages/create-node-nestjs"
   ],
   "dependencies": {
-    "release-please": "^16.10.1"
+    "@eslint/js": "^9.2.0",
+    "@manypkg/cli": "^0.21.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-sonar": "^0.13.2",
+    "eslint-plugin-sonarjs": "~0.25.1",
+    "globals": "^15.1.0",
+    "npm-run-all2": "^6.1.2",
+    "oxlint": "^0.3.2",
+    "release-please": "^16.10.1",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.8.0"
   }
 }
