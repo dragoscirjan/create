@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.12](https://github.com/templ-project/create/compare/create-v1.0.11...create-v1.0.12) (2024-05-06)
+
+
+### Bug Fixes
+
+* another approach on eslint ([16b8f32](https://github.com/templ-project/create/commit/16b8f32095ef20e14ce1fcd52c642f12dc525779))
+* downgraded typescript version because of esling-plugin-sonar ([3be87f0](https://github.com/templ-project/create/commit/3be87f0cf28117d1c5e189f904d68d143cd050a4))
+* eslint still required ([4e419f7](https://github.com/templ-project/create/commit/4e419f73f18d5dcf4e687b2b8afc8acff50e2317))
+* letting eslint-plugin-sonar decide what version of tslint it requires ([3f42053](https://github.com/templ-project/create/commit/3f420533f5458c7183ae34c0c5197d7ea3a74581))
+* should fix eslint ([3539f9a](https://github.com/templ-project/create/commit/3539f9ab7b427e89e2f3e4a8a17885c81d6bd2b3))
+* should fix eslint ([9d87d68](https://github.com/templ-project/create/commit/9d87d685c6811ca7753affc1e603cb0acb3e9ca5))
+
 ## [1.0.11](https://github.com/templ-project/create/compare/create-v1.0.10...create-v1.0.11) (2024-03-31)
 
 
