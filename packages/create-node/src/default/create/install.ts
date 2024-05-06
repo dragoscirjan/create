@@ -33,8 +33,8 @@ const buildPackageList = <T extends CreateCommandOptions>({
     ...(qualityTools.includes("eslint")
       ? [
           "eslint",
-          // TODO: whether we should stop using eslint-plugin-sonar for now...
-          "eslint-plugin-sonar", // will install @typescript-eslint/* as well with version 6.2.*
+          // TODO: eslint-plugin-sonar is somewhat problematic in terms of typescript-eslint usable version
+          // "eslint-plugin-sonar",
           `eslint-plugin-sonarjs@${EslintPluginSonarjsVersion}`,
         ]
       : []),
@@ -42,8 +42,11 @@ const buildPackageList = <T extends CreateCommandOptions>({
     // @typescript-eslint/parser even for babel
     ...(qualityTools.includes("eslint")
       ? [
-          // "typescript-eslint", 
-          `typescript`,
+          // TODO: eslint-plugin-sonar is somewhat problematic in terms of typescript-eslint usable version
+          // "typescript-eslint",
+          "@typescript-eslint/parser",
+          "@typescript-eslint/eslint-plugin", // @~6.21.0
+          "typescript",
         ]
       : []),
     ...(qualityTools.includes("jscpd")

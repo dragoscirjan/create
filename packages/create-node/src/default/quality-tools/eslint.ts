@@ -17,12 +17,20 @@ export const eslintConfig = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:sonarjs/recommended",
-    "plugin:sonar/recommended",
+    // TODO: eslint-plugin-sonar is somewhat problematic in terms of typescript-eslint usable version
+    // "plugin:sonar/recommended",
     "plugin:prettier/recommended",
     "plugin:import/recommended",
     "plugin:import/warnings",
   ],
-  plugins: ["@typescript-eslint", "sonarjs", "sonar", "prettier", "import"],
+  plugins: [
+    "@typescript-eslint",
+    "sonarjs",
+    // TODO: eslint-plugin-sonar is somewhat problematic in terms of typescript-eslint usable version
+    // "sonar",
+    "prettier",
+    "import",
+  ],
   overrides: [
     {
       env: {
