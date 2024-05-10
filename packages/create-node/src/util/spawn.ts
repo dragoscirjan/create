@@ -19,8 +19,8 @@ export default async function (
       stdio: ["pipe", "pipe", "pipe"],
       ...options,
     });
-    let stdout = "";
-    let stderr = "";
+    let stdout = "",
+      stderr = "";
 
     if (!options?.stdio) {
       proc?.stdout?.on("data", (data) => {
@@ -35,11 +35,15 @@ export default async function (
     proc?.on("close", (code) => {
       if (code === 0) {
         resolve(stdout);
-      } else {
-        logger.error(`'${command.join(" ")}' exited with code ${code}.`);
-        logger.debug(`error: ${stderr}`); // TODO: ?? no reject ???
-        process.exit(1);
+        return;
       }
+      if (!options?.stdio) {
+        reject(code);
+        return;
+      }
+      logger.error(`'${command.join(" ")}' exited with code ${code}.`);
+      logger.debug(`error: ${stderr}`);
+      process.exit(1);
     });
   });
 }

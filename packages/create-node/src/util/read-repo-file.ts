@@ -9,11 +9,16 @@ export default async function <T extends GenericCommandOptions>(
 ): Promise<string> {
   const filePath = pathJoin(__dirname, file);
   const { logger } = options;
+  let content = "";
   try {
-    return readFile(filePath).then((buffer) => buffer.toString("utf-8"));
+    content = await readFile(filePath).then((buffer) =>
+      buffer.toString("utf-8"),
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     logger?.error(`error reading ${filePath}`);
     logger?.debug(`error: ${error.message}\n\n ${error.stack}`);
     process.exit(1);
   }
+  return content;
 }

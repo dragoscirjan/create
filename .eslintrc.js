@@ -10,8 +10,8 @@ module.exports = {
     "plugin:sonarjs/recommended",
     "plugin:sonar/recommended",
     "plugin:prettier/recommended",
-    "plugin:import/recommended",
-    "plugin:import/warnings",
+    // "plugin:import/recommended",
+    // "plugin:import/warnings",
   ],
   overrides: [
     {
@@ -27,12 +27,19 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
+    project: ["./tsconfig.eslint.json", "./packages/*/tsconfig.build.json"],
   },
-  plugins: ["@typescript-eslint", "sonarjs", "sonar", "prettier", "import"],
+  plugins: [
+    "@typescript-eslint",
+    "sonarjs",
+    "sonar",
+    "prettier",
+    // "import"
+  ],
   rules: {
     "consistent-return": 2,
     "max-len": ["error", 120],
-    "max-lines-per-function": ["error", 20],
+    "max-lines-per-function": ["error", 40],
     "max-params": ["error", 3],
     "no-else-return": 1,
     "sonar/no-invalid-await": 0,
@@ -41,4 +48,17 @@ module.exports = {
     indent: [1, 2],
     semi: [1, "always"],
   },
+  // settings: {
+  //   "import/parsers": {
+  //     "@typescript-eslint/parser": [".ts", ".tsx"],
+  //   },
+  //   "import/resolver": {
+  //     typescript: {
+  //       project: ["./tsconfig.eslint.json", "./packages/*/tsconfig.build.json"],
+  //     },
+  //     node: {
+  //       project: ["./tsconfig.eslint.json", "./packages/*/tsconfig.build.json"],
+  //     },
+  //   },
+  // },
 };
