@@ -1,22 +1,15 @@
-import { GenericCommandOptions } from "../types";
-import writeFile from "../util/write-file";
+import {GenericCommandOptions} from '../types';
+import writeFile from '../util/write-file';
 
-export default async function <T extends GenericCommandOptions>(
-  options: T,
-): Promise<void> {
+export default async function <T extends GenericCommandOptions>(options: T): Promise<void> {
   const createRc = {
     ...options,
   };
 
-  for (const item of [
-    "logger",
-    "projectPath",
-    "packageManager",
-    "testFramework",
-    "qualityTools",
-  ]) {
+  for (const item of ['logger', 'projectPath', 'packageManager', 'testFramework', 'qualityTools']) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     delete (createRc as any)[item];
   }
 
-  return writeFile(".createrc", createRc, options);
+  return writeFile('.createrc', createRc, options);
 }

@@ -1,12 +1,10 @@
-export default async function (
-  message = "Do you wish to continue?",
-): Promise<void> {
-  return import("inquirer")
-    .then(({ default: inquirer }) =>
+export default async function (message = 'Do you wish to continue?'): Promise<void> {
+  return import('inquirer')
+    .then(({default: inquirer}) =>
       inquirer.prompt([
         {
-          type: "confirm",
-          name: "continue",
+          type: 'confirm',
+          name: 'continue',
           message,
         },
       ]),

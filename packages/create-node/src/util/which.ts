@@ -1,19 +1,19 @@
-import { platform } from "os";
+import {platform} from 'os';
 
-import spawn from "./spawn";
+import spawn from './spawn';
 
 /** @param binary string */
 export default async function which(binary: string): Promise<string> {
-  if (platform() === "win32") {
-    return spawn(["where", binary]).then((b: string) => b!.trim());
+  if (platform() === 'win32') {
+    return spawn(['where', binary]).then((b: string) => b!.trim());
   }
-  return spawn(["which", binary]).then((b: string) => b!.trim());
+  return spawn(['which', binary]).then((b: string) => b!.trim());
 }
 
-export const whichNode = () => which("node");
-export const whichNpm = () => which("npm");
-export const whichPnpm = () => which("pnpm");
-export const whichYarn = () => which("yarn");
+export const whichNode = () => which('node');
+export const whichNpm = () => which('npm');
+export const whichPnpm = () => which('pnpm');
+export const whichYarn = () => which('yarn');
 
 // /** TODO: must rewrite using require.resolve() */
 // export async function getModulePath(moduleName: string, dir = import.meta.url.replace("file://", "")) {

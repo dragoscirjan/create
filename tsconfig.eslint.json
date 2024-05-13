@@ -1,0 +1,15 @@
+{
+  // extend your base config to share compilerOptions, etc
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // ensure that nobody can accidentally use this config for a build
+    "noEmit": true
+  },
+  "include": [
+    // whatever paths you intend to lint
+    "packages/create-node/src",
+    "packages/create-node/test",
+    "packages/create-node-nestjs/src",
+    "packages/create-node-nestjs/test"
+  ]
+}

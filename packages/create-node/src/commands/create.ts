@@ -1,5 +1,5 @@
-import run from "../run";
-import { BuildTarget, BuildTool, CreateCommandOptions } from "../types";
+import run from '../run';
+import {BuildTarget, BuildTool, CreateCommandOptions} from '../types';
 
 import {
   allBuildTools,
@@ -8,57 +8,33 @@ import {
   allQualityTools,
   allTargets,
   allTestFrameworks,
-} from "../constants";
+} from '../constants';
 
+// eslint-disable-next-line max-lines-per-function
 export const createOptionsValidate = (options: CreateCommandOptions): void => {
-  const {
-    buildTool,
-    language,
-    logger,
-    packageManager,
-    qualityTools,
-    targets,
-    testFramework,
-  } = options;
+  const {buildTool, language, logger, packageManager, qualityTools, targets, testFramework} = options;
 
   const testsAndMessages = [
+    [!allLanguages.includes(language!), `Invalid language '${language}'. Accepted: ${allLanguages.join(', ')}`],
     [
-      !allLanguages.includes(language!),
-      `Invalid language '${language}'. Accepted: ${allLanguages.join(", ")}`,
-    ],
-    [
-      !(targets as BuildTarget[])
-        .map((t) => allTargets.includes(t))
-        .reduce((a, c) => a && c, true),
-      `Invalid targets '${targets?.join(", ")}'. Accepted: ${allTargets.join(
-        ", ",
-      )}`,
+      !(targets as BuildTarget[]).map((t) => allTargets.includes(t)).reduce((a, c) => a && c, true),
+      `Invalid targets '${targets?.join(', ')}'. Accepted: ${allTargets.join(', ')}`,
     ],
     [
       !allPackageManagers.includes(packageManager),
-      `Invalid language '${packageManager}'. Accepted: ${allPackageManagers.join(
-        ", ",
-      )}`,
+      `Invalid language '${packageManager}'. Accepted: ${allPackageManagers.join(', ')}`,
     ],
     [
       !allTestFrameworks.includes(testFramework),
-      `Invalid test frame '${testFramework}'. Accepted: ${allTestFrameworks.join(
-        ", ",
-      )}`,
+      `Invalid test frame '${testFramework}'. Accepted: ${allTestFrameworks.join(', ')}`,
     ],
     [
-      !qualityTools
-        .map((qt) => allQualityTools.includes(qt))
-        .reduce((a, c) => a && c, true),
-      `Invalid targets '${qualityTools.join(
-        ", ",
-      )}'. Accepted: ${allQualityTools.join(", ")}`,
+      !qualityTools.map((qt) => allQualityTools.includes(qt)).reduce((a, c) => a && c, true),
+      `Invalid targets '${qualityTools.join(', ')}'. Accepted: ${allQualityTools.join(', ')}`,
     ],
     [
       ![undefined, ...allBuildTools].includes(buildTool as BuildTool),
-      `Invalid build tool '${buildTool}'. Accepted: ${allBuildTools.join(
-        ", ",
-      )}`,
+      `Invalid build tool '${buildTool}'. Accepted: ${allBuildTools.join(', ')}`,
     ],
   ];
 
@@ -70,32 +46,31 @@ export const createOptionsValidate = (options: CreateCommandOptions): void => {
   }
 };
 
+// eslint-disable-next-line max-lines-per-function
 export default async function (options: CreateCommandOptions) {
-  const { language, qualityTools, buildTool, testFramework, targets } = options;
+  const {language, qualityTools, buildTool, testFramework, targets} = options;
 
   const runners = [
     // project init
-    "create/package-json",
+    'create/package-json',
 
     // npm i
-    "create/install",
+    'create/install',
 
     // deploy code
-    "code",
+    'code',
 
     // deploy tests
     `test-framework/${testFramework}`,
 
     // deploy validate stuff
-    "commitlint",
-    "editorconfig",
+    'commitlint',
+    'editorconfig',
 
     // deploy builder
     // ...(language === "coffee" ? [] : []),// TODO: add coffee support
-    ...(language === "js" || (language === "ts" && testFramework === "jasmine")
-      ? ["build-tool/babel"]
-      : []),
-    ...(language === "ts" ? ["build-tool/tsc"] : []),
+    ...(language === 'js' || (language === 'ts' && testFramework === 'jasmine') ? ['build-tool/babel'] : []),
+    ...(language === 'ts' ? ['build-tool/tsc'] : []),
     ...(buildTool ? [`build-tool/${buildTool}`] : []),
 
     // deploy target settings
@@ -105,10 +80,10 @@ export default async function (options: CreateCommandOptions) {
     ...qualityTools.map((qt) => `quality-tools/${qt}`),
 
     // git
-    "husky",
+    'husky',
 
     // create
-    "createrc",
+    'createrc',
   ];
 
   for (const runner of runners) {

@@ -1,32 +1,25 @@
-import { mkdir, stat, writeFile } from "fs/promises";
-import { dirname, join as joinPath } from "path";
-import { GenericCommandOptions } from "../types";
+import {mkdir, writeFile} from 'fs/promises';
+import {dirname, join as joinPath} from 'path';
+import {GenericCommandOptions} from '../types';
 
 export default async function <T extends GenericCommandOptions>(
   file: string,
   content: string | Record<string, unknown>,
-  { projectPath, logger }: T,
+  {projectPath, logger}: T,
 ) {
   const filePath = joinPath(projectPath!, file);
 
+  logger?.debug(`making sure ${dirname(filePath)} exists...`);
   try {
-    const stats = await stat(dirname(filePath));
-    if (stats.isDirectory()) {
-      throw new Error("");
-    }
+    await mkdir(dirname(filePath), {recursive: true});
   } catch (e) {
-    await mkdir(dirname(filePath), { recursive: true });
+    throw new Error(`Unable to create folder ${dirname(filePath)}`, {cause: e});
   }
 
-  logger?.verbose(`writing ${filePath}...`);
+  logger?.debug(`writing ${filePath}...`);
   try {
-    return writeFile(
-      filePath,
-      typeof content === "string" ? content : JSON.stringify(content, null, 2),
-    );
-  } catch (error: any) {
-    logger?.error(`error writing ${filePath}`);
-    logger?.debug(`error: ${error.message}\n\n ${error.stack}`);
-    process.exit(1);
+    return writeFile(filePath, typeof content === 'string' ? content : JSON.stringify(content, null, 2));
+  } catch (e) {
+    throw new Error(`Unable to write ${filePath}`, {cause: e});
   }
 }

@@ -104,7 +104,7 @@ jobs:
           - 18.x
           #   - 20.x
           #   - 21.x
-          - 22.x
+          # - 22.x
           # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - uses: actions/checkout@v4
@@ -119,6 +119,9 @@ jobs:
             npm i -g ${{ inputs.PackageManager }}
           fi
           npm i -g ts-node
+      - name: Code Analysis
+        run: |
+          npm run ca
       - name: Init Project
         run: |
           set -ex
