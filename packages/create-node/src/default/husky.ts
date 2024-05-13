@@ -8,7 +8,7 @@ import {GenericCommandOptions} from '../types';
 export const configureCommitLint = async <T extends GenericCommandOptions>(options: T): Promise<void> => {
   const {logger} = options;
 
-  const commitLintPath = joinPath('.husky', '_', 'commit-msg');
+  const commitLintPath = joinPath('.husky', 'commit-msg');
   let commitLint = `#!/bin/sh
 . "$(dirname "$0")/_/husky.sh"`;
 
@@ -21,7 +21,7 @@ export const configureCommitLint = async <T extends GenericCommandOptions>(optio
     commitLintPath,
     `${commitLint}
 
-echo npx commitlint --edit $1`,
+npx commitlint --edit $1`,
     options,
   );
 };
@@ -29,7 +29,7 @@ echo npx commitlint --edit $1`,
 export const configurePreCommit = async <T extends GenericCommandOptions>(options: T): Promise<void> => {
   const {logger} = options;
 
-  const preCommitPath = joinPath('.husky', '_', 'pre-commit');
+  const preCommitPath = joinPath('.husky', 'pre-commit');
   let preCommit = `#!/bin/sh
 . "$(dirname "$0")/_/husky.sh"`;
 
