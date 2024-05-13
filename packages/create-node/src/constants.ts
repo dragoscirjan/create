@@ -1,44 +1,31 @@
-import {
-  BuildTarget,
-  BuildTool,
-  PackageManager,
-  ProgrammingLanguage,
-  QualityTool,
-  TestFramework,
-} from "./types";
+import {BuildTarget, BuildTool, PackageManager, ProgrammingLanguage, QualityTool, TestFramework} from './types';
 
 /*******************************************************************************
  * Program Options
  */
 
-export const allLanguages: ProgrammingLanguage[] = ["js", "ts" /*, "coffee" */];
+export const allLanguages: ProgrammingLanguage[] = ['js', 'ts' /*, "coffee" */];
 
-export const allBuildTools: BuildTool[] = [
-  "babel",
-  "esbuild",
-  "rollup",
-  "swc",
-  "tsc",
-];
+export const allBuildTools: BuildTool[] = ['babel', 'esbuild', 'rollup', 'swc', 'tsc'];
 
-export const allPackageManagers: PackageManager[] = ["npm", "pnpm", "yarn"];
+export const allPackageManagers: PackageManager[] = ['npm', 'pnpm', 'yarn'];
 
 export const allQualityTools: QualityTool[] = [
-  "eslint",
-  "oxlint",
-  "prettier",
-  "jscpd",
-  "dependency-cruiser",
-  "license-checker",
-  "audit",
+  'eslint',
+  'oxlint',
+  'prettier',
+  'jscpd',
+  'dependency-cruiser',
+  'license-checker',
+  'audit',
 ];
 
 export const allTargets: BuildTarget[] = [
-  "browser",
-  "bun",
+  'browser',
+  'bun',
   // "deno",
-  "node-cjs",
-  "node-esm",
+  'node-cjs',
+  'node-esm',
 ];
 
 export const allTestFrameworks: TestFramework[] = [
@@ -47,8 +34,8 @@ export const allTestFrameworks: TestFramework[] = [
   // "deno", // TODO: undecided whether to support or not ...
   // "mocha",
   // "jasmine",
-  "jest",
-  "vitest",
+  'jest',
+  'vitest',
 ];
 
 /*******************************************************************************
@@ -57,11 +44,10 @@ export const allTestFrameworks: TestFramework[] = [
 
 /**
  * TODO: Unable to install latest version because we still use old .eslintrc.js configuration
- * Latest eslint-plugin-sonarjs version is compatible with eslint 9.x which uses eslint.config.json, 
+ * Latest eslint-plugin-sonarjs version is compatible with eslint 9.x which uses eslint.config.json,
  * while the new config file is not supported yet by eslint-plugin-import.
  */
-export const EslintPluginSonarjsVersion = "~0.25.1";
-
+export const EslintPluginSonarjsVersion = '~0.25.1';
 
 /*******************************************************************************
  * Code Static Stuff
@@ -279,14 +265,14 @@ const build = async (file) => {
 
 export const avaConfigJs = {
   babel: {
-    extensions: ["js"],
+    extensions: ['js'],
     testOptions: {
       babelrc: true,
     },
   },
-  extensions: ["js"],
-  require: ["@babel/register"],
-  files: ["./{src,test}/**/*.{spec,test}.js"],
+  extensions: ['js'],
+  require: ['@babel/register'],
+  files: ['./{src,test}/**/*.{spec,test}.js'],
   environmentVariables: {},
 };
 
@@ -294,14 +280,14 @@ export const avaConfigTs = {
   ...avaConfigJs,
   babel: {
     ...avaConfigJs.babel,
-    extensions: ["ts"],
+    extensions: ['ts'],
   },
   extensions: {
-    ts: "module",
+    ts: 'module',
   },
-  require: ["ts-node/register"],
-  files: ["./{src,test}/**/*.{spec,test}.ts"],
-  nodeArguments: ["--import=tsimp"],
+  require: ['ts-node/register'],
+  files: ['./{src,test}/**/*.{spec,test}.ts'],
+  nodeArguments: ['--import=tsimp'],
 };
 
 export const jasmineConfigJs = /*js-*/ `require("@babel/register")({

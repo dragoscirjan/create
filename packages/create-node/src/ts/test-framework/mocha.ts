@@ -1,10 +1,10 @@
-import { mochaSpecTs, mochaTestTs } from "../../constants";
-import mocha, { mochaConfig } from "../../default/test-framework/mocha";
-import { CreateCommandOptions } from "../../types";
-import continuePrompt from "../../util/inquire-continue";
+import {mochaSpecTs, mochaTestTs} from '../../constants';
+import mocha, {mochaConfig} from '../../default/test-framework/mocha';
+import {CreateCommandOptions} from '../../types';
+import continuePrompt from '../../util/inquire-continue';
 
 export default async function (options: CreateCommandOptions) {
-  const { language, logger } = options;
+  const {language, logger} = options;
   const config = mochaConfig(language!);
 
   logger?.warn(
@@ -16,7 +16,7 @@ export default async function (options: CreateCommandOptions) {
     options,
     {
       ...config,
-      require: ["ts-node/register", ...config.require],
+      require: ['ts-node/register', ...config.require],
     },
     mochaSpecTs,
     mochaTestTs,

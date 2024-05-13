@@ -1,4 +1,4 @@
-import { BuildCommandOptions } from "../../types";
+import {BuildCommandOptions} from '../../types';
 import {
   CompilerHost,
   CompilerOptions,
@@ -9,8 +9,8 @@ import {
   Program,
   readConfigFile,
   sys,
-} from "typescript";
-import { writeEsmPackageJson } from "../../default/build/babel";
+} from 'typescript';
+import {writeEsmPackageJson} from '../../default/build/babel';
 
 export interface PartialTsConfig {
   compilerOptions?: Record<string, unknown>;
@@ -30,7 +30,7 @@ export interface CreateProgramFromConfigOptions extends PartialTsConfig {
 
 /**/
 export function createProgramFromConfig(
-  { logger, projectPath }: BuildCommandOptions,
+  {logger, projectPath}: BuildCommandOptions,
   {
     configFilePath,
     compilerOptions,
@@ -46,18 +46,12 @@ export function createProgramFromConfig(
   const readResult = readConfigFile(configFilePath!, sys.readFile);
 
   if (readResult.error) {
-    logger?.error(`Could not read tsconfig: ${readResult.error.messageText}`, [
-      readResult.error,
-    ]);
+    logger?.error(`Could not read tsconfig: ${readResult.error.messageText}`, [readResult.error]);
     process.exit(1);
   }
   const config: PartialTsConfig = readResult.config;
 
-  config.compilerOptions = Object.assign(
-    {},
-    config.compilerOptions,
-    compilerOptions,
-  );
+  config.compilerOptions = Object.assign({}, config.compilerOptions, compilerOptions);
   if (include) {
     config.include = include;
   }
@@ -74,17 +68,16 @@ export function createProgramFromConfig(
     config.references = references;
   }
 
-  const { options, fileNames, projectReferences, errors } =
-    parseJsonConfigFileContent(
-      config,
-      sys,
-      projectPath!,
-      undefined,
-      configFilePath,
-    );
+  const {options, fileNames, projectReferences, errors} = parseJsonConfigFileContent(
+    config,
+    sys,
+    projectPath!,
+    undefined,
+    configFilePath,
+  );
 
   if (errors && errors.length) {
-    logger?.error("Errors parsing config", errors);
+    logger?.error('Errors parsing config', errors);
   }
 
   const program = createProgram({
@@ -95,15 +88,15 @@ export function createProgramFromConfig(
   });
 
   // https://github.com/Microsoft/TypeScript/issues/1863
-  (program as any)[Symbol("exclude")] = config.exclude;
+  (program as any)[Symbol('exclude')] = config.exclude;
 
   return program;
 }
 /**/
 
 function treatDiagnostics(
-  { logger, projectPath }: BuildCommandOptions,
-  { noEmit }: CompilerOptions,
+  {logger, projectPath}: BuildCommandOptions,
+  {noEmit}: CompilerOptions,
   emitSkipped: boolean,
   diagnostics: Diagnostic[],
 ) {
@@ -112,10 +105,8 @@ function treatDiagnostics(
     diagnostics.forEach((d: Diagnostic) =>
       logger?.warn(
         `${
-          typeof d.messageText === "string"
-            ? d.messageText
-            : JSON.stringify(d.messageText)
-        } at ${d.file?.fileName?.replace(projectPath!, "")}:${d.start}`,
+          typeof d.messageText === 'string' ? d.messageText : JSON.stringify(d.messageText)
+        } at ${d.file?.fileName?.replace(projectPath!, '')}:${d.start}`,
       ),
     );
   }
@@ -123,9 +114,9 @@ function treatDiagnostics(
 
 /**/
 export function compile(options: BuildCommandOptions, program: Program) {
-  const { logger, projectPath } = options;
+  const {logger, projectPath} = options;
 
-  logger?.info("Compiling files...");
+  logger?.info('Compiling files...');
   const time = Date.now();
 
   const config = program.getCompilerOptions();
@@ -133,28 +124,24 @@ export function compile(options: BuildCommandOptions, program: Program) {
   config.listFiles = true;
   if (config.listFiles) {
     logger?.debug(
-      "Files to compile: " +
+      'Files to compile: ' +
         program
           .getRootFileNames()
-          .map((f) => "." + f.replace(projectPath!, ""))
-          .join(" "),
+          .map((f) => '.' + f.replace(projectPath!, ''))
+          .join(' '),
     );
   }
   // tslint:disable-next-line: prefer-const
-  const { diagnostics, emitSkipped, emittedFiles } = program.emit();
+  const {diagnostics, emitSkipped, emittedFiles} = program.emit();
 
   if (config.listEmittedFiles && emittedFiles) {
-    logger?.debug(
-      "Emitted files: " +
-        emittedFiles.map((f) => "." + f.replace(projectPath!, "")).join(" "),
-    );
+    logger?.debug('Emitted files: ' + emittedFiles.map((f) => '.' + f.replace(projectPath!, '')).join(' '));
   }
 
   // https://github.com/dsherret/ts-morph/issues/384
-  const allDiagnostics: Diagnostic[] =
-    getPreEmitDiagnostics(program).concat(diagnostics);
+  const allDiagnostics: Diagnostic[] = getPreEmitDiagnostics(program).concat(diagnostics);
   treatDiagnostics(
-    { logger, projectPath } as BuildCommandOptions,
+    {logger, projectPath} as BuildCommandOptions,
     program.getCompilerOptions(),
     emitSkipped,
     allDiagnostics,
@@ -175,18 +162,18 @@ export function compile(options: BuildCommandOptions, program: Program) {
 /**/
 
 export default async function (options: BuildCommandOptions) {
-  const { target } = options;
+  const {target} = options;
 
   const program = await createProgramFromConfig(options, {
-    configFilePath: `tsconfig.${target.replace("node-", "")}.json`,
+    configFilePath: `tsconfig.${target.replace('node-', '')}.json`,
     compilerOptions: {
-      rootDir: "src",
+      rootDir: 'src',
       outDir: `dist/${target}`,
       declaration: true,
       skipLibCheck: true,
     },
-    include: ["src/**/*"],
-    exclude: ["node_modules", "test", "dist", "**/*.spec.ts"],
+    include: ['src/**/*'],
+    exclude: ['node_modules', 'test', 'dist', '**/*.spec.ts'],
   });
 
   await compile(options, program);
