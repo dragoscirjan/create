@@ -148,7 +148,7 @@ module.exports = {
         'section of your package.json. If this module is development only - add it to the ' +
         'from.pathNot re of the not-to-dev-dep rule in the dependency-cruiser configuration',
       from: {
-        path: '^(packages)',
+        path: '^(src)',
         pathNot: '[.](?:spec|test)[.](?:js|mjs|cjs|jsx|ts|mts|cts|tsx|ls|coffee|litcoffee|coffee[.]md)$'
       },
       to: {
@@ -255,7 +255,7 @@ module.exports = {
        folder the cruise is initiated from. Useful for how (some) mono-repos
        manage dependencies & dependency definitions.
      */
-    combinedDependencies: true,
+    // combinedDependencies: false,
 
     /* if true leave symlinks untouched, otherwise use the realpath */
     // preserveSymlinks: false,
@@ -269,7 +269,7 @@ module.exports = {
        defaults to './tsconfig.json'.
      */
     tsConfig: {
-      fileName: 'tsconfig.json'
+      fileName: 'tsconfig.build.json'
     },
 
     /* Webpack configuration to use to get resolve options from.
@@ -390,4 +390,4 @@ module.exports = {
     }
   }
 };
-// generated: dependency-cruiser@16.3.2 on 2024-05-13T21:32:15.976Z
+// generated: dependency-cruiser@16.3.2 on 2024-05-15T20:05:46.590Z
