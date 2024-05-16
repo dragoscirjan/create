@@ -38,9 +38,9 @@ export default async function (options: CreateCommandOptions) {
   await updatePackageJson(options, (object) => ({
     ...object,
     exports: {
-      ...(object.exports || {}),
+      ...object.exports,
       '.': {
-        ...(object.exports?.['.'] || {}),
+        ...object.exports?.['.'],
         import: './dist/node/node-esm/index.js',
       },
     },

@@ -1,7 +1,7 @@
 import {mochaSpecJs, mochaTestJs} from '../../constants';
 import {CreateCommandOptions, ProgrammingLanguage} from '../../types';
 import writeFile from '../../util/write-file';
-import {update as updatePackageJson} from '../create/package-json';
+import {PackageJsonOptions, update as updatePackageJson} from '../create/package-json';
 import writeTestFiles from './write-test-files';
 
 export type MochaConfig = {
@@ -11,7 +11,7 @@ export type MochaConfig = {
   reporter: string;
   timeout: number;
   require: string[];
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 export const mochaConfig = (language: ProgrammingLanguage): MochaConfig => ({
@@ -36,8 +36,9 @@ export default async function (
   await updatePackageJson(options, (object) => ({
     ...object,
     scripts: {
-      ...(object as any).scripts,
-      test: `npm run test:single`,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ...(object as PackageJsonOptions).scripts,
+      test: 'npm run test:single',
       // BUILD_ENV is for babel
       'test:single': `cross-env NODE_ENV=test ${language === 'js' ? 'BUILD_ENV=node-cjs' : ''} nyc mocha --forbid-only`,
       'test:watch': 'npm run test -- --watch',

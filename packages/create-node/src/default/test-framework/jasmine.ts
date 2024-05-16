@@ -1,5 +1,5 @@
 import writeFile from '../../util/write-file';
-import {update as updatePackageJson} from '../../default/create/package-json';
+import {PackageJsonOptions, update as updatePackageJson} from '../../default/create/package-json';
 import {CreateCommandOptions, ProgrammingLanguage} from '../../types';
 
 import writeTestFiles from './write-test-files';
@@ -11,7 +11,7 @@ export type JasmineConfig = {
   helpers: string[];
   stopSpecOnExpectationFailure: boolean;
   random: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 export const jasmineConfig = (language: ProgrammingLanguage): JasmineConfig => ({
@@ -36,7 +36,7 @@ export default async function (
   await updatePackageJson(options, (object) => ({
     ...object,
     scripts: {
-      ...(object as any).scripts,
+      ...(object as PackageJsonOptions).scripts,
       test: 'cross-env NODE_ENV=test BUILD_ENV=node-cjs nyc jasmine --config=.jasmine.json',
       'test:watch': 'nodemon --exec "npm run test" --watch src --watch test --ext js',
     },

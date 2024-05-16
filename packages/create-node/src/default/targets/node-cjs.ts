@@ -9,9 +9,9 @@ export default async function (options: CreateCommandOptions) {
     ...object,
     main: 'dist/node-cjs/index.js',
     exports: {
-      ...(object.exports || {}),
+      ...object.exports,
       '.': {
-        ...(object.exports?.['.'] || {}),
+        ...object.exports?.['.'],
         require: './dist/node/node-cjs/index.js',
       },
     },

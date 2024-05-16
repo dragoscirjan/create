@@ -5,7 +5,7 @@ import {CreateCommandOptions} from '../../types';
 
 const buildPackageList = <T extends CreateCommandOptions>({qualityTools, testFramework, buildTool}: T): string[] => {
   return [
-    `typescript`,
+    'typescript',
     'ts-node',
     'tslib',
     '@types/node',

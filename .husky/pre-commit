@@ -1,7 +1,11 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run ca
+# TODO: ca:lint doesn't work properly
+# npm run ca
+npm run lint-staged
+npm run ca:quality
+npm run ca:security
 # npm run test
 npm run build
 

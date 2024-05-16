@@ -8,6 +8,7 @@ const buildPackageList = <T extends CreateCommandOptions>({
   testFramework,
   buildTool,
   targets,
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 }: T): string[] => {
   return [
     '@templ-project/create-node',
@@ -86,10 +87,10 @@ export default async function <T extends CreateCommandOptions>(options: T): Prom
     saveDev: true,
   });
 
-  return updatePackageJson(options, (packageObject: PackageJsonOptions) => ({
-    ...packageObject,
+  return updatePackageJson(options, (config: PackageJsonOptions) => ({
+    ...config,
     scripts: {
-      ...(packageObject as any).scripts,
+      ...config.scripts,
       clean: 'rimraf ./dist',
       prepare: 'husky',
       release: 'run-s release:*',

@@ -1,6 +1,6 @@
 import {CreateCommandOptions, ProgrammingLanguage} from '../../types';
 import {jestSpecJs, jestTestJs} from '../../constants';
-import {update as updatePackageJson} from '../create/package-json';
+import {PackageJsonOptions, update as updatePackageJson} from '../create/package-json';
 import writeFile from '../../util/write-file';
 import writeTestFiles from './write-test-files';
 
@@ -11,7 +11,7 @@ export type JestConfig = {
   roots: string[];
   testEnvironment: string;
   testMatch: string[];
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 export const jestConfig = (language: ProgrammingLanguage): JestConfig => ({
@@ -34,10 +34,11 @@ export default async function (
 
   config = config || jestConfig(language!);
 
-  await updatePackageJson(options, (object) => ({
+  await updatePackageJson(options, (object: PackageJsonOptions) => ({
     ...object,
     scripts: {
-      ...(object as any).scripts,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ...object.scripts,
       test: `cross-env NODE_ENV=test ${
         language === 'js' ? 'BUILD_ENV=node-cjs' : ''
       } NO_API_DOC=1 jest --coverage --runInBand --verbose`,

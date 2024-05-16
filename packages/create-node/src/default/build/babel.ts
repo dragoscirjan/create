@@ -8,25 +8,28 @@ import writeFile from '../../util/write-file';
 import mergeWith from 'lodash.mergewith';
 
 export const mergeConfigs = (...configs: Record<string, unknown>[]) => {
-  switch (configs.length) {
-    case 0:
-      return {};
-    case 1:
-      return configs[0];
-    default:
-      const config1 = configs.shift();
-      const config2 = configs.shift();
-      Object.keys(config2).forEach((key) => {
-        if (Array.isArray(config1?.[key]) && Array.isArray(config2[key])) {
-          config1[key] = [...new Set([...(config1[key] as unknown[]), ...(config2[key] as unknown[])])];
-        } else if (typeof config1[key] === 'object' && typeof config2[key] === 'object') {
-          config1[key] = mergeConfigs(config1[key] as Record<string, unknown>, config2[key] as Record<string, unknown>);
-        } else {
-          config1[key] = config2[key];
-        }
-      });
-      return mergeConfigs(config1, ...configs);
+  if (configs.length === 0) {
+    throw new Error('No config objects provided');
   }
+  if (configs.length === 1) {
+    throw new Error('Too many config objects provided; please provide two or more');
+  }
+  const config1 = configs.shift() as Record<string, unknown>;
+  const config2 = configs.shift() as Record<string, unknown>;
+
+  Object.keys(config2).forEach((key) => {
+    if (Array.isArray(config1?.[key]) && Array.isArray(config2[key])) {
+      config1[key] = [...new Set([...(config1[key] as unknown[]), ...(config2[key] as unknown[])])];
+    } else if (typeof config1[key] === 'object' && typeof config2[key] === 'object') {
+      config1[key] = mergeConfigs(config1[key] as Record<string, unknown>, config2[key] as Record<string, unknown>);
+    } else {
+      config1[key] = config2[key];
+    }
+  });
+  if (configs.length === 0) {
+    return config1;
+  }
+  return mergeConfigs(config1, ...configs);
 };
 
 /**
@@ -76,7 +79,7 @@ export async function handleCompiledFile(
   file: string,
   {logger, projectPath, target}: Pick<BuildCommandOptions, 'logger' | 'projectPath' | 'target'>,
 ): Promise<string> {
-  const distPath = file.replace(projectPath, '').replace(/^\/src/, joinPath('.', 'dist', target));
+  const distPath = file.replace(projectPath!, '').replace(/^\/src/, joinPath('.', 'dist', target));
 
   await writeFile(distPath, code, {
     logger,
@@ -111,6 +114,7 @@ export async function writeEsmPackageJson(options: BuildCommandOptions) {
   }
 }
 
+// eslint-disable-next-line max-lines-per-function
 export async function compile(options: BuildCommandOptions) {
   const {logger, projectPath, target} = options;
   let errorCount = 0;
@@ -121,17 +125,17 @@ export async function compile(options: BuildCommandOptions) {
   logger?.info('Compiling files...');
   const time = Date.now();
 
-  await globby(joinPath(projectPath, 'src', '**', '*.js'))
+  await globby(joinPath(projectPath!, 'src', '**', '*.js'))
     .then((files) => files.filter((f) => !f.endsWith('.spec.js')))
     .then(async (files) => {
       for (const file of files) {
         fileCount++;
-        logger?.debug(`Compiling .${file.replace(projectPath, '')}`);
+        logger?.debug(`Compiling .${file.replace(projectPath!, '')}`);
 
         await readFile(file, 'utf-8')
           .then((code) => transformAsync(code, babelConfig))
           .then((result) =>
-            handleCompiledFile(result?.code, file, {
+            handleCompiledFile(result?.code ?? '', file, {
               logger,
               projectPath,
               target,

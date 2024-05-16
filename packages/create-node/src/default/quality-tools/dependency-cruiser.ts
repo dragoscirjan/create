@@ -1,7 +1,7 @@
 import {stat} from 'fs/promises';
 import {join as joinPath} from 'path';
 
-import {appendRunS, update as updatePackageJson} from '../../default/create/package-json';
+import {appendRunS, PackageJsonOptions, update as updatePackageJson} from '../../default/create/package-json';
 import spawn from '../../util/spawn';
 import {CreateCommandOptions} from '../../types';
 
@@ -12,11 +12,11 @@ export default async function (options: CreateCommandOptions) {
   try {
     const stats = await stat(joinPath(projectPath!, '.dependency-cruiser.js'));
     if (stats.isFile()) {
-      logger?.debug(`.dependency-cruiser.js already exists; moving on.`);
+      logger?.debug('.dependency-cruiser.js already exists; moving on.');
       return;
     }
   } catch (error) {
-    logger?.debug(`.dependency-cruiser.js doesn't exist; creating one...`);
+    logger?.debug(".dependency-cruiser.js doesn't exist; creating one...");
   }
 
   await spawn(['./node_modules/.bin/depcruise', '--init', 'oneshot'], {
@@ -24,12 +24,12 @@ export default async function (options: CreateCommandOptions) {
     stdio: 'inherit',
   });
 
-  return updatePackageJson(options, (object) => ({
+  await updatePackageJson(options, (object: PackageJsonOptions) => ({
     ...object,
     scripts: {
-      ...(object as any).scripts,
-      ca: appendRunS((object?.scripts as any)?.ca, 'ca:quality'),
-      'ca:quality': appendRunS((object?.scripts as any)?.['ca:quality'], 'depcruise'),
+      ...object.scripts,
+      ca: appendRunS(object?.scripts?.ca, 'ca:quality'),
+      'ca:quality': appendRunS(object?.scripts?.['ca:quality'], 'depcruise'),
       depcruise: 'depcruise --config .dependency-cruiser.js src',
     },
   }));

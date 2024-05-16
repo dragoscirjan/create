@@ -1,6 +1,6 @@
 import writeFile from '../../util/write-file';
 
-import {appendRunS, update as updatePackageJson} from '../../default/create/package-json';
+import {appendRunS, PackageJsonOptions, update as updatePackageJson} from '../../default/create/package-json';
 import {CreateCommandOptions} from '../../types';
 
 export const jscpdConfig = {
@@ -19,12 +19,12 @@ export default async function (options: CreateCommandOptions, config = jscpdConf
   const stringConfig = JSON.stringify(config, null, 2);
   await writeFile('.jscpd.json', stringConfig, options);
 
-  return updatePackageJson(options, (object) => ({
+  return updatePackageJson(options, (object: PackageJsonOptions) => ({
     ...object,
     scripts: {
-      ...(object as any).scripts,
-      ca: appendRunS((object?.scripts as any)?.ca, 'ca:quality'),
-      'ca:quality': appendRunS((object?.scripts as any)?.['ca:quality'], 'jscpd'),
+      ...object.scripts,
+      ca: appendRunS(object?.scripts?.ca, 'ca:quality'),
+      'ca:quality': appendRunS(object?.scripts?.['ca:quality'], 'jscpd'),
       'jscpd:html': 'npm run jscpd -- --reporters html',
       jscpd: 'jscpd ./src --blame',
     },

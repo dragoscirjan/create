@@ -19,7 +19,7 @@ export async function readLocalSwcConfig({
   logger?.debug(`Reading local ${localPath}`);
 
   try {
-    return readFile(localPath, 'utf-8').then((content) => JSON.parse(content));
+    return await readFile(localPath, 'utf-8').then((content) => JSON.parse(content));
   } catch (e) {
     logger?.warn(`error reading local ${localPath.replace(projectPath!, '')}, moving on with empty config`, e);
   }
@@ -63,7 +63,7 @@ export async function compile(options: BuildCommandOptions) {
     .then(async (files) => {
       for (const file of files) {
         fileCount++;
-        logger?.debug(`Compiling .${file.replace(projectPath, '')}`);
+        logger?.debug(`Compiling .${file.replace(projectPath!, '')}`);
 
         await readFile(file, 'utf-8')
           .then((code) => transform(code, babelConfig))
@@ -73,11 +73,13 @@ export async function compile(options: BuildCommandOptions) {
               projectPath,
               target,
             });
-            handleCompiledFile(result?.map, `${file}.map`, {
-              logger,
-              projectPath,
-              target,
-            });
+            if (result?.map) {
+              handleCompiledFile(result?.map, `${file}.map`, {
+                logger,
+                projectPath,
+                target,
+              });
+            }
           })
           .catch((error) => {
             console.error(`${error.code}: ${error.message}`);

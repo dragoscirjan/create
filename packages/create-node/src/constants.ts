@@ -234,7 +234,7 @@ const spawnSwc = async (file, outFile) =>
 
 const build = async (file) => {
   // Calculate output path
-  const outFile = pathJoin(outputDir, relative("src", file.replace(/\.ts$/, ".js")));
+  const outFile = pathJoin(outputDir, relative("src", file.replace(/\\.ts$/, ".js")));
   const outDir = dirname(outFile);
 
   // Ensure the directory exists
@@ -363,13 +363,13 @@ test('writeHello("World") to return "Hello, World!"', (t) => {
 });
 `;
 
-export const bunSpecJs = /*js-*/ `// TODO: Implement tests for the "bun" target`;
+export const bunSpecJs = /*js-*/ '// TODO: Implement tests for the "bun" target';
 
-export const bunTestJs = /*js-*/ `// TODO: Implement tests for the "bun" target`;
+export const bunTestJs = /*js-*/ '// TODO: Implement tests for the "bun" target';
 
-export const denoSpecJs = /*js-*/ `// TODO: Implement tests for the "deno" target`;
+export const denoSpecJs = /*js-*/ '// TODO: Implement tests for the "deno" target';
 
-export const denoTestJs = /*js-*/ `// TODO: Implement tests for the "deno" target`;
+export const denoTestJs = /*js-*/ '// TODO: Implement tests for the "deno" target';
 
 export const jasmineSpecJs = /*js-*/ `import { hello } from "./index";
 

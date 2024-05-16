@@ -1,7 +1,7 @@
 import {BuildCommandOptions} from '../../types';
-import {buildBabelConfig, handleCompiledFile, handleCompiledFileAndMap, writeEsmPackageJson} from './babel';
+import {handleCompiledFileAndMap, writeEsmPackageJson} from './babel';
 import globby from 'globby';
-import {readFile, stat} from 'fs/promises';
+import {readFile} from 'fs/promises';
 import * as esbuild from 'esbuild';
 import {join as joinPath} from 'path';
 
@@ -22,6 +22,7 @@ export const esbuildTransformOptions = (options: BuildCommandOptions): esbuild.T
   };
 };
 
+// eslint-disable-next-line max-lines-per-function
 export async function compile(options: BuildCommandOptions) {
   const {logger, projectPath, target} = options;
   let errorCount = 0;
@@ -33,12 +34,13 @@ export async function compile(options: BuildCommandOptions) {
   logger?.info('Compiling files...');
   const time = Date.now();
 
-  await globby(joinPath(projectPath, 'src', '**', '*.js'))
+  await globby(joinPath(projectPath!, 'src', '**', '*.js'))
     .then((files) => files.filter((f) => !f.endsWith('.spec.js')))
+    // eslint-disable-next-line max-lines-per-function
     .then(async (files) => {
       for (const file of files) {
         fileCount++;
-        logger?.debug(`Compiling .${file.replace(projectPath, '')}`);
+        logger?.debug(`Compiling .${file.replace(projectPath!, '')}`);
 
         await readFile(file, 'utf-8')
           .then((code) =>
@@ -87,7 +89,7 @@ export async function compile(options: BuildCommandOptions) {
     logger?.warn(`Compilation done with ${warningCount} warning(s)`);
     process.exit(0);
   }
-  logger?.info(`Successfully compiled in ${Date.now() - time}ms`);
+  logger?.info(`Successfully compiled ${fileCount} files, in ${Date.now() - time}ms`);
 }
 
 export default async function (options: BuildCommandOptions) {

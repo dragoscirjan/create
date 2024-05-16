@@ -1,15 +1,15 @@
-import {appendRunS, update as updatePackageJson} from '../../default/create/package-json';
+import {appendRunS, PackageJsonOptions, update as updatePackageJson} from '../../default/create/package-json';
 import {CreateCommandOptions} from '../../types';
 
 export default async function (options: CreateCommandOptions) {
   const {logger} = options;
   logger?.info('updating package.json for license-checker tool...');
 
-  return updatePackageJson(options, (object) => ({
+  return updatePackageJson(options, (object: PackageJsonOptions) => ({
     ...object,
     scripts: {
-      ...(object as any).scripts,
-      ca: appendRunS((object?.scripts as any)?.ca, 'ca:security'),
+      ...object.scripts,
+      ca: appendRunS(object?.scripts?.ca, 'ca:security'),
       'ca:security': appendRunS(object?.scripts?.['ca:security'], 'license-check'),
       'license-check': `npx license-checker --production --json --failOn="${[
         'AGPL AGPL 1.0',

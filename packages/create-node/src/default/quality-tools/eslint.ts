@@ -1,9 +1,10 @@
+import {ESLint} from '@eslint/js';
+
+import {appendRunS, PackageJsonOptions, update as updatePackageJson} from '../../default/create/package-json';
+import {CreateCommandOptions} from '../../types';
 import writeFile from '../../util/write-file';
 
-import {appendRunS, update as updatePackageJson} from '../../default/create/package-json';
-import {CreateCommandOptions} from '../../types';
-
-export const eslintConfig = {
+export const eslintConfig: ESLint.ConfigData = {
   env: {
     browser: true,
     node: true,
@@ -69,7 +70,7 @@ export default async function (options: CreateCommandOptions, config = eslintCon
   logger?.info('updating package.json for (generic) eslint tool...');
 
   if (['ava', 'jest', 'mocha'].includes(testFramework)) {
-    config.extends.push(`plugin:${testFramework}/recommended`);
+    (config.extends as string[]).push(`plugin:${testFramework}/recommended`);
   }
 
   const stringConfig = `// .eslintrc.js
@@ -78,12 +79,12 @@ module.exports = ${JSON.stringify(config, null, 2)};`;
 
   await writeFile('.eslintrc.js', stringConfig, options);
 
-  return updatePackageJson(options, (object) => ({
+  return updatePackageJson(options, (object: PackageJsonOptions) => ({
     ...object,
     scripts: {
-      ...(object as any).scripts,
-      ca: appendRunS((object?.scripts as any)?.ca, 'ca:lint'),
-      'ca:lint': appendRunS((object?.scripts as any)?.['ca:lint'], 'lint'),
+      ...object.scripts,
+      ca: appendRunS(object?.scripts?.ca, 'ca:lint'),
+      'ca:lint': appendRunS(object?.scripts?.['ca:lint'], 'lint'),
       lint: 'run-s lint:*',
       'lint:eslint': `eslint ./{src,test}/**/*.${language} --fix`,
     },

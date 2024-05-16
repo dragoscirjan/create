@@ -1,11 +1,11 @@
 import {update as updatePackageJson} from '../create/package-json';
-import readRepoFile from '../../util/read-repo-file';
 import writeFile from '../../util/write-file';
 import {BuildTarget, CreateCommandOptions} from '../../types';
 import {getBuildableTargets} from '../targets';
 import {generateBuildCommand} from '.';
 import {Options as SwcOptions} from '@swc/core';
 
+// eslint-disable-next-line max-lines-per-function
 export function buildSwcConfig(target: BuildTarget): SwcOptions {
   let config: SwcOptions = {
     jsc: {
@@ -27,11 +27,11 @@ export function buildSwcConfig(target: BuildTarget): SwcOptions {
   };
 
   if (target.startsWith('node-')) {
-    delete config.env.targets.browsers;
+    delete config?.env?.targets?.browsers;
   }
 
   if (target === 'node-cjs') {
-    delete config.env.targets;
+    delete config?.env?.targets;
 
     config = {
       ...config,
@@ -41,7 +41,7 @@ export function buildSwcConfig(target: BuildTarget): SwcOptions {
       env: {
         ...config.env,
         targets: {
-          ...config.env.targets,
+          ...config?.env?.targets,
           node: '16',
         },
       },
@@ -57,7 +57,7 @@ export function buildSwcConfig(target: BuildTarget): SwcOptions {
       env: {
         ...config.env,
         targets: {
-          ...config.env.targets,
+          ...config?.env?.targets,
           node: '16',
         },
         mode: 'entry',
@@ -75,7 +75,7 @@ export default async function (options: CreateCommandOptions) {
   const {targets, logger, buildTool, useDefaultCommands} = options;
   logger?.verbose(`configuring (js) ${buildTool}...`);
 
-  for (const target of getBuildableTargets(targets)) {
+  for (const target of getBuildableTargets(targets!)) {
     const fileName = `swcrc.${target.replace('node-', '')}.json`;
     await writeFile(`.${fileName}`, buildSwcConfig(target) as Record<string, unknown>, options);
   }
@@ -85,7 +85,7 @@ export default async function (options: CreateCommandOptions) {
     scripts: {
       ...packageObject.scripts,
       build: 'run-s clean build:*',
-      ...getBuildableTargets(targets)
+      ...getBuildableTargets(targets!)
         .map((target: BuildTarget) => ({
           [`build:${target}`]: useDefaultCommands
             ? `swc src -d dist/${target} -s true --config-file .swcrc.${target.replace(

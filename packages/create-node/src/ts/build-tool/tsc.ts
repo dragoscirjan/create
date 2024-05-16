@@ -8,7 +8,7 @@ import {getBuildableTargets} from '../../default/targets';
 // eslint-disable-next-line max-lines-per-function
 export default async function (options: CreateCommandOptions) {
   const {testFramework, targets, logger, useDefaultCommands} = options;
-  logger?.verbose(`configuring babel...`);
+  logger?.verbose('configuring babel...');
 
   const tsConfig = await readRepoFile('../../static/tsconfig.json', options);
   let tsConfigObject = JSON.parse(tsConfig);
@@ -16,7 +16,7 @@ export default async function (options: CreateCommandOptions) {
     tsConfigObject = {
       ...tsConfigObject,
       compilerOptions: {
-        ...(tsConfigObject?.compilerOptions ?? {}),
+        ...tsConfigObject?.compilerOptions,
         types: [...(tsConfigObject?.compilerOptions?.types ?? []), testFramework],
       },
     };

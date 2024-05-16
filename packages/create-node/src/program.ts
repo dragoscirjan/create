@@ -56,7 +56,7 @@ program
   .command('build')
   .description('Build the project')
   .option('--target <target>', `Module's target: ${allTargets.join(', ')}`, 'node-cjs')
-  .option('--out-dir <outDir>', `Folder to compile to:`, './dist')
+  .option('--out-dir <outDir>', 'Folder to compile to:', './dist')
   .action(async (options: BuildCommandOptions, command: Command) => {
     const projectPath = process.cwd();
 

@@ -1,9 +1,10 @@
+import {Config} from 'prettier';
+
+import {appendRunS, PackageJsonOptions, update as updatePackageJson} from '../../default/create/package-json';
+import {CreateCommandOptions} from '../../types';
 import writeFile from '../../util/write-file';
 
-import {appendRunS, update as updatePackageJson} from '../../default/create/package-json';
-import {CreateCommandOptions} from '../../types';
-
-export const prettierConfig = {
+export const prettierConfig: Config = {
   bracketSpacing: false,
   overrides: [
     // see other parsers https://prettier.io/docs/en/options.html#parser
@@ -30,10 +31,6 @@ export const prettierConfig = {
   trailingComma: 'all',
 };
 
-/**
- * @param options {{language: 'js' | 'ts' | 'coffee', testFramework: 'ava' | 'deno' | 'mocha' | 'jasmine' | 'jest' | 'vitest', }}
- * @param config {object}
- */
 export default async function (options: CreateCommandOptions, config = prettierConfig) {
   const {language, logger} = options;
   logger?.info('updating package.json for (generic) prettier tool...');
@@ -44,12 +41,12 @@ module.exports = ${JSON.stringify(config, null, 2)};`;
 
   await writeFile('.prettierrc.js', stringConfig, options);
 
-  return updatePackageJson(options, (object) => ({
+  return updatePackageJson(options, (object: PackageJsonOptions) => ({
     ...object,
     scripts: {
-      ...(object as any).scripts,
-      ca: appendRunS((object?.scripts as any)?.ca, 'ca:lint'),
-      'ca:lint': appendRunS((object?.scripts as any)?.['ca:lint'], 'prettier'),
+      ...object.scripts,
+      ca: appendRunS(object?.scripts?.ca, 'ca:lint'),
+      'ca:lint': appendRunS(object?.scripts?.['ca:lint'], 'prettier'),
       prettier: `prettier ./{src,test*}/**/*.${language} --write`,
     },
   }));

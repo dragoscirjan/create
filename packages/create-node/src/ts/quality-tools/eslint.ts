@@ -7,11 +7,11 @@ export default async function (options: CreateCommandOptions) {
 
   return eslint(options, {
     ...eslintConfig,
-    extends: [...eslintConfig.extends, 'plugin:import/typescript'],
+    extends: [...(eslintConfig.extends ?? []), 'plugin:import/typescript'],
     rules: {
       '@typescript-eslint/object-curly-spacing': 'off',
       '@typescript-eslint/space-infix-ops': 'off',
       ...eslintConfig.rules,
     },
-  } as any);
+  } as Record<string, unknown>);
 }

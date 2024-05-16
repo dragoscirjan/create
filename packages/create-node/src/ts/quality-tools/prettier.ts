@@ -8,7 +8,7 @@ export default async function (options: CreateCommandOptions) {
   await prettier(options, {
     ...prettierConfig,
     overrides: [
-      ...(prettierConfig as any).overrides,
+      ...(prettierConfig?.overrides ?? []),
       {
         files: '*.js',
         options: {

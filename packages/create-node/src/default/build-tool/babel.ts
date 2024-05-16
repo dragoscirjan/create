@@ -118,7 +118,7 @@ export default async function (options: CreateCommandOptions) {
     );
   }
 
-  await readRepoFile(`../../static/babelrc.js`, options).then((config) => writeFile('.babelrc.js', config, options));
+  await readRepoFile('../../static/babelrc.js', options).then((config) => writeFile('.babelrc.js', config, options));
 
   return updatePackageJson(options, updatePackageJsonScripts(options));
 }

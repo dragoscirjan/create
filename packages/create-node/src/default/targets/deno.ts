@@ -8,9 +8,9 @@ export default async function (options: CreateCommandOptions) {
   return updatePackageJson(options, (object) => ({
     ...object,
     exports: {
-      ...(object.exports || {}),
+      ...object.exports,
       '.': {
-        ...(object.exports?.['.'] || {}),
+        ...object.exports?.['.'],
         deno: './dist/worker/index.js',
       },
     },

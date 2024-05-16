@@ -36,10 +36,12 @@ export async function init<T extends PackageManagerInitOptions>(options: T): Pro
   try {
     const stats = await stat(joinPath(projectPath!, 'package.json'));
     if (stats.isFile()) {
-      console.warn(`Project folder already exists.`);
+      console.warn('Project folder already exists.');
       await continuePrompt();
     }
-  } catch (e) {}
+  } catch (e) {
+    // not going to throw
+  }
 
   logger?.verbose(`creating ${projectPath}...`);
   await mkdir(projectPath!, {recursive: true});

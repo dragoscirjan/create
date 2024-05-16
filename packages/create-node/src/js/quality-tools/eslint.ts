@@ -7,5 +7,5 @@ export default async function (options) {
 
   return eslint(options, {
     ...eslintConfig,
-  } as any);
+  });
 }

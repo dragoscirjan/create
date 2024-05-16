@@ -1,6 +1,6 @@
 import writeFile from '../../util/write-file';
 
-import {update as updatePackageJson} from '../../default/create/package-json';
+import {PackageJsonOptions, update as updatePackageJson} from '../../default/create/package-json';
 import {CreateCommandOptions} from '../../types';
 import writeTestFiles from './write-test-files';
 import {vitestSpecJs, vitestTestJs} from '../../constants';
@@ -10,7 +10,7 @@ export type VitestConfig = {
     include: string[];
     reporters: string[];
   };
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 export const vitestConfig: VitestConfig = {
@@ -40,7 +40,8 @@ export default defineConfig(${JSON.stringify(config, null, 2)});`;
   await updatePackageJson(options, (object) => ({
     ...object,
     scripts: {
-      ...(object as any).scripts,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ...(object as PackageJsonOptions).scripts,
       test: 'npm run test:watch -- --run',
       'test:watch': 'cross-env NODE_ENV=test vitest',
     },

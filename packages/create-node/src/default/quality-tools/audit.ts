@@ -1,4 +1,4 @@
-import {appendRunS, update as updatePackageJson} from '../../default/create/package-json';
+import {appendRunS, PackageJsonOptions, update as updatePackageJson} from '../../default/create/package-json';
 import {CreateCommandOptions} from '../../types';
 
 /**
@@ -10,11 +10,11 @@ export default async function (options: CreateCommandOptions) {
   const {packageManager, logger} = options;
   logger?.info('updating package.json for audit tool...');
 
-  return updatePackageJson(options, (object) => ({
+  return updatePackageJson(options, (object: PackageJsonOptions) => ({
     ...object,
     scripts: {
-      ...(object as any).scripts,
-      ca: appendRunS((object?.scripts as any)?.ca, 'ca:security'),
+      ...object.scripts,
+      ca: appendRunS(object?.scripts?.ca, 'ca:security'),
       'ca:security': appendRunS(object?.scripts?.['ca:security'], 'audit-modules'),
       'audit-modules':
         packageManager === 'npm'

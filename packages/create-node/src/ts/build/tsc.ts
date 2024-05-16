@@ -29,6 +29,7 @@ export interface CreateProgramFromConfigOptions extends PartialTsConfig {
 }
 
 /**/
+// eslint-disable-next-line max-lines-per-function
 export function createProgramFromConfig(
   {logger, projectPath}: BuildCommandOptions,
   {
@@ -88,6 +89,7 @@ export function createProgramFromConfig(
   });
 
   // https://github.com/Microsoft/TypeScript/issues/1863
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (program as any)[Symbol('exclude')] = config.exclude;
 
   return program;
@@ -113,6 +115,7 @@ function treatDiagnostics(
 }
 
 /**/
+// eslint-disable-next-line max-lines-per-function
 export function compile(options: BuildCommandOptions, program: Program) {
   const {logger, projectPath} = options;
 

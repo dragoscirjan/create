@@ -21,7 +21,7 @@ export type PackageJsonOptions = {
 
 const addNycConfigToPackageJson = async (options: CreateCommandOptions): Promise<void> => {
   const {logger} = options;
-  logger?.verbose(`adding nyc config to package.json`);
+  logger?.verbose('adding nyc config to package.json');
 
   return update(options, (object: PackageJsonOptions) => ({
     ...object,
@@ -40,17 +40,17 @@ const addNycConfigToPackageJson = async (options: CreateCommandOptions): Promise
 const runProjectInit = async (options: CreateCommandOptions): Promise<void> => {
   const {logger} = options;
   if (!process.env.SKIP_NPM_INIT) {
-    logger?.verbose(`initializing project...`);
+    logger?.verbose('initializing project...');
     return import(`../util/package-manager/${options.packageManager}`).then((binary) => binary.init(options));
   }
-  logger?.debug(`project init skiped.`);
+  logger?.debug('project init skiped.');
   try {
-    logger?.verbose(`updating package.json`);
+    logger?.verbose('updating package.json');
     return await update(options, (object) => object);
   } catch (e) {
-    logger?.warn(`package.json doesn't exist`, e);
+    logger?.warn("package.json doesn't exist", e);
   }
-  logger?.verbose(`creating package.json`);
+  logger?.verbose('creating package.json');
   return await writeFile(packageJson, '{}', options);
 };
 

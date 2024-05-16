@@ -1,4 +1,4 @@
-import {mkdir, stat} from 'fs/promises';
+import {mkdir} from 'fs/promises';
 import {join as joinPath} from 'path';
 import {rimraf} from 'rimraf';
 import {CreateCommandOptions} from '../../types';
@@ -9,7 +9,7 @@ const noCode = '// no code';
 
 export default async function <T extends CreateCommandOptions>(options: T, test = noCode, spec = noCode) {
   const {language, projectPath, logger} = options;
-  logger?.verbose(`writing default test files...`);
+  logger?.verbose('writing default test files...');
 
   const codePath = joinPath(projectPath!, 'test');
   await rimraf(codePath);
