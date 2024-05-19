@@ -7,10 +7,14 @@
   "scripts": {
     "build": "rimraf ./dist && tsc -p ./tsconfig.build.json",
     "depcruise": "depcruise --config .dependency-cruiser.js src",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:watch": "npm run test -- --watch",
+    "test": "cross-env NODE_ENV=test  NO_API_DOC=1 jest --coverage --runInBand --verbose"
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.12",
+    "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2"
   }

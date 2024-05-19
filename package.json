@@ -24,11 +24,18 @@
     "lint": "run-s lint:*",
     "prettier": "prettier ./packages/create-node/src/**/*.ts --write",
     "release": "release-please",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "npm run test --workspaces --if-present"
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
-  "workspaces": ["packages/code-analysis", "packages/code-build", "packages/core", "packages/create-node", "packages/create-node-nestjs"],
+  "workspaces": [
+    "packages/code-analysis",
+    "packages/code-build",
+    "packages/core",
+    "packages/create-node",
+    "packages/create-node-nestjs"
+  ],
   "dependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
