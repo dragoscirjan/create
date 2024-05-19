@@ -6,6 +6,7 @@
     "audit-modules": "npm audit",
     "build": "rimraf ./dist; run-p build:*",
     "build:create-node": "npm run build -w @templ-project/create-node",
+    "create-node-ts": "npm run create-node-ts -w @templ-project/create-node",
     "ca:lint": "run-s prettier lint",
     "ca:quality": "run-s depcruise",
     "--ca:quality": "run-s jscpd depcruise",
@@ -27,7 +28,7 @@
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
-  "workspaces": ["packages/create-node", "packages/create-node-nestjs"],
+  "workspaces": ["packages/code-analysis", "packages/code-build", "packages/core", "packages/create-node", "packages/create-node-nestjs"],
   "dependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",

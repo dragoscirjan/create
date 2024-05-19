@@ -1,0 +1,17 @@
+{
+  "name": "@templ-project/core",
+  "version": "0.0.0",
+  "description": "Templ Project Core Stuff",
+  "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rimraf ./dist && tsc -p ./tsconfig.build.json",
+    "depcruise": "depcruise --config .dependency-cruiser.js src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2"
+  }
+}
