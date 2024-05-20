@@ -1,5 +1,5 @@
 import {spawn as cpspawn, SpawnOptions as CPSpawnOptions, ChildProcess, StdioOptions} from 'child_process';
-import {logger} from './logger';
+import {logger} from '../logger';
 
 // Type for a custom child process handler function
 export type ChildProcessHandler = (
