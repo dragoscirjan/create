@@ -22,7 +22,7 @@
     "lint:oxlint": "oxlint ./packages/create-node/src/**/*.ts --fix",
     "lint-staged": "lint-staged",
     "lint": "run-s lint:*",
-    "prettier": "prettier ./packages/create-node/src/**/*.ts --write",
+    "prettier": "npm run prettier --workspaces --if-present",
     "release": "release-please",
     "prepare": "husky",
     "test": "npm run test --workspaces --if-present"
@@ -30,9 +30,9 @@
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
   "workspaces": [
+    "packages/core",
     "packages/code-analysis",
     "packages/code-build",
-    "packages/core",
     "packages/create-node",
     "packages/create-node-nestjs"
   ],
@@ -43,6 +43,7 @@
     "@jscpd/badge-reporter": "^3.4.5",
     "@manypkg/cli": "^0.21.4",
     "commitlint": "^19.3.0",
+    "configrc": "^0.1.2",
     "dependency-cruiser": "^16.3.2",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
@@ -52,6 +53,7 @@
     "globals": "^15.1.0",
     "husky": "^9.0.11",
     "import-sort-style-module": "^6.0.0",
+    "inquire": "^0.4.8",
     "jscpd": "^3.5.10",
     "license-checker": "^25.0.1",
     "lint-staged": "^15.2.2",
@@ -72,5 +74,8 @@
       "parser": "typescript",
       "style": "module"
     }
+  },
+  "devDependencies": {
+    "@types/license-checker": "^25.0.6"
   }
 }

@@ -1,15 +1,12 @@
 import {Command} from 'commander';
 
-
 const program = new Command();
 
 program
-  .command('build')
-  .description('Build the project')
-  .option('--target <target>', `Module's target: `, 'node-cjs')
-  .option('--out-dir <outDir>', 'Folder to compile to:', './dist')
-  .action(async (options, command) => {
-    
-  });
+  .description('Run Code Analysis on the Code')
+  .option('--init', 'Initialize Code Analysis Cnfig')
+  .option('--lint-staged', 'Perform Code Quality Using `lint-staged`')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  .action(async (options: any, command: any) => {});
 
 export default program;

@@ -6,10 +6,16 @@
   "scripts": {
     "build": "rimraf ./dist && tsc -p ./tsconfig.build.json",
     "depcruise": "depcruise --config .dependency-cruiser.js src",
+    "prettier": "prettier --config ../../.prettierrc.js --write \"src/**/*.ts\"",
     "test": "echo \"Error: no test specified\""
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@templ-project/core": "^0.0.0",
+    "@types/license-checker": "^25.0.6"
+  }
 }
