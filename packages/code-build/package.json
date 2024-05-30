@@ -11,6 +11,7 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "license-checker": "^25.0.1"
+  }
 }

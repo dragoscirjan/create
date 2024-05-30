@@ -4,12 +4,39 @@
   "description": "Templ Project Core Stuff",
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js"
+    },
+    "./child-process": {
+      "types": "./dist/child-process/index.d.js",
+      "require": "./dist/child-process/index.js"
+    },
+    "./fs": {
+      "types": "./dist/fs/index.d.js",
+      "require": "./dist/fs/index.js"
+    },
+    "./inquire": {
+      "types": "./dist/inquire/index.d.js",
+      "require": "./dist/inquire/index.js"
+    },
+    "./package-json": {
+      "types": "./dist/package-json/index.d.js",
+      "require": "./dist/package-json/index.js"
+    },
+    "./package-typesmanager": {
+      "types": "./dist/package-manager/index.d.js",
+      "require": "./dist/package-manager/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "types": "./dist/index.d.js",
   "scripts": {
     "build": "rimraf ./dist && tsc -p ./tsconfig.build.json",
     "depcruise": "depcruise --config .dependency-cruiser.js src",
     "prettier": "prettier --config ../../.prettierrc.js --write \"src/**/*.ts\"",
     "test:watch": "npm run test -- --watch",
-    "test": "cross-env NODE_ENV=test  NO_API_DOC=1 jest --coverage --runInBand --verbose"
+    "test": "cross-env NODE_ENV=test NO_API_DOC=1 jest --coverage --runInBand --verbose"
   },
   "license": "MIT",
   "devDependencies": {
@@ -18,5 +45,9 @@
     "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2"
+  },
+  "dependencies": {
+    "license-checker": "^25.0.1",
+    "winston": "^3.13.0"
   }
 }

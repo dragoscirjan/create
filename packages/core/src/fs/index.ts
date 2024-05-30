@@ -1,2 +1,2 @@
-export {readFile} from './read-file';
-export {writeFile} from './write-file';
+export * from './read-file';
+export * from './write-file';

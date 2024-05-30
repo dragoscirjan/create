@@ -1,2 +1,2 @@
-export {spawn} from './spawn';
-export {which, whichNode, whichNpm, whichPnpm, whichYarn} from './which';
+export * from './spawn';
+export * from './which';

@@ -4,7 +4,7 @@
   "description": "Create Node.js Module",
   "main": "src/index.js",
   "scripts": {
-    "build": "rimraf ./dist && tsc -p ./tsconfig.build.json",
+    "--build": "rimraf ./dist && tsc -p ./tsconfig.build.json",
     "create-node-ts": "ts-node ./bin/create-node.ts",
     "depcruise": "depcruise --config .dependency-cruiser.js src",
     "prettier": "prettier --config ../../.prettierrc.js --write \"src/**/*.ts\"",
@@ -26,6 +26,7 @@
     "globby": "^11.1.0",
     "import-meta-resolve": "^4.0.0",
     "inquirer": "^9.2.17",
+    "license-checker": "^25.0.1",
     "lodash": "^4.17.21",
     "lodash.mergewith": "^4.6.2",
     "prettier": "^3.2.5",

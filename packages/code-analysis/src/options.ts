@@ -10,6 +10,7 @@ export interface FormatAndLintOptions {
 
 export type ToolDescription = {
   enabled?: boolean;
+  module: string;
   command?: string | string[];
 };
 
@@ -43,82 +44,10 @@ export type DependencyOptions = {
   };
 };
 
-export type Options = {
+export type ConfigOptions = {
+  lintStaged?: ToolDescription; // https://www.npmjs.com/package/lint-staged
   formatAndLint?: FormatAndLintOptions;
   security?: SecurityOptions;
   quality?: QualityOptions;
   dependency?: DependencyOptions;
-};
-
-// const prettierCommand = 'prettier --write';
-
-export const defaultOptions: Options = {
-  formatAndLint: {
-    // 'src/**/*.js': [prettierCommand, 'eslint --fix', 'oxlint'],
-    // 'src/**/*.ts': [prettierCommand, 'eslint --fix', 'oxlint'],
-    // 'src/**/*.md': [prettierCommand],
-  },
-  security: {
-    audit: {
-      enabled: false,
-      command: 'npm audit',
-    },
-    snyk: {
-      enabled: false,
-      command: 'snyk',
-      authToken: 'SNYK_AUTH_TOKEN',
-    },
-  },
-  quality: {
-    depcruise: {
-      enabled: false,
-      command: 'depcruise --config .dependency-cruiser.js src',
-    },
-    jscpd: {
-      enabled: false,
-      command: 'jscpd ./src --blame',
-    },
-    sonar: {
-      enabled: false,
-      command: 'sonarqube-scan',
-      host: 'SONARQUBE_HOST',
-      projectKey: 'SONARQUBE_PROJECT_KEY',
-      authToken: 'SONARQUBE_AUTH_TOKEN',
-    },
-  },
-  dependency: {
-    licenseCheck: {
-      enabled: false,
-      options: {
-        failOn: [
-          'AGPL AGPL 1.0',
-          'AGPL 3.0',
-          'CDDL or GPLv2 with exceptions',
-          'CNRI Python GPL Compatible',
-          'Eclipse 1.0',
-          'Eclipse 2.0',
-          'GPL',
-          'GPL 1.0',
-          'GPL 2.0',
-          'GPL 2.0 Autoconf',
-          'GPL 2.0 Bison',
-          'GPL 2.0 Classpath',
-          'GPL 2.0 Font',
-          'GPL 2.0 GCC',
-          'GPL 3.0',
-          'GPL 3.0 Autoconf',
-          'GPL 3.0 GCC',
-          'GPLv2 with XebiaLabs FLOSS License Exception',
-          'LGPL',
-          'LGPL 2.0',
-          'LGPL 2.1',
-          'LGPL 3.0',
-          'Suspected Eclipse 1.0',
-          'Suspected Eclipse 2.0',
-        ].join('; '),
-        production: true,
-        start: process.cwd(),
-      },
-    },
-  },
 };

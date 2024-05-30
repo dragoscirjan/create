@@ -4,8 +4,7 @@
   "description": "Create apps",
   "scripts": {
     "audit-modules": "npm audit",
-    "build": "rimraf ./dist; run-p build:*",
-    "build:create-node": "npm run build -w @templ-project/create-node",
+    "build": "rimraf ./dist; npm run build --workspaces --if-present",
     "create-node-ts": "npm run create-node-ts -w @templ-project/create-node",
     "ca:lint": "run-s prettier lint",
     "ca:quality": "run-s depcruise",

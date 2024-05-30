@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "paths": {
+      "@templ-project/core/*": ["node_modules/@templ-project/core/dist/*"]
+    }
   },
   "extends": "../../tsconfig.json",
   "include": ["src/**/*"],
