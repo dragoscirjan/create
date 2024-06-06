@@ -1,7 +1,6 @@
-import {ConfigOptions, ToolCommand, ToolDescription} from '../options';
-import Listr, {ListrContext, ListrOptions} from 'listr';
-
-import {spawn} from './spawn';
+import {ConfigOptions, ToolCommand, ToolDescription} from '../options.js';
+import Listr, {ListrContext, ListrOptions, ListrTask} from 'listr';
+import {execa} from 'execa';
 
 // eslint-disable-next-line max-lines-per-function
 export const runAll = async (config: ConfigOptions): Promise<void> => {
@@ -18,22 +17,22 @@ export const runAll = async (config: ConfigOptions): Promise<void> => {
       buildTask('Quality...', 'quality'),
       {
         title: 'Quality...',
-        skip: (ctx: ListrContext) => ctx.tools.filter((task) => task.tag === 'quality').length === 0,
+        skip: (ctx: ListrContext) => ctx.tools.filter((tool: ToolDescription) => tool.tag === 'quality').length === 0,
         task: async (ctx: ListrContext) =>
           new Listr([
             ...ctx.tools
-              .filter((task) => task.tag === 'lint')
-              .map((task) => ({
-                ...task,
+              .filter((tool: ToolDescription) => tool.tag === 'lint')
+              .map((tool: ToolDescription) => ({
+                ...tool,
                 enabled: () => true,
                 task: async (ctx: ListrContext) => new Promise((resolve) => setTimeout(resolve, Math.random() * 1000)),
-                title: task.title ?? task.command,
-              })),
+                title: tool.title ?? tool.command,
+              }) as ListrTask),
           ]),
       },
       {
         title: 'Dependency...',
-        skip: (ctx: ListrContext) => ctx.tools.filter((task) => task.tag === 'dependency').length === 0,
+        skip: (ctx: ListrContext) => ctx.tools.filter((tool: ToolDescription) => tool.tag === 'dependency').length === 0,
         task: async (ctx: ListrContext) =>
           new Listr([
             {
@@ -44,7 +43,7 @@ export const runAll = async (config: ConfigOptions): Promise<void> => {
       },
       {
         title: 'Security...',
-        skip: (ctx: ListrContext) => ctx.tools.filter((task) => task.tag === 'security').length === 0,
+        skip: (ctx: ListrContext) => ctx.tools.filter((tool: ToolDescription) => tool.tag === 'security').length === 0,
         task: async (ctx: ListrContext) =>
           new Listr([
             {
@@ -57,7 +56,9 @@ export const runAll = async (config: ConfigOptions): Promise<void> => {
     {collapse: false} as ListrOptions<ListrContext>,
   );
 
-  await tasks.run();
+  await tasks.run().then((ctx: ListrContext) => {
+    console.log(ctx)
+  });
 };
 
 export const prepareTools = async (config: ConfigOptions): Promise<ToolDescription[]> => {
@@ -67,7 +68,7 @@ export const prepareTools = async (config: ConfigOptions): Promise<ToolDescripti
     tools = [
       ...tools,
       ...Object.keys(config.lint)
-        .map((glob) => (config?.lint?.[glob] ?? []) as ToolCommand[])
+        .map((glob) => ((config?.lint?.[glob] ?? []) as string[]).map(command => `${command} ${glob}`) as ToolCommand[])
         .reduce((acc, cur) => [...acc, ...cur], [])
         .map((command) => ({command, enabled: true, tag: 'lint', title: command}) as ToolDescription),
     ];
@@ -87,18 +88,25 @@ export const prepareTools = async (config: ConfigOptions): Promise<ToolDescripti
 
 export const buildTask = (title: string, tag: string) => ({
   title,
-  skip: (ctx: ListrContext) => ctx.tools.filter((task) => task.tag === tag).length === 0,
+  skip: (ctx: ListrContext) => ctx.tools.filter((tool: ToolDescription) => tool.tag === tag).length === 0,
   task: async (ctx: ListrContext) =>
     new Listr([
       ...ctx.tools
-        .filter((tool) => tool.tag === tag)
-        .map((tool) => ({
+        .filter((tool: ToolDescription) => tool.tag === tag)
+        .map((tool: ToolDescription) => ({
           ...tool,
           enabled: () => true,
           task: async (ctx: ListrContext) => {
-            typeof tool.command === 'function' ? await tool.command(ctx) : spawn(tool.command, {cwd: process.cwd()});
+            return typeof tool.command === 'function' ? await tool.command(ctx) : new Promise((resolve, reject) => {
+              execa('npm --version').then((response) => {
+                ctx.stdout = ctx.stdout ?? [];
+                ctx.stdout = [...ctx.stdout, 'npm --version', response.stdout];
+                resolve(response)
+                console.log(response.stdout)
+              }).catch(reject);
+            });
           },
           title: tool.title ?? tool.command,
-        })),
+        }) as ListrTask),
     ]),
 });

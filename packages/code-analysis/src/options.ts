@@ -38,7 +38,7 @@ export type DependencyOptions = Partial<Record<'depcheck' | 'license', ToolDescr
 export type ToolTag = 'lint' | 'quality' | 'dependency' | 'security';
 
 export type ToolDescription = {
-  command?: ToolCommand | ToolCommand[];
+  command: ToolCommand | ToolCommand[];
   enabled?: boolean;
   options?: unknown;
   tag?: ToolTag;

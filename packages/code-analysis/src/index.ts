@@ -1,8 +1,7 @@
 import {Command} from 'commander';
-import logger from '../../create-node/dist/util/logger';
-import {ConfigOptions} from './options';
-import {loadConfig} from './util/config';
-import {runAll} from './util/run-all';
+import {ConfigOptions} from './options.js';
+import {loadConfig} from './util/config.js';
+import {runAll} from './util/run-all.js';
 
 const program = new Command();
 
@@ -30,7 +29,7 @@ program
     try {
       config = await loadConfig(options.config);
     } catch (err) {
-      logger.error(`Unable to read config file: ${err.message}`);
+      console.error(err);
       process.exit(1);
     }
     try {

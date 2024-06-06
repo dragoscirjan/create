@@ -30,6 +30,9 @@
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
   "workspaces": [
+    "packages/code-analysis"
+  ],
+  "--workspaces": [
     "packages/core",
     "packages/code-analysis",
     "packages/code-build",

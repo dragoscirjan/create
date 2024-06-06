@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   formatAndLint: {},
   security: {
     audit: {enabled: true},

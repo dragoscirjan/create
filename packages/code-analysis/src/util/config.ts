@@ -1,5 +1,5 @@
 import {cosmiconfig} from 'cosmiconfig';
-import {ConfigOptions} from '../options';
+import {ConfigOptions} from '../options.js';
 import merge from 'lodash.merge';
 
 export const defaultOptions: ConfigOptions = {
