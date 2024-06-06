@@ -2,7 +2,7 @@ import {Command} from 'commander';
 import logger from '../../create-node/dist/util/logger';
 import {ConfigOptions} from './options';
 import {loadConfig} from './util/config';
-import {runner} from './runner';
+import {runAll} from './util/run-all';
 
 const program = new Command();
 
@@ -34,10 +34,17 @@ program
       process.exit(1);
     }
     try {
-      await runner(config);
+      await runAll(config);
     } catch (err) {
-      logger.error(`Unable to run code analysis: ${err.message}`);
-      process.exit(2);
+      console.log(err);
+      // if (err instanceof SpawnError) {
+      //   logger.error(`Unable to run code analysis: ${err.message}`);
+      //   console.log(err.options.stdout);
+      //   console.log(err.options.stderr);
+      //   process.exit(err.options.code as number);
+      // }
+      // process.stdout.write(err.cause.stdout);
+      process.exit(255);
     }
   });
 

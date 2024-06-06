@@ -3,58 +3,47 @@ import {ConfigOptions} from '../options';
 import merge from 'lodash.merge';
 
 export const defaultOptions: ConfigOptions = {
-  lintStaged: {
+  useLintStaged: {
     command: 'lint-staged',
     enabled: false,
-    module: 'lint-staged',
   },
-  formatAndLint: {
-    // 'src/**/*.js': [prettierCommand, 'eslint --fix', 'oxlint'],
-    // 'src/**/*.ts': [prettierCommand, 'eslint --fix', 'oxlint'],
-    // 'src/**/*.md': [prettierCommand],
+  lint: {
+    // 'src/**/*.js': ['prettier --write', 'eslint --fix', 'oxlint'],
+    'src/**/*.ts': ['prettier --write', 'eslint --color --fix', 'oxlint'],
+    // 'src/**/*.md': ['prettier --write'],
   },
   security: {
     audit: {
       command: 'npm audit',
       enabled: false,
-      module: '',
     },
     snyk: {
-      command: 'snyk',
+      command: 'snyk --severity-threshold=high',
       enabled: false,
-      module: 'snyk',
-      authToken: 'SNYK_AUTH_TOKEN',
     },
   },
   quality: {
     depcruise: {
       command: 'depcruise --config .dependency-cruiser.js src',
       enabled: false,
-      module: 'dependency-cruiser',
     },
     jscpd: {
       command: 'jscpd ./src --blame',
       enabled: false,
-      module: 'jscpd',
     },
     sonar: {
-      command: 'sonarqube-scan',
+      command: 'sonar-scanner',
       enabled: false,
-      module: 'sonar...',
-      host: 'SONARQUBE_HOST',
-      projectKey: 'SONARQUBE_PROJECT_KEY',
-      authToken: 'SONARQUBE_AUTH_TOKEN',
     },
   },
   dependency: {
     depcheck: {
       enabled: false,
-      module: 'depcheck',
       command: 'depcheck',
     },
-    licenseCheck: {
+    license: {
       enabled: false,
-      module: 'license-checker',
+      command: 'npx license-checker --production --start .',
       options: {
         failOn: [
           'AGPL AGPL 1.0',

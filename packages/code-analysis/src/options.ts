@@ -1,53 +1,46 @@
-import {InitOpts as LicenseCheckerOptions} from 'license-checker';
+export type ConfigOptions = {
+  lint?: LintCommands;
+  useLintStaged?: ToolDescription; // https://www.npmjs.com/package/lint-staged
+  security?: SecurityOptions;
+  dependency?: DependencyOptions;
+  quality?: QualityOptions;
+};
 
 // https://www.npmjs.com/package/eslint
 // https://www.npmjs.com/package/oxlint
 // https://www.npmjs.com/package/prettier
 // https://www.npmjs.com/package/standard
-export interface FormatAndLintOptions {
-  [key: string]: string | string[];
+export interface LintCommands {
+  [glob: string]: ToolCommand | ToolCommand[];
 }
 
+export type ToolCommand = ShellCommand | FunctionCommand;
+
+export type ShellCommand = string;
+
+export type FunctionCommand = (options: unknown) => Promise<void>;
+
+// https://www.npmjs.com/package/npm-audit
+// https://www.npmjs.com/package/retire
+// https://www.npmjs.com/package/snyk
+export type SecurityOptions = Partial<Record<'audit' | 'retire' | 'snyk', ToolDescription>>;
+
+// https://www.npmjs.com/package/jscpd
+// https://www.npmjs.com/package/dependecy-cruiser
+// https://www.npmjs.com/package/sonarqube-scanner
+// https://www.npmjs.com/package/upjs-plato
+export type QualityOptions = Partial<Record<'depcruise' | 'jscpd' /*| 'plato'*/ | 'sonar', ToolDescription>>;
+
+// https://www.npmjs.com/package/depcheck
+// https://www.npmjs.com/package/license-checker
+export type DependencyOptions = Partial<Record<'depcheck' | 'license', ToolDescription>>;
+
+export type ToolTag = 'lint' | 'quality' | 'dependency' | 'security';
+
 export type ToolDescription = {
+  command?: ToolCommand | ToolCommand[];
   enabled?: boolean;
-  module: string;
-  command?: string | string[];
-};
-
-export type SecurityOptions = {
-  audit?: ToolDescription; // https://www.npmjs.com/package/npm-audit
-  retire?: ToolDescription; // https://www.npmjs.com/package/retire
-  // https://www.npmjs.com/package/snyk
-  snyk?: ToolDescription & {
-    authToken: string;
-  };
-};
-
-export type QualityOptions = {
-  jscpd?: ToolDescription; // https://www.npmjs.com/package/jscpd
-  depcruise?: ToolDescription; // https://www.npmjs.com/package/dependecy-cruiser
-  // https://www.npmjs.com/package/sonarqube-scanner
-  sonar?: ToolDescription & {
-    host: string;
-    projectKey: string;
-    authToken: string;
-  };
-  // https://www.npmjs.com/package/upjs-plato
-  // plato?: ToolDescription;
-};
-
-export type DependencyOptions = {
-  depcheck?: ToolDescription; // https://www.npmjs.com/package/depcheck
-  // https://www.npmjs.com/package/license-checker
-  licenseCheck?: Omit<ToolDescription, 'command'> & {
-    options: LicenseCheckerOptions;
-  };
-};
-
-export type ConfigOptions = {
-  lintStaged?: ToolDescription; // https://www.npmjs.com/package/lint-staged
-  formatAndLint?: FormatAndLintOptions;
-  security?: SecurityOptions;
-  quality?: QualityOptions;
-  dependency?: DependencyOptions;
+  options?: unknown;
+  tag?: ToolTag;
+  title?: string;
 };

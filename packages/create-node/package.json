@@ -26,21 +26,27 @@
     "globby": "^11.1.0",
     "import-meta-resolve": "^4.0.0",
     "inquirer": "^9.2.17",
-    "license-checker": "^25.0.1",
     "lodash": "^4.17.21",
     "lodash.mergewith": "^4.6.2",
-    "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "swc": "^1.0.11",
     "typescript": "^5.4.5",
     "winston": "^3.13.0"
   },
   "devDependencies": {
+    "@jscpd/html-reporter": "^4.0.1",
     "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8.56.10",
     "@types/inquirer": "^9.0.7",
     "@types/lodash": "^4.17.0",
     "@types/lodash.mergewith": "^4.6.9",
-    "dependency-cruiser": "^16.3.2"
+    "depcheck": "^1.4.7",
+    "dependency-cruiser": "^16.3.2",
+    "eslint": "^9.4.0",
+    "jscpd": "^4.0.4",
+    "license-checker": "^25.0.1",
+    "oxlint": "^0.4.2",
+    "prettier": "^3.3.0",
+    "snyk": "^1.1291.1"
   }
 }
