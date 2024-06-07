@@ -9,7 +9,7 @@ export const defaultOptions: ConfigOptions = {
   },
   lint: {
     // 'src/**/*.js': ['prettier --write', 'eslint --fix', 'oxlint'],
-    'src/**/*.ts': ['prettier --write', 'eslint --color --fix', 'oxlint'],
+    // 'src/**/*.ts': ['prettier --write', 'eslint --color --fix', 'oxlint --fix'],
     // 'src/**/*.md': ['prettier --write'],
   },
   security: {

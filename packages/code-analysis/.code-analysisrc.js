@@ -1,5 +1,7 @@
 export default {
-  formatAndLint: {},
+  lint: {
+    'src/**/*.ts': ['prettier --write', 'eslint --color --fix', 'oxlint --fix'],
+  },
   security: {
     audit: {enabled: true},
     snyk: {enabled: true},

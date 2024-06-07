@@ -15,49 +15,56 @@ export const runAll = async (config: ConfigOptions): Promise<void> => {
       },
       buildTask('Format and Lint...', 'lint'),
       buildTask('Quality...', 'quality'),
-      {
-        title: 'Quality...',
-        skip: (ctx: ListrContext) => ctx.tools.filter((tool: ToolDescription) => tool.tag === 'quality').length === 0,
-        task: async (ctx: ListrContext) =>
-          new Listr([
-            ...ctx.tools
-              .filter((tool: ToolDescription) => tool.tag === 'lint')
-              .map((tool: ToolDescription) => ({
-                ...tool,
-                enabled: () => true,
-                task: async (ctx: ListrContext) => new Promise((resolve) => setTimeout(resolve, Math.random() * 1000)),
-                title: tool.title ?? tool.command,
-              }) as ListrTask),
-          ]),
-      },
-      {
-        title: 'Dependency...',
-        skip: (ctx: ListrContext) => ctx.tools.filter((tool: ToolDescription) => tool.tag === 'dependency').length === 0,
-        task: async (ctx: ListrContext) =>
-          new Listr([
-            {
-              title: 'Running Dependency...',
-              task: async (ctx: ListrContext) => new Promise((resolve) => setTimeout(resolve, Math.random() * 1000)),
-            },
-          ]),
-      },
-      {
-        title: 'Security...',
-        skip: (ctx: ListrContext) => ctx.tools.filter((tool: ToolDescription) => tool.tag === 'security').length === 0,
-        task: async (ctx: ListrContext) =>
-          new Listr([
-            {
-              title: 'Running Security...',
-              task: async (ctx: ListrContext) => new Promise((resolve) => setTimeout(resolve, Math.random() * 1000)),
-            },
-          ]),
-      },
+      // {
+      //   title: 'Quality...',
+      //   skip: (ctx: ListrContext) => ctx.tools.filter((tool: ToolDescription) =>
+      //            tool.tag === 'quality').length === 0,
+      //   task: async (ctx: ListrContext) =>
+      //     new Listr([
+      //       ...ctx.tools
+      //         .filter((tool: ToolDescription) => tool.tag === 'lint')
+      //         .map(
+      //           (tool: ToolDescription) =>
+      //             ({
+      //               ...tool,
+      //               enabled: () => true,
+      //               task: async (ctx: ListrContext) =>
+      //                 new Promise((resolve) => setTimeout(resolve, Math.random() * 1000)),
+      //               title: tool.title ?? tool.command,
+      //             }) as ListrTask,
+      //         ),
+      //     ]),
+      // },
+      // {
+      //   title: 'Dependency...',
+      //   skip: (ctx: ListrContext) =>
+      //     ctx.tools.filter((tool: ToolDescription) => tool.tag === 'dependency').length === 0,
+      //   task: async (ctx: ListrContext) =>
+      //     new Listr([
+      //       {
+      //         title: 'Running Dependency...',
+      //         task: async (ctx: ListrContext) => new Promise((resolve) => setTimeout(resolve, Math.random() * 1000)),
+      //       },
+      //     ]),
+      // },
+      // {
+      //   title: 'Security...',
+      //   skip: (ctx: ListrContext) => ctx.tools.filter((tool: ToolDescription) =>
+      //        tool.tag === 'security').length === 0,
+      //   task: async (ctx: ListrContext) =>
+      //     new Listr([
+      //       {
+      //         title: 'Running Security...',
+      //         task: async (ctx: ListrContext) => new Promise((resolve) => setTimeout(resolve, Math.random() * 1000)),
+      //       },
+      //     ]),
+      // },
     ],
     {collapse: false} as ListrOptions<ListrContext>,
   );
 
   await tasks.run().then((ctx: ListrContext) => {
-    console.log(ctx)
+    console.log(ctx);
   });
 };
 
@@ -68,7 +75,9 @@ export const prepareTools = async (config: ConfigOptions): Promise<ToolDescripti
     tools = [
       ...tools,
       ...Object.keys(config.lint)
-        .map((glob) => ((config?.lint?.[glob] ?? []) as string[]).map(command => `${command} ${glob}`) as ToolCommand[])
+        .map(
+          (glob) => ((config?.lint?.[glob] ?? []) as string[]).map((command) => `${command} ${glob}`) as ToolCommand[],
+        )
         .reduce((acc, cur) => [...acc, ...cur], [])
         .map((command) => ({command, enabled: true, tag: 'lint', title: command}) as ToolDescription),
     ];
@@ -90,23 +99,31 @@ export const buildTask = (title: string, tag: string) => ({
   title,
   skip: (ctx: ListrContext) => ctx.tools.filter((tool: ToolDescription) => tool.tag === tag).length === 0,
   task: async (ctx: ListrContext) =>
-    new Listr([
-      ...ctx.tools
+    new Listr(
+      ctx.tools
         .filter((tool: ToolDescription) => tool.tag === tag)
-        .map((tool: ToolDescription) => ({
-          ...tool,
-          enabled: () => true,
-          task: async (ctx: ListrContext) => {
-            return typeof tool.command === 'function' ? await tool.command(ctx) : new Promise((resolve, reject) => {
-              execa('npm --version').then((response) => {
-                ctx.stdout = ctx.stdout ?? [];
-                ctx.stdout = [...ctx.stdout, 'npm --version', response.stdout];
-                resolve(response)
-                console.log(response.stdout)
-              }).catch(reject);
-            });
-          },
-          title: tool.title ?? tool.command,
-        }) as ListrTask),
-    ]),
+        .map(
+          (tool: ToolDescription) =>
+            ({
+              ...tool,
+              enabled: () => true,
+              task: async (ctx: ListrContext) => {
+                return typeof tool.command === 'function'
+                  ? await tool.command(ctx)
+                  : new Promise((resolve, reject) => {
+                      const [binary, ...args] = tool.command.split(' ');
+                      return execa(binary, args, {preferLocal: true})
+                        .then((response) => {
+                          ctx.stdout = ctx.stdout ?? [];
+                          ctx.stdout = [...ctx.stdout, tool.command as string, response.stdout];
+                          resolve(response);
+                          console.log(response.stdout);
+                        })
+                        .catch(reject);
+                    });
+              },
+              title: tool.title ?? tool.command,
+            }) as ListrTask,
+        ),
+    ),
 });
