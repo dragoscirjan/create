@@ -13,9 +13,9 @@
     "build": "rimraf ./dist && tsc -p ./tsconfig.build.json",
     "--build": "rimraf ./dist && tsc -p ./tsconfig.build.json && node .scripts/module.js",
     "clear-modules": "rimraf ./node_modules",
-    "depcruise": "depcruise --config .dependency-cruiser.js src",
-    "lint:eslint": "eslint ./src/**/*.ts --fix",
-    "lint:oxlint": "oxlint ./src/**/*.ts --fix",
+    "depcruise": "depcruise src",
+    "lint:eslint": "eslint --fix ./src/**/*.ts",
+    "lint:oxlint": "oxlint --fix ./src/**/*.ts",
     "lint": "run-s lint:*",
     "prettier": "prettier --config ../../.prettierrc.js --write \"src/**/*.ts\"",
     "test": "echo \"Error: no test specified\""
