@@ -14,7 +14,7 @@ export default {
       enabled: true,
     },
     sonar: {
-      enabled: true,
+      enabled: false,
     },
   },
   dependency: {

@@ -24,7 +24,7 @@ export const defaultOptions: ConfigOptions = {
   },
   quality: {
     depcruise: {
-      command: 'depcruise --config .dependency-cruiser.js src',
+      command: 'depcruise src',
       enabled: false,
     },
     jscpd: {

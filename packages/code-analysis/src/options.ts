@@ -1,6 +1,16 @@
+export type ProgramOptions = {
+  init?: boolean;
+  staged?: boolean;
+  concurrent: number;
+  config?: string;
+  quiet?: boolean;
+  verbose?: boolean;
+};
+
+// https://www.npmjs.com/package/lint-staged
 export type ConfigOptions = {
   lint?: LintCommands;
-  useLintStaged?: ToolDescription; // https://www.npmjs.com/package/lint-staged
+  useLintStaged?: ToolDescription;
   security?: SecurityOptions;
   dependency?: DependencyOptions;
   quality?: QualityOptions;

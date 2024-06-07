@@ -1,26 +1,28 @@
+import os from 'os';
 import {Command} from 'commander';
-import {ConfigOptions} from './options.js';
+import chalk from 'chalk';
+
+import {ConfigOptions, ProgramOptions} from './options.js';
 import {loadConfig} from './util/config.js';
 import {runAll} from './util/run-all.js';
 
 const program = new Command();
 
-export type ProgramOptions = {
-  init?: boolean;
-  staged?: boolean;
-  config?: string;
-  quiet?: boolean;
-  verbose?: boolean;
-};
+const defaultConcurrent: number = os.cpus().length / 2;
 
 program
   .description('Run Code Analysis on the Code')
   .option('--init', 'Initialize Code Analysis Config')
   .option('--staged', 'Perform Code Quality Using `lint-staged`')
   .option('--config [string]', 'Path to configuration file')
+  .option(
+    '-p, --concurrent [number]',
+    `the number of tasks to run concurrently, set 1 for serial (default: ${defaultConcurrent} | 0.5 * CPU cores)`,
+    `${defaultConcurrent}`,
+  )
   .option('-q, --quiet', 'Suppress all output except for warnings and errors')
   .option('-v, --verbose', 'Increase logging level')
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   .action(async (options: ProgramOptions) => {
     if (options.init) {
       return;
@@ -33,17 +35,16 @@ program
       process.exit(1);
     }
     try {
-      await runAll(config);
-    } catch (err) {
-      console.log(err);
-      // if (err instanceof SpawnError) {
-      //   logger.error(`Unable to run code analysis: ${err.message}`);
-      //   console.log(err.options.stdout);
-      //   console.log(err.options.stderr);
-      //   process.exit(err.options.code as number);
-      // }
-      // process.stdout.write(err.cause.stdout);
-      process.exit(255);
+      await runAll(config, options);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.log('');
+      console.error(chalk.red(Array.from({length: 80}, () => '-').join('')));
+      console.error(chalk.red(err.shortMessage));
+      console.error(chalk.red(Array.from({length: 80}, () => '-').join('')));
+      console.error(err.stdout);
+
+      process.exit(err.exitCode);
     }
   });
 
