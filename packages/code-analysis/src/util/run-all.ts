@@ -17,16 +17,16 @@ export const runAll = async (config: ConfigOptions, options: ProgramOptions): Pr
         },
       },
       buildTask('Format and Lint...', 'lint'),
-      // buildTask('Quality...', 'quality'),
-      // buildTask('Dependency...', 'dependency'),
-      // buildTask('Security...', 'security'),
+      buildTask('Quality...', 'quality'),
+      buildTask('Dependency...', 'dependency'),
+      buildTask('Security...', 'security'),
     ],
-    {collapse: false} as ListrOptions<ListrContext>,
+    {collapse: false, concurrent: false} as ListrOptions<ListrContext>,
   );
 
-  await tasks.run() /*.then((ctx: ListrContext) => {
+  await tasks.run().then((ctx: ListrContext) => {
     console.log(ctx);
-  })*/;
+  });
 };
 
 export const prepareTools = async (ctx: ListrContext): Promise<ToolDescription[]> => {
