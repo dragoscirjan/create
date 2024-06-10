@@ -39,7 +39,7 @@ export const defaultOptions: ConfigOptions = {
   dependency: {
     depcheck: {
       enabled: false,
-      command: 'depcheck',
+      command: 'depcheck .',
     },
     license: {
       enabled: false,

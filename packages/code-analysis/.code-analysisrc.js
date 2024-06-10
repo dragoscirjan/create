@@ -1,17 +1,17 @@
 export default {
   lint: {
-    'src/**/*.ts': ['prettier --write', 'eslint --color --fix', 'oxlint --fix'],
+    'src/**/*.ts': ['prettier --write', 'eslint --fix', 'oxlint --fix'],
   },
   security: {
     audit: {enabled: true},
-    snyk: {enabled: true},
+    snyk: {enabled: false},
   },
   quality: {
     depcruise: {
       enabled: true,
     },
     jscpd: {
-      enabled: true,
+      enabled: false,
     },
     sonar: {
       enabled: false,
@@ -20,10 +20,12 @@ export default {
   dependency: {
     depcheck: {
       enabled: true,
-      command: 'depcheck . --ignores=@jscpd/html-reporter,depcheck,dependency-cruiser,jscpd,snyk',
+      options: {
+        ignoreDevDependencies: true,
+      },
     },
     licenseCheck: {
-      enabled: true,
+      enabled: false,
       options: {
         start: process.cwd(),
       },

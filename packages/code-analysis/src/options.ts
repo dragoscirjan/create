@@ -43,7 +43,10 @@ export type QualityOptions = Partial<Record<'depcruise' | 'jscpd' /*| 'plato'*/ 
 
 // https://www.npmjs.com/package/depcheck
 // https://www.npmjs.com/package/license-checker
-export type DependencyOptions = Partial<Record<'depcheck' | 'license', ToolDescription>>;
+export type DependencyOptions = {
+  depcheck?: ToolDescription & {options?: DepcheckOptions};
+  license?: ToolDescription;
+};
 
 export type ToolTag = 'lint' | 'quality' | 'dependency' | 'security';
 
@@ -51,6 +54,9 @@ export type ToolDescription = {
   command: ToolCommand | ToolCommand[];
   enabled?: boolean;
   options?: unknown;
-  tag?: ToolTag;
   title?: string;
 };
+
+export type TaskDescription = ToolDescription & {tag: ToolTag; command: ToolCommand};
+
+export type DepcheckOptions = {ignoreDevDependencies?: boolean};

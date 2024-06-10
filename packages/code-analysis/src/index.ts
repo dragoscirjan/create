@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import {ConfigOptions, ProgramOptions} from './options.js';
 import {loadConfig} from './util/config.js';
 import {runAll} from './util/run-all.js';
+import {ExecaError} from 'execa';
 
 const program = new Command();
 
@@ -35,16 +36,19 @@ program
       process.exit(1);
     }
     try {
-      await runAll(config, options);
+      const ctx = await runAll(config, options);
+      console.log(ctx);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.log('');
-      console.error(chalk.red(Array.from({length: 80}, () => '-').join('')));
-      console.error(chalk.red(err.shortMessage));
-      console.error(chalk.red(Array.from({length: 80}, () => '-').join('')));
-      console.error(err.stdout);
+      if (err instanceof ExecaError) {
+        console.error(chalk.red(Array.from({length: 80}, () => '-').join('')));
+        console.error(chalk.red(err.shortMessage));
+        console.error(chalk.red(Array.from({length: 80}, () => '-').join('')));
+        console.error(err.stdout);
 
-      process.exit(err.exitCode);
+        process.exit(err.exitCode);
+      }
+      console.error(err);
     }
   });
 
