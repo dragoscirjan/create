@@ -27,10 +27,10 @@ export const runAll = async (config: ConfigOptions, options: ProgramOptions): Pr
           ctx.errors = [];
         },
       },
-      toolCollectionToMasterTask('Format and Lint...', 'lint'),
-      toolCollectionToMasterTask('Quality...', 'quality'),
-      toolCollectionToMasterTask('Dependency...', 'dependency'),
-      toolCollectionToMasterTask('Security...', 'security'),
+      prepareTaskByTag('Format and Lint...', 'lint'),
+      prepareTaskByTag('Quality...', 'quality'),
+      prepareTaskByTag('Dependency...', 'dependency'),
+      prepareTaskByTag('Security...', 'security'),
     ],
     {collapse: false, concurrent: false, exitOnError: true} as ListrOptions<ListrContext>,
   );
@@ -106,40 +106,44 @@ const enrichCommandWithOptions = async (tool: ToolDescription): Promise<ToolComm
     command = `${command} --ignore=${Object.keys(packageJsonOptions?.devDependencies ?? {}).join(',')}`;
   }
 
-  if (command.includes('eslint')) {
+  if (command.includes('eslint') && !command.includes('--color')) {
     command = `${command} --color`;
   }
 
   return command as ToolCommand;
 };
 
-export const toolCollectionToMasterTask = (title: string, tag: string) => ({
-  title,
+export const prepareTaskByTag = (title: string, tag: string) => ({
   skip: (ctx: ListrContext) => ctx.tasks.filter((task: TaskDescription) => task.tag === tag).length === 0,
-  task: async (ctx: ListrContext) =>
-    new Listr(ctx.tasks.filter((task: TaskDescription) => task.tag === tag).map(taskDescriptionToListrTask), {
+  task: async (ctx: ListrContext) => {
+    const tasks = ctx.tasks.filter((task: TaskDescription) => task.tag === tag).map(prepareSubtask);
+    
+    return new Listr(tasks, {
       concurrent: ctx.options.concurrent,
-      exitOnError: true,
-    }),
+      // exitOnError: true,
+    });
+  },
+  title,
 });
 
-export const taskDescriptionToListrTask = (tool: ToolDescription): ListrTask =>
+export const prepareSubtask = (task: TaskDescription): ListrTask =>
   ({
-    ...tool,
+    ...task,
     enabled: () => true,
-    task: async (ctx: ListrContext) => {
-      return typeof tool.command === 'function'
-        ? await tool.command(ctx)
+    task: async (ctx: ListrContext) =>
+      typeof task.command === 'function'
+        ? task.command
         : async (ctx: ListrContext) =>
             new Promise((resolve) => {
-              const [binary, ...args] = (tool.command as string).split(' ');
+              console.log(`Running ${task.command}`);
+              const [binary, ...args] = (task.command as string).split(' ');
               return execa(binary, args, {preferLocal: true}).then((response: Result) => {
-                ctx.results[tool.title as string] = response;
+                console.log(response);
+                ctx.results[task.title as string] = response;
                 resolve(response);
               });
-            });
-    },
-    title: taskTitle(tool.title ?? (tool.command as string)),
+            }),
+    title: taskTitle(task.title ?? (task.command as string)),
   }) as ListrTask;
 
 const taskTitle = (command: ToolCommand): string => {
