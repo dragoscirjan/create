@@ -1,4 +1,7 @@
 import {cosmiconfig} from 'cosmiconfig';
+import merge from 'lodash.merge';
+import {ListrContext} from 'listr';
+
 import {
   CAConfigDepcheckOptions,
   CAConfigLintOptions,
@@ -7,11 +10,9 @@ import {
   CATaskDescription,
   CAToolCommand,
   CAToolOptions,
-} from '../options.js';
-import merge from 'lodash.merge';
-import {ListrContext} from 'listr';
-import {normalize} from './normalize-path.js';
-import {packageJson} from './package-json.js';
+} from '../options.ts';
+import {normalize} from './normalize-path.ts';
+import {packageJson} from './package-json.ts';
 
 // eslint-disable-next-line max-lines-per-function
 export const convertConfigToCaTasks = async (ctx: ListrContext): Promise<CATaskDescription[]> => {
@@ -106,7 +107,7 @@ export const defaultOptions: CAConfigOptions = {
     enabled: false,
   },
   lint: {
-    // 'src/**/*.js': ['prettier --write', 'eslint --fix', 'oxlint'],
+    // 'src/**/*.ts': ['prettier --write', 'eslint --fix', 'oxlint'],
     // 'src/**/*.ts': ['prettier --write', 'eslint --color --fix', 'oxlint --fix'],
     // 'src/**/*.md': ['prettier --write'],
   },

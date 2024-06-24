@@ -25,10 +25,14 @@
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
-  "workspaces": ["packages/code-analysis", "packages/eslint-config", "packages/tslint-config"],
+  "workspaces": [
+    "packages/eslint-config",
+    "packages/eslint-config-ts",
+    "packages/prettier-config",
+    "packages/code-analysis"
+  ],
   "--workspaces": [
     "packages/core",
-    "packages/code-analysis",
     "packages/code-build",
     "packages/create-node",
     "packages/create-node-nestjs"
@@ -43,15 +47,12 @@
     "dependency-cruiser": "^16.3.2",
     "globals": "^15.1.0",
     "husky": "^9.0.11",
-    "import-sort-style-module": "^6.0.0",
     "inquire": "^0.4.8",
     "jscpd": "^4.0.4",
     "license-checker": "^25.0.1",
     "lint-staged": "^15.2.2",
     "npm-run-all2": "^6.1.2",
     "oxlint": "^0.4.2",
-    "prettier": "^3.3.0",
-    "prettier-plugin-import-sort": "^0.0.7",
     "release-please": "^16.10.1",
     "typescript": "^5.4.5"
   },

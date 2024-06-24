@@ -1,3 +1,6 @@
+import Listr, {ListrOptions, ListrTask} from 'listr';
+import {execa, Result} from 'execa';
+
 import {
   CAConfigOptions,
   CAListrContext,
@@ -5,10 +8,8 @@ import {
   CAToolCommand,
   FunctionCommand,
   ProgramOptions,
-} from '../options.js';
-import Listr, {ListrOptions, ListrTask} from 'listr';
-import {execa, Result} from 'execa';
-import {convertConfigToCaTasks} from './config.js';
+} from '../options.ts';
+import {convertConfigToCaTasks} from './config.ts';
 
 // eslint-disable-next-line max-lines-per-function
 export const runAll = async (config: CAConfigOptions, options: ProgramOptions): Promise<void> => {
@@ -42,7 +43,7 @@ export const prepareTaskByTag = (title: string, tag: string) => ({
     const tasks = ctx.tasks.filter((task: CATaskDescription) => task.tag === tag).map(prepareSubtask);
 
     return new Listr(tasks, {
-      concurrent: parseInt(ctx.options.concurrent),
+      concurrent: parseInt(ctx.options.concurrent, 10),
       exitOnError: true,
     });
   },
@@ -73,18 +74,19 @@ export const prepareListrTaskFromCommand = (task: CATaskDescription) => async (c
   return typeof command === 'function'
     ? (command as FunctionCommand)
     : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new Promise<any>((resolve, reject) => {
-      const [binary, ...args] = (command as string).split(' ');
-      return execa(binary, args, {preferLocal: true})
-        .then((response: Result) => {
-          ctx.results[title as string] = response;
-          resolve(response);
-        })
-        .catch((err) => {
-          ctx.errors.push(err);
-          reject(err);
-        });
-    });
+      new Promise<any>((resolve, reject) => {
+        const [binary, ...args] = (command as string).split(' ');
+
+        execa(binary, args, {preferLocal: true})
+          .then((response: Result) => {
+            ctx.results[title as string] = response;
+            resolve(response);
+          })
+          .catch((err) => {
+            ctx.errors.push(err);
+            reject(err);
+          });
+      });
 };
 
 const taskTitle = (command: CAToolCommand): string => {

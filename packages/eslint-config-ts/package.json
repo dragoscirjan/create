@@ -1,5 +1,5 @@
 {
-  "name": "@templ-project/tslint-config",
+  "name": "@templ-project/eslint-config-ts",
   "version": "0.0.1",
   "description": "Templ Project ESLint Config for TypeScript",
   "main": "index.js",
@@ -12,14 +12,17 @@
     "lint:eslint": "eslint --fix .",
     "lint:oxlint": "oxlint --fix .",
     "lint": "run-s lint:*",
-    "prettier": "prettier --config ../../.prettierrc.js --write \"src/**/*.ts\""
+    "prettier": "prettier --write \"*.{js,ts}\""
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@templ-project/eslint-config": "^0.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.57.0",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
     "@typescript-eslint/typescript-estree": "^5.57.0"
+  },
+  "devDependencies": {
+    "@templ-project/prettier-config": "^0.0.1"
   }
 }

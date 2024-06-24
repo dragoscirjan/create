@@ -17,7 +17,7 @@
     "lint:eslint": "eslint --fix ./src/**/*.ts",
     "lint:oxlint": "oxlint --fix ./src/**/*.ts",
     "lint": "run-s lint:*",
-    "prettier": "prettier --config ../../.prettierrc.js --write \"src/**/*.ts\"",
+    "prettier": "prettier --write \"./**/*.{js,ts}\"",
     "test": "echo \"Error: no test specified\""
   },
   "author": "",
@@ -32,7 +32,8 @@
   },
   "devDependencies": {
     "@jscpd/html-reporter": "^4.0.1",
-    "@templ-project/tslint-config": "^0.0.1",
+    "@templ-project/eslint-config-ts": "^0.0.1",
+    "@templ-project/prettier-config": "^0.0.1",
     "@tsconfig/node18": "^18.2.4",
     "@types/execa": "^2.0.0",
     "@types/listr": "^0.14.9",
@@ -43,7 +44,7 @@
     "dependency-cruiser": "^16.3.2",
     "jscpd": "^4.0.4",
     "oxlint": "^0.4.2",
-    "prettier": "^3.3.0",
+    "prettier": "^3.3.2",
     "rimraf": "^5.0.7",
     "snyk": "^1.1291.1",
     "typescript": "^5.4.5"

@@ -7,9 +7,10 @@
   },
   "include": [
     // whatever paths you intend to lint
-    "packages/create-node/src",
-    "packages/create-node/test",
-    "packages/create-node-nestjs/src",
-    "packages/create-node-nestjs/test"
+    "packages/eslint-config",
+    "packages/eslint-config-ts",
+    "packages/prettier-config",
+    "packages/**/src",
+    "packages/**/test"
   ]
 }

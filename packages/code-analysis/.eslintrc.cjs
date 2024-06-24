@@ -4,8 +4,9 @@ module.exports = {
     commonjs: true,
     es2022: true,
   },
-  extends: ['@templ-project/tslint-config'],
+  extends: ['@templ-project/eslint-config-ts'],
   parserOptions: {
     project: './tsconfig.build.json',
-  },
+    sourceType: "module",
+  }
 };

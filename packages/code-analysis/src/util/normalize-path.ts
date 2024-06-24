@@ -14,6 +14,7 @@
  * Released under the MIT License.
  */
 
+// eslint-disable-next-line import/prefer-default-export
 export const normalize = (path: string, stripTrailing = false): string => {
   if (typeof path !== 'string') {
     throw new TypeError('expected path to be a string');
@@ -40,9 +41,9 @@ export const normalize = (path: string, stripTrailing = false): string => {
     }
   }
 
-  const segs = path.split(/[/\\]+/);
-  if (stripTrailing !== false && segs[segs.length - 1] === '') {
-    segs.pop();
+  const segments = path.split(/[/\\]+/);
+  if (stripTrailing !== false && segments[segments.length - 1] === '') {
+    segments.pop();
   }
-  return prefix + segs.join('/');
+  return prefix + segments.join('/');
 };

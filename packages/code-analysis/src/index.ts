@@ -2,10 +2,10 @@ import os from 'os';
 import {Command} from 'commander';
 import chalk from 'chalk';
 
-import {CAConfigOptions, CAListrContext, ProgramOptions} from './options.js';
-import {loadConfig} from './util/config.js';
-import {runAll} from './util/run-all.js';
 import {ExecaError, Result} from 'execa';
+import {CAConfigOptions, CAListrContext, ProgramOptions} from './options.ts';
+import {loadConfig} from './util/config.ts';
+import {runAll} from './util/run-all.ts';
 
 const program = new Command();
 const markLine = Array.from({length: 80}, () => '-').join('');

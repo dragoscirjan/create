@@ -7,10 +7,11 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:sonarjs/recommended',
-    'prettier',
     'plugin:import/recommended',
     'plugin:import/warnings',
+    'eslint-config-airbnb-base', // TODO: decide whether to use or not
+    'plugin:sonarjs/recommended',
+    'prettier',
   ],
   parser: '@babel/eslint-parser',
   parserOptions: {
@@ -30,5 +31,10 @@ module.exports = {
     curly: ['error', 'all'],
     indent: [1, 2],
     semi: [1, 'always'],
+    'no-use-before-define': 0,
+    'no-restricted-syntax': ['warn'],
+    'no-await-in-loop': 'warn',
+    'no-return-await': 'warn',
+    'no-param-reassign': 'warn',
   },
 };

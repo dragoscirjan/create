@@ -36,7 +36,7 @@ export type CAConfigSecurityOptions = Partial<Record<'audit' | 'retire' | 'snyk'
 // https://www.npmjs.com/package/dependecy-cruiser
 // https://www.npmjs.com/package/sonarqube-scanner
 // https://www.npmjs.com/package/upjs-plato
-export type CAConfigQualityOptions = Partial<Record<'depcruise' | 'jscpd' /*| 'plato'*/ | 'sonar', CAToolOptions>>;
+export type CAConfigQualityOptions = Partial<Record<'depcruise' | 'jscpd' /* | 'plato' */ | 'sonar', CAToolOptions>>;
 
 // https://www.npmjs.com/package/depcheck
 // https://www.npmjs.com/package/license-checker

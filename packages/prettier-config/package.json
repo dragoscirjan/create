@@ -1,0 +1,34 @@
+{
+  "name": "@templ-project/prettier-config",
+  "version": "0.0.1",
+  "description": "Templ Project Prettier Config",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "clear-modules": "rimraf ./node_modules",
+    "--lint:eslint": "eslint --fix .",
+    "lint:oxlint": "oxlint --fix .",
+    "lint": "run-s lint:*",
+    "prettier": "prettier --write \"./*.{js,ts}\""
+  },
+  "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "import-sort-style-module": "^6.0.0",
+    "prettier": "^3.3.2",
+    "prettier-plugin-import-sort": "^0.0.7"
+  },
+  "importSort": {
+    ".js, .jsx": {
+      "parser": "babylon",
+      "style": "module"
+    },
+    ".ts, .tsx": {
+      "parser": "typescript",
+      "style": "module"
+    }
+  }
+}
