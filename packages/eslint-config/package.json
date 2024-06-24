@@ -1,0 +1,29 @@
+{
+  "name": "@templ-project/eslint-config",
+  "version": "0.0.1",
+  "description": "Templ Project ESLint Config for ES6+",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "clear-modules": "rimraf ./node_modules",
+    "lint:eslint": "eslint --fix .",
+    "lint:oxlint": "oxlint --fix .",
+    "lint": "run-s lint:*",
+    "prettier": "prettier --config ../../.prettierrc.js --write \"src/**/*.ts\""
+  },
+  "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
+  "license": "MIT",
+  "eslint": "^7.32.0",
+  "dependencies": {
+    "@babel/eslint-parser": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-sonarjs": "^0.25.1"
+  }
+}

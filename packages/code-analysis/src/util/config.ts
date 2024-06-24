@@ -1,8 +1,106 @@
 import {cosmiconfig} from 'cosmiconfig';
-import {ConfigOptions} from '../options.js';
+import {
+  CAConfigDepcheckOptions,
+  CAConfigLintOptions,
+  CAConfigOptions,
+  CAConfigToolTag,
+  CATaskDescription,
+  CAToolCommand,
+  CAToolOptions,
+} from '../options.js';
 import merge from 'lodash.merge';
+import {ListrContext} from 'listr';
+import {normalize} from './normalize-path.js';
+import {packageJson} from './package-json.js';
 
-export const defaultOptions: ConfigOptions = {
+// eslint-disable-next-line max-lines-per-function
+export const convertConfigToCaTasks = async (ctx: ListrContext): Promise<CATaskDescription[]> => {
+  // await new Promise((resolve) => setTimeout(resolve, 10000));
+  let tasks: CATaskDescription[] = [];
+  const {config} = ctx;
+
+  // convert lint commands to tasks
+  if (config.lint && !config.useLintStaged?.enabled) {
+    tasks = [
+      ...tasks,
+      ...Object.entries(config.lint as CAConfigLintOptions)
+        .map(([glob, commands]) => [glob, Array.isArray(commands) ? commands : [commands]] as [string, string[]])
+        // each glob can contain multiple commands that needs task conversion
+        // and then reducing the array of arrays into a single array
+        .map(([glob, commands]) => commands.map((command) => enrichCommandWithGlob(command, glob)) as string[])
+        .reduce((acc, cur) => [...acc, ...cur], [])
+        .map(
+          (command: CAToolCommand) =>
+            ({
+              command,
+              enabled: true,
+              tag: 'lint',
+              title: command,
+            }) as CATaskDescription,
+        ),
+    ];
+  }
+
+  // convert the other options into tasks
+  for (const tag of ['quality', 'dependency', 'security'] as CAConfigToolTag[]) {
+    tasks = [
+      ...tasks,
+      ...(Object.values(config?.[tag] ?? {}) as CAToolOptions[])
+        .filter((tool: CAToolOptions) => tool.enabled)
+        // each tool can contain multiple tools that needs task conversion
+        // and then reducing the array of arrays into a single array
+        .map(({command, ...tool}: CAToolOptions) =>
+          (Array.isArray(command) ? command : [command]).map((c) => ({...tool, command: c, tag}) as CATaskDescription),
+        )
+        .reduce((acc, cur) => [...acc, ...cur], []),
+    ];
+  }
+
+  // enrich the commands with options
+  for (const task of tasks) {
+    task.command = await enrichCommandWithOptions(task);
+  }
+
+  return tasks;
+};
+
+const enrichCommandWithGlob = (command: string, glob: string): string => {
+  if (typeof command !== 'string') {
+    throw new TypeError('expected command to be a string');
+  }
+  return `${command} ${normalize(glob)}`;
+};
+
+const enrichCommandWithOptions = async (tool: CAToolOptions): Promise<CAToolCommand> => {
+  let {command} = tool;
+  const {options} = tool;
+
+  if (typeof command !== 'string') {
+    return command as CAToolCommand;
+  }
+
+  if (command.includes('depcheck') && (options as CAConfigDepcheckOptions)?.ignoreDevDependencies) {
+    const packageJsonOptions = await packageJson();
+    command = `${command} --ignores=${Object.keys(packageJsonOptions?.devDependencies ?? {}).join(',')}`;
+  }
+
+  if (command.includes('eslint') && !command.includes('--color')) {
+    command = `${command} --color`;
+  }
+
+  return command as CAToolCommand;
+};
+
+export const loadConfig = async (configPath?: string): Promise<CAConfigOptions> => {
+  const explorer = cosmiconfig('code-analysis');
+  return await (configPath ? explorer.load(configPath) : explorer.search()).then((result) =>
+    normalizeConfig(result?.config ?? defaultOptions),
+  );
+};
+
+const normalizeConfig = (config: CAConfigOptions): CAConfigOptions => merge(defaultOptions, config);
+
+export const defaultOptions: CAConfigOptions = {
   useLintStaged: {
     command: 'lint-staged',
     enabled: false,
@@ -76,13 +174,4 @@ export const defaultOptions: ConfigOptions = {
       },
     },
   },
-};
-
-export const normalizeConfigOptions = (config: ConfigOptions): ConfigOptions => merge(defaultOptions, config);
-
-export const loadConfig = async (configPath?: string): Promise<ConfigOptions> => {
-  const explorer = cosmiconfig('code-analysis');
-  return await (configPath ? explorer.load(configPath) : explorer.search()).then((result) =>
-    normalizeConfigOptions(result?.config ?? defaultOptions),
-  );
 };

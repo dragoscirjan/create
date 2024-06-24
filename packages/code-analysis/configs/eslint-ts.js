@@ -10,7 +10,7 @@ module.exports = {
     'plugin:sonarjs/recommended',
     'plugin:sonar/recommended',
     'plugin:prettier/recommended',
-    // "plugin:import/recommended",
+    'plugin:import/recommended',
     // "plugin:import/warnings",
   ],
   overrides: [

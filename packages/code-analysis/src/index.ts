@@ -2,12 +2,13 @@ import os from 'os';
 import {Command} from 'commander';
 import chalk from 'chalk';
 
-import {ConfigOptions, ProgramOptions} from './options.js';
+import {CAConfigOptions, CAListrContext, ProgramOptions} from './options.js';
 import {loadConfig} from './util/config.js';
 import {runAll} from './util/run-all.js';
-import {ExecaError} from 'execa';
+import {ExecaError, Result} from 'execa';
 
 const program = new Command();
+const markLine = Array.from({length: 80}, () => '-').join('');
 
 const defaultConcurrent: number = os.cpus().length / 2;
 
@@ -28,7 +29,7 @@ program
     if (options.init) {
       return;
     }
-    let config: ConfigOptions;
+    let config: CAConfigOptions;
     try {
       config = await loadConfig(options.config);
     } catch (err) {
@@ -37,17 +38,24 @@ program
     }
     try {
       const ctx = await runAll(config, options);
-      console.log(ctx);
+      Object.entries((ctx as CAListrContext).results ?? {}).forEach(([command, result]) => {
+        console.log(markLine);
+        console.log(command);
+        console.log(markLine);
+        console.log((result as Result).stdout);
+      });
+      // console.log(ctx);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if (err instanceof ExecaError) {
-        console.error(chalk.red(Array.from({length: 80}, () => '-').join('')));
+        console.error(chalk.red(markLine));
         console.error(chalk.red(err.shortMessage));
-        console.error(chalk.red(Array.from({length: 80}, () => '-').join('')));
+        console.error(chalk.red(markLine));
         console.error(err.stdout);
 
         process.exit(err.exitCode);
       }
+
       console.error(err);
     }
   });
