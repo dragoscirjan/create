@@ -20,7 +20,8 @@
     "@templ-project/eslint-config": "^0.0.1",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
-    "@typescript-eslint/typescript-estree": "^5.57.0"
+    "@typescript-eslint/typescript-estree": "^5.57.0",
+    "eslint-import-resolver-typescript": "^3.6.1"
   },
   "devDependencies": {
     "@templ-project/prettier-config": "^0.0.1"

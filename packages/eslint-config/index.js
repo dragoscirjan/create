@@ -7,7 +7,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:import/recommended',
+    'plugin:import/errors',
     'plugin:import/warnings',
     'eslint-config-airbnb-base', // TODO: decide whether to use or not
     'plugin:sonarjs/recommended',

@@ -1,5 +1,5 @@
-import {join as pathJoin} from 'path';
-import {readFile} from 'fs/promises';
+import { join as pathJoin } from "path";
+import { readFile } from "fs/promises";
 
 export type PackageJsonOptions = {
   dependencies?: Record<string, string>;
@@ -15,7 +15,9 @@ export type PackageJsonOptions = {
 };
 
 export const packageJson = async (): Promise<PackageJsonOptions> => {
-  const packageJsonBuffer = await readFile(pathJoin(process.cwd(), 'package.json'));
+  const packageJsonBuffer = await readFile(
+    pathJoin(process.cwd(), "package.json"),
+  );
 
   return JSON.parse(packageJsonBuffer.toString());
 };

@@ -1,0 +1,14 @@
+{
+  "extends": "@tsconfig/bun/tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+
+    // Best practices
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false,
+
+    // Best practices
+    "removeComments": true
+  }
+}

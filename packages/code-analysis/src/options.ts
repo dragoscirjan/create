@@ -1,5 +1,5 @@
-import {Result} from 'execa';
-import {ListrContext, ListrTaskResult, ListrTaskWrapper} from 'listr';
+import { Result } from "execa";
+import { ListrContext, ListrTaskResult, ListrTaskWrapper } from "listr";
 
 export type ProgramOptions = {
   init?: boolean;
@@ -30,18 +30,22 @@ export interface CAConfigLintOptions {
 // https://www.npmjs.com/package/npm-audit
 // https://www.npmjs.com/package/retire
 // https://www.npmjs.com/package/snyk
-export type CAConfigSecurityOptions = Partial<Record<'audit' | 'retire' | 'snyk', CAToolOptions>>;
+export type CAConfigSecurityOptions = Partial<
+  Record<"audit" | "retire" | "snyk", CAToolOptions>
+>;
 
 // https://www.npmjs.com/package/jscpd
 // https://www.npmjs.com/package/dependecy-cruiser
 // https://www.npmjs.com/package/sonarqube-scanner
 // https://www.npmjs.com/package/upjs-plato
-export type CAConfigQualityOptions = Partial<Record<'depcruise' | 'jscpd' /* | 'plato' */ | 'sonar', CAToolOptions>>;
+export type CAConfigQualityOptions = Partial<
+  Record<"depcruise" | "jscpd" /* | 'plato' */ | "sonar", CAToolOptions>
+>;
 
 // https://www.npmjs.com/package/depcheck
 // https://www.npmjs.com/package/license-checker
 export type CAConfigDependencyOptions = {
-  depcheck?: CAToolOptions & {options?: CAConfigDepcheckOptions};
+  depcheck?: CAToolOptions & { options?: CAConfigDepcheckOptions };
   license?: CAToolOptions;
 };
 
@@ -51,9 +55,9 @@ export type CATaskDescription = {
   title: string;
 };
 
-export type CAConfigDepcheckOptions = {ignoreDevDependencies?: boolean};
+export type CAConfigDepcheckOptions = { ignoreDevDependencies?: boolean };
 
-export type CAConfigToolTag = 'lint' | 'quality' | 'dependency' | 'security';
+export type CAConfigToolTag = "lint" | "quality" | "dependency" | "security";
 
 export type CAToolOptions = {
   command: CAToolCommand | CAToolCommand[];

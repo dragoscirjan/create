@@ -16,12 +16,12 @@
 
 // eslint-disable-next-line import/prefer-default-export
 export const normalize = (path: string, stripTrailing = false): string => {
-  if (typeof path !== 'string') {
-    throw new TypeError('expected path to be a string');
+  if (typeof path !== "string") {
+    throw new TypeError("expected path to be a string");
   }
 
-  if (path === '\\' || path === '/') {
-    return '/';
+  if (path === "\\" || path === "/") {
+    return "/";
   }
 
   const len = path.length;
@@ -32,18 +32,18 @@ export const normalize = (path: string, stripTrailing = false): string => {
   // ensure that win32 namespaces has two leading slashes, so that the path is
   // handled properly by the win32 version of path.parse() after being normalized
   // https://msdn.microsoft.com/library/windows/desktop/aa365247(v=vs.85).aspx#namespaces
-  let prefix = '';
-  if (len > 4 && path[3] === '\\') {
+  let prefix = "";
+  if (len > 4 && path[3] === "\\") {
     const ch = path[2];
-    if ((ch === '?' || ch === '.') && path.slice(0, 2) === '\\\\') {
+    if ((ch === "?" || ch === ".") && path.slice(0, 2) === "\\\\") {
       path = path.slice(2);
-      prefix = '//';
+      prefix = "//";
     }
   }
 
   const segments = path.split(/[/\\]+/);
-  if (stripTrailing !== false && segments[segments.length - 1] === '') {
+  if (stripTrailing !== false && segments[segments.length - 1] === "") {
     segments.pop();
   }
-  return prefix + segments.join('/');
+  return prefix + segments.join("/");
 };

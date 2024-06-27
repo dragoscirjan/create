@@ -1,0 +1,41 @@
+{
+  "name": "@templ-project/babel-config",
+  "version": "0.0.1",
+  "description": "Templ Project Prettier Config",
+  "main": "index.js",
+  "exports": {
+    "./base": "./base.js",
+    "./browser": "./browser.js",
+    "./cjs": "./cjs.js",
+    "./esm": "./esm.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "clear-modules": "rimraf ./node_modules",
+    "--lint:eslint": "eslint --fix .",
+    "lint:oxlint": "oxlint --fix .",
+    "lint": "run-s lint:*",
+    "prettier": "prettier --write \"./*.{js,ts}\""
+  },
+  "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@templ-project/prettier-config": "^0.0.1",
+    "@babel/eslint-parser": "^7.24.7",
+    "@babel/plugin-transform-typescript": "^7.24.7",
+    "@babel/preset-env": "^7.24.7"
+  },
+  "importSort": {
+    ".js, .jsx": {
+      "parser": "babylon",
+      "style": "module"
+    },
+    ".ts, .tsx": {
+      "parser": "typescript",
+      "style": "module"
+    }
+  },
+  "devDependencies": {
+    "@templ-project/prettier-config": "^0.0.1"
+  }
+}

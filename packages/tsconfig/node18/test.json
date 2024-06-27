@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.cjs.json",
+  "extends": "./cjs.json",
   "compilerOptions": {
     "types": ["node"]
   }

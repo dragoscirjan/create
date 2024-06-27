@@ -1,0 +1,49 @@
+{
+  "name": "@templ-project/tsconfig",
+  "version": "0.0.1",
+  "description": "Templ Project Prettier Config",
+  "main": "index.js",
+  "exports": {
+    "./bun.json": "./node18/bun.json",
+    "./deno.json": "./node18/deno.json",
+
+    "./base.json": "./node18/base.json",
+    "./browser.json": "./node18/browser.json",
+    "./cjs.json": "./node18/cjs.json",
+    "./esm.json": "./node18/esm.json",
+    "./test.json": "./node18/test.json",
+
+    "./node18/base.json": "./node18/base.json",
+    "./node18/browser.json": "./node18/browser.json",
+    "./node18/cjs.json": "./node18/cjs.json",
+    "./node18/esm.json": "./node18/esm.json",
+    "./node18/test.json": "./node18/test.json",
+
+    "./node20/base.json": "./node20/base.json",
+    "./node20/browser.json": "./node18/browser.json",
+    "./node20/cjs.json": "./node20/cjs.json",
+    "./node20/esm.json": "./node20/esm.json",
+    "./node20/test.json": "./node20/test.json",
+
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "clear-modules": "rimraf ./node_modules"
+  },
+  "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@tsconfig/node18": "^18.2.4",
+    "@tsconfig/node20": "^20.1.4"
+  },
+  "importSort": {
+    ".js, .jsx": {
+      "parser": "babylon",
+      "style": "module"
+    },
+    ".ts, .tsx": {
+      "parser": "typescript",
+      "style": "module"
+    }
+  }
+}

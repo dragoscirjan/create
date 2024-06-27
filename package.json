@@ -26,10 +26,12 @@
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
   "workspaces": [
+    "packages/prettier-config",
+    "packages/babel-config",
     "packages/eslint-config",
     "packages/eslint-config-ts",
-    "packages/prettier-config",
-    "packages/code-analysis"
+    "packages/code-analysis",
+    "packages/tsconfig"
   ],
   "--workspaces": [
     "packages/core",

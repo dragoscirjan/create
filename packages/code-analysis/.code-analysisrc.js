@@ -1,10 +1,10 @@
 export default {
   lint: {
-    'src/**/*.ts': ['prettier --write', 'eslint --fix', 'oxlint --fix'],
+    "src/**/*.ts": ["prettier --write", "eslint --fix", "oxlint --fix"],
   },
   security: {
-    audit: {enabled: true},
-    snyk: {enabled: true},
+    audit: { enabled: true },
+    snyk: { enabled: true },
   },
   quality: {
     depcruise: {
@@ -19,16 +19,14 @@ export default {
   },
   dependency: {
     depcheck: {
+      command: 'depcheck --ignore-patterns="\\.*rc\\.cjs"',
       enabled: true,
       options: {
         ignoreDevDependencies: true,
       },
     },
-    licenseCheck: {
-      enabled: false,
-      options: {
-        start: process.cwd(),
-      },
+    license: {
+      enabled: true,
     },
   },
 };
