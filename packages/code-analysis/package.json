@@ -1,52 +1,46 @@
 {
   "name": "@templ-project/code-analysis",
   "version": "0.0.1",
-  "description": "Create Node.js Module",
+  "description": "Code Analysis Made Easier",
+  "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "type": "module",
-  "bin": "./bin/code-analysis.js",
+  "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js",
-    "./bin": "./dist/code-analysis.js",
     "./package.json": "./package.json"
   },
+  "types": "./dist/index.d.js",
   "scripts": {
     "build": "rimraf ./dist && tsc",
-    "--build": "rimraf ./dist && tsc && node .scripts/module.js",
     "clear-modules": "rimraf ./node_modules",
     "depcruise": "depcruise src",
     "lint:eslint": "eslint --fix ./src/**/*.ts",
     "lint:oxlint": "oxlint --fix ./src/**/*.ts",
     "lint": "run-s lint:*",
     "prettier": "prettier --write \"./**/*.{js,ts}\"",
-    "test": "echo \"Error: no test specified\""
+    "test": "cross-env NODE_ENV=test vitest run"
   },
-  "author": "",
   "license": "MIT",
-  "dependencies": {
-    "chalk": "^5.3.0",
-    "commander": "^12.1.0",
-    "cosmiconfig": "^9.0.0",
-    "execa": "^9.1.0",
-    "listr": "^0.14.3",
-    "lodash.merge": "^4.6.2"
-  },
   "devDependencies": {
     "@jscpd/html-reporter": "^4.0.1",
-    "@templ-project/eslint-config-ts": "^0.0.1",
-    "@templ-project/prettier-config": "^0.0.1",
-    "@templ-project/tsconfig": "^0.0.1",
-    "@types/execa": "^2.0.0",
-    "@types/listr": "^0.14.9",
-    "@types/lodash.merge": "^4.6.9",
-    "@typescript-eslint/eslint-plugin": "^7.13.0",
-    "@typescript-eslint/parser": "^7.13.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.12",
+    "cross-env": "^7.0.3",
     "depcheck": "^1.4.7",
     "dependency-cruiser": "^16.3.2",
+    "eslint": "^9.4.0",
+    "jest": "^29.7.0",
     "jscpd": "^4.0.4",
+    "license-checker": "^25.0.1",
     "oxlint": "^0.4.2",
-    "prettier": "^3.3.2",
-    "rimraf": "^5.0.7",
+    "prettier": "^3.3.0",
     "snyk": "^1.1291.1",
-    "typescript": "^5.4.5"
+    "ts-jest": "^29.1.2",
+    "vitest": "^2.0.2"
+  },
+  "dependencies": {
+    "@templ-project/core": "^0.0.1",
+    "execa": "^9.3.0",
+    "winston": "^3.13.0"
   }
 }

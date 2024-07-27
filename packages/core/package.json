@@ -1,43 +1,24 @@
 {
   "name": "@templ-project/core",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Templ Project Core Stuff",
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
+  "type": "module",
   "main": "./dist/index.js",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.js",
-      "require": "./dist/index.js"
-    },
-    "./child-process": {
-      "types": "./dist/child-process/index.d.js",
-      "require": "./dist/child-process/index.js"
-    },
-    "./fs": {
-      "types": "./dist/fs/index.d.js",
-      "require": "./dist/fs/index.js"
-    },
-    "./inquire": {
-      "types": "./dist/inquire/index.d.js",
-      "require": "./dist/inquire/index.js"
-    },
-    "./package-json": {
-      "types": "./dist/package-json/index.d.js",
-      "require": "./dist/package-json/index.js"
-    },
-    "./package-typesmanager": {
-      "types": "./dist/package-manager/index.d.js",
-      "require": "./dist/package-manager/index.js"
-    },
+    ".": "./dist/index.js",
     "./package.json": "./package.json"
   },
   "types": "./dist/index.d.js",
   "scripts": {
-    "build": "rimraf ./dist && tsc -p ./tsconfig.build.json",
-    "depcruise": "depcruise --config .dependency-cruiser.js src",
-    "prettier": "prettier --config ../../.prettierrc.js --write \"src/**/*.ts\"",
-    "test:watch": "npm run test -- --watch",
-    "test": "cross-env NODE_ENV=test NO_API_DOC=1 jest --coverage --runInBand --verbose"
+    "build": "rimraf ./dist && tsc",
+    "clear-modules": "rimraf ./node_modules",
+    "depcruise": "depcruise src",
+    "lint:eslint": "eslint --fix ./src/**/*.ts",
+    "lint:oxlint": "oxlint --fix ./src/**/*.ts",
+    "lint": "run-s lint:*",
+    "prettier": "prettier --write \"./**/*.{js,ts}\"",
+    "test": "cross-env NODE_ENV=test vitest run"
   },
   "license": "MIT",
   "devDependencies": {
@@ -54,9 +35,11 @@
     "oxlint": "^0.4.2",
     "prettier": "^3.3.0",
     "snyk": "^1.1291.1",
-    "ts-jest": "^29.1.2"
+    "ts-jest": "^29.1.2",
+    "vitest": "^2.0.2"
   },
   "dependencies": {
-    "winston": "^3.13.0"
+    "execa": "^9.3.0",
+    "winston": "^3.13.1"
   }
 }

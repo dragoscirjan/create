@@ -30,13 +30,13 @@
     "packages/babel-config",
     "packages/eslint-config",
     "packages/eslint-config-ts",
+    "packages/tsconfig",
+    "packages/core",
     "packages/code-analysis",
-    "packages/tsconfig"
+    "packages/code-build",
+    "packages/create-node"
   ],
   "--workspaces": [
-    "packages/core",
-    "packages/code-build",
-    "packages/create-node",
     "packages/create-node-nestjs"
   ],
   "dependencies": {
@@ -44,11 +44,11 @@
     "@commitlint/config-conventional": "^19.2.2",
     "@jscpd/badge-reporter": "^3.4.5",
     "@manypkg/cli": "^0.21.4",
+    "@templ-project/core": "^0.0.1",
     "commitlint": "^19.3.0",
     "configrc": "^0.1.2",
     "dependency-cruiser": "^16.3.2",
     "globals": "^15.1.0",
-    "husky": "^9.0.11",
     "inquire": "^0.4.8",
     "jscpd": "^4.0.4",
     "license-checker": "^25.0.1",
@@ -67,5 +67,8 @@
       "parser": "typescript",
       "style": "module"
     }
+  },
+  "devDependencies": {
+    "husky": "^9.1.3"
   }
 }

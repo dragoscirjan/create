@@ -20,10 +20,10 @@
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@templ-project/prettier-config": "^0.0.1",
     "@babel/eslint-parser": "^7.24.7",
     "@babel/plugin-transform-typescript": "^7.24.7",
-    "@babel/preset-env": "^7.24.7"
+    "@babel/preset-env": "^7.24.7",
+    "@templ-project/prettier-config": "^0.0.1"
   },
   "importSort": {
     ".js, .jsx": {
@@ -34,8 +34,5 @@
       "parser": "typescript",
       "style": "module"
     }
-  },
-  "devDependencies": {
-    "@templ-project/prettier-config": "^0.0.1"
   }
 }
