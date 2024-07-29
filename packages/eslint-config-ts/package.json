@@ -17,8 +17,8 @@
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@templ-project/babel-config": "^0.0.2",
-    "@templ-project/eslint-config": "^0.0.2",
+    "@templ-project/babel-config": "^1.0.0",
+    "@templ-project/eslint-config": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
     "@typescript-eslint/typescript-estree": "^5.57.0",

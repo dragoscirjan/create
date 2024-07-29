@@ -31,15 +31,5 @@
   "dependencies": {
     "@tsconfig/node18": "^18.2.4",
     "@tsconfig/node20": "^20.1.4"
-  },
-  "importSort": {
-    ".js, .jsx": {
-      "parser": "babylon",
-      "style": "module"
-    },
-    ".ts, .tsx": {
-      "parser": "typescript",
-      "style": "module"
-    }
   }
 }
