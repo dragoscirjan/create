@@ -1,6 +1,6 @@
 {
   "name": "@templ-project/babel-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Templ Project Prettier Config",
   "main": "index.js",
   "exports": {

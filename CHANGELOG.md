@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.14](https://github.com/templ-project/create/compare/create-v1.0.13...create-v1.0.14) (2024-07-29)
+
+
+### Bug Fixes
+
+* manually added versions ([9d3eeea](https://github.com/templ-project/create/commit/9d3eeea9d3e66e6aa332e8d120cc4044a5426c93))
+* removing node20 for now ([73b7dfe](https://github.com/templ-project/create/commit/73b7dfee0df1b470102c37b95fac0eb67eb0d6f2))
+* version bumps ([c3cbf2e](https://github.com/templ-project/create/commit/c3cbf2e08f0f826a62d9ef2a7238102c316ee869))
+
 ## [1.0.13](https://github.com/templ-project/create/compare/create-v1.0.12...create-v1.0.13) (2024-07-29)
 
 
