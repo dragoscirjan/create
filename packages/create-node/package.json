@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@npmcli/package-json": "^5.2.0",
+    "@templ-project/code-build": "^0.0.1",
     "@templ-project/core": "^0.0.1",
     "execa": "^9.3.0",
     "winston": "^3.13.0"

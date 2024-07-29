@@ -24,7 +24,7 @@ const commitLintSetup = async (
     },
   );
 
-  await ensureCommitLinkConfig(projectPath);
+  await ensureCommitLintConfig(projectPath);
 
   logger.debug("`commitlint`setup completed...");
 };
@@ -39,5 +39,5 @@ module.exports = {
 
 `;
 
-const ensureCommitLinkConfig = async (projectPath: string) =>
-  writeFile(path.join(projectPath, ".commitlinkrc.js"), commitLintConfig);
+const ensureCommitLintConfig = async (projectPath: string) =>
+  writeFile(path.join(projectPath, ".commitlintrc.js"), commitLintConfig);

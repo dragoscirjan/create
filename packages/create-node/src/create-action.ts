@@ -8,19 +8,32 @@ import {
 } from "@templ-project/core";
 import { execa } from "execa";
 
-import { ProgramOptions } from "../options.js";
-import huskySetup from "../tools/husky.js";
+import { ProgramOptions } from "./options.js";
+import codeSetup from "./tools/code.js";
+import huskySetup from "./tools/husky.js";
 import PackageJson from "@npmcli/package-json";
+import commitLintSetup from "./tools/commitlint.js";
+import editorConfigSetup from "./tools/editorconfig.js";
+import rcSetup from "./tools/rc.js";
 
-const runner = async (projectPath: string, options: ProgramOptions) => {
+const create = async (projectPath: string, options: ProgramOptions) => {
   await initProject(projectPath, options);
-
   // await installDeps(projectPath, options);
 
+  await codeSetup(projectPath, options);
+
+  await import(`./tools/test/${options.testFramework}.js`).then(
+    async ({ default: testRunner }) => testRunner(projectPath, options),
+  );
+
+  await editorConfigSetup(projectPath, options);
+  await commitLintSetup(projectPath, options);
   await huskySetup(projectPath, options);
+
+  await rcSetup(projectPath, options);
 };
 
-export default runner;
+export default create;
 
 const initProject = async (projectPath: string, options: ProgramOptions) => {
   logger.debug("Running project init...");

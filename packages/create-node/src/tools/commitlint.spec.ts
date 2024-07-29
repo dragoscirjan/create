@@ -48,11 +48,11 @@ describe("commitLintSetup", () => {
     );
   });
 
-  it("should call writeFile to create .commitlinkrc.js", async () => {
+  it("should call writeFile to create .commitlintrc.js", async () => {
     await commitLintSetup(projectPath, options);
 
     expect(mockedWriteFile).toHaveBeenCalledWith(
-      path.join(projectPath, ".commitlinkrc.js"),
+      path.join(projectPath, ".commitlintrc.js"),
       commitLintConfig,
     );
   });

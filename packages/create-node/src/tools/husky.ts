@@ -8,7 +8,7 @@ import { installDevDependencies, logger } from "@templ-project/core";
 import { execa, $ } from "execa";
 
 import { ProgramOptions } from "../options.js";
-import { readFile, writeFile } from "fs/promises";
+import { writeFile } from "fs/promises";
 import path from "path";
 
 const huskySetup = async (projectPath: string, options: ProgramOptions) => {
@@ -43,43 +43,20 @@ const ensureHuskyInit = async (projectPath: string) =>
     stdout: ["pipe", "inherit"],
   });
 
-export const commitMsgCommands = `npx --yes commitlint --edit $1`;
+export const commitMsgCommands = `npx --yes commitlint --edit $1
 
-const commitMsgSetup = async (projectPath: string) => {
-  const commitMsgPath = path.join(projectPath, ".husky", "commit-msg");
+`;
 
-  await readFile(commitMsgPath)
-    .then((commitMsg) => commitMsg.toString("utf-8"))
-    .then((commitMsg) =>
-      writeFile(
-        commitMsgPath,
-        `${commitMsg}
-
-${commitMsgCommands}
-
-`,
-      ),
-    );
-};
+const commitMsgSetup = async (projectPath: string) =>
+  writeFile(path.join(projectPath, ".husky", "commit-msg"), commitMsgCommands);
 
 export const preCommitCommands = `npm run ca
 npm run test
 npm run build
 
-git add -u`;
+git add -u
 
-const preCommitSetup = async (projectPath: string) => {
-  const precommitPath = path.join(projectPath, ".husky", "pre-commit");
-  await readFile(precommitPath)
-    .then((preCommit) => preCommit.toString("utf-8"))
-    .then((preCommit) =>
-      writeFile(
-        precommitPath,
-        `${preCommit}
+`;
 
-${preCommitCommands}
-
-`,
-      ),
-    );
-};
+const preCommitSetup = async (projectPath: string) =>
+  writeFile(path.join(projectPath, ".husky", "pre-commit"), preCommitCommands);

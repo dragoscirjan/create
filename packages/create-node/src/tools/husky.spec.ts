@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { installDevDependencies, logger } from "@templ-project/core";
 import { execa, $ } from "execa";
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
+import { installDevDependencies, logger } from "@templ-project/core";
+import huskySetup, { commitMsgCommands, preCommitCommands } from "./husky.js";
+import { ProgramOptions } from "../options.js";
 
-import huskySetup, { commitMsgCommands, preCommitCommands } from "./husky";
-import { ProgramOptions } from "../options";
-
+// Mock execa, $, readFile, writeFile, and installDevDependencies
 vi.mock("execa", () => ({
   execa: vi.fn(),
   $: vi.fn(),
@@ -32,9 +32,9 @@ const mockedInstallDevDependencies =
   installDevDependencies as unknown as ReturnType<typeof vi.fn>;
 const mockedLogger = logger.debug as unknown as ReturnType<typeof vi.fn>;
 
-describe("husky setup", () => {
+describe("huskySetup", () => {
   const projectPath = "/mocked/path";
-  const options = { packageManager: "npm" } as unknown as ProgramOptions;
+  const options: ProgramOptions = { packageManager: "npm" };
 
   beforeEach(() => {
     mockedExeca.mockClear();
@@ -43,15 +43,13 @@ describe("husky setup", () => {
     mockedWriteFile.mockClear();
     mockedInstallDevDependencies.mockClear();
     mockedLogger.mockClear();
-
-    mockedReadFile.mockResolvedValue(Buffer.from("existing content"));
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
-  it("should call installDevDependencies", async () => {
+  it("should call installDevDependencies with correct arguments", async () => {
     await huskySetup(projectPath, options);
 
     expect(mockedInstallDevDependencies).toHaveBeenCalledWith(
@@ -82,35 +80,32 @@ describe("husky setup", () => {
     expect(mockedExeca).toHaveBeenCalled();
   });
 
-  it("should read and write commit-msg hook", async () => {
+  it("should write commit-msg hook", async () => {
     await huskySetup(projectPath, options);
 
     const commitMsgPath = path.join(projectPath, ".husky", "commit-msg");
 
-    expect(mockedReadFile).toHaveBeenCalledWith(commitMsgPath);
     expect(mockedWriteFile).toHaveBeenCalledWith(
       commitMsgPath,
-      `existing content
-
-${commitMsgCommands}
-
-`,
+      commitMsgCommands,
     );
   });
 
-  it("should read and write pre-commit hook", async () => {
+  it("should write pre-commit hook", async () => {
     await huskySetup(projectPath, options);
 
-    const precommitPath = path.join(projectPath, ".husky", "pre-commit");
+    const preCommitPath = path.join(projectPath, ".husky", "pre-commit");
 
-    expect(mockedReadFile).toHaveBeenCalledWith(precommitPath);
     expect(mockedWriteFile).toHaveBeenCalledWith(
-      precommitPath,
-      `existing content
-
-${preCommitCommands}
-
-`,
+      preCommitPath,
+      preCommitCommands,
     );
+  });
+
+  it("should log debug messages", async () => {
+    await huskySetup(projectPath, options);
+
+    expect(mockedLogger).toHaveBeenCalledWith("Setting up `husky`...");
+    expect(mockedLogger).toHaveBeenCalledWith("`husky`setup completed...");
   });
 });
