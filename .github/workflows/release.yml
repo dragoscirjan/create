@@ -75,7 +75,7 @@ jobs:
         run: |
           set -ex
 
-          for token in create-node; do
+          for token in $(cat package.json | jq -r '.workspaces | join(" ")' | sed 's/packages\///g'); do
             cd packages/$token
             module=@templ-project/$token@$(node -p "require('./package.json').version")
             if ! npm view $module > /dev/null 2>&1; then
