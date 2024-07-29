@@ -1,6 +1,6 @@
 {
   "name": "@templ-project/eslint-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Templ Project ESLint Config for ES6+",
   "main": "index.js",
   "exports": {

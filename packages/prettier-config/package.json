@@ -1,6 +1,6 @@
 {
   "name": "@templ-project/prettier-config",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Templ Project Prettier Config",
   "main": "index.js",
   "exports": {
