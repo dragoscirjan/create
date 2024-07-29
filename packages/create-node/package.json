@@ -1,6 +1,6 @@
 {
   "name": "@templ-project/create-node",
-  "version": "0.0.1",
+  "version": "1.0.6",
   "description": "Templ Project - Create Node Module",
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "type": "module",
