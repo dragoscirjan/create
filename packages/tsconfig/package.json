@@ -16,12 +16,14 @@
     "./node18/cjs.json": "./node18/cjs.json",
     "./node18/esm.json": "./node18/esm.json",
     "./node18/test.json": "./node18/test.json",
+    "./package.json": "./package.json"
+  },
+  "exports--": {
     "./node20/base.json": "./node20/base.json",
     "./node20/browser.json": "./node18/browser.json",
     "./node20/cjs.json": "./node20/cjs.json",
     "./node20/esm.json": "./node20/esm.json",
-    "./node20/test.json": "./node20/test.json",
-    "./package.json": "./package.json"
+    "./node20/test.json": "./node20/test.json"
   },
   "scripts": {
     "clear-modules": "rimraf ./node_modules"
