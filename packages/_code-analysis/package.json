@@ -32,9 +32,9 @@
   },
   "devDependencies": {
     "@jscpd/html-reporter": "^4.0.1",
-    "@templ-project/eslint-config-ts": "^0.0.1",
-    "@templ-project/prettier-config": "^0.0.1",
-    "@templ-project/tsconfig": "^0.0.1",
+    "@templ-project/eslint-config-ts": "^0.0.2",
+    "@templ-project/prettier-config": "^0.0.2",
+    "@templ-project/tsconfig": "^0.0.2",
     "@types/execa": "^2.0.0",
     "@types/listr": "^0.14.9",
     "@types/lodash.merge": "^4.6.9",

@@ -24,7 +24,7 @@
     "@babel/plugin-transform-typescript": "^7.24.7",
     "@babel/preset-env": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
-    "@templ-project/prettier-config": "^0.0.1"
+    "@templ-project/prettier-config": "^0.0.2"
   },
   "importSort": {
     ".js, .jsx": {
