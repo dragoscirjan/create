@@ -1,6 +1,6 @@
 {
   "name": "@templ-project/eslint-config-ts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Templ Project ESLint Config for TypeScript",
   "main": "index.js",
   "exports": {
@@ -17,7 +17,8 @@
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@templ-project/eslint-config": "^0.0.1",
+    "@templ-project/babel-config": "^0.0.1",
+    "@templ-project/eslint-config": "^0.0.2",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
     "@typescript-eslint/typescript-estree": "^5.57.0",

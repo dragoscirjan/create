@@ -4,6 +4,7 @@ module.exports = {
   ...require('./base'),
   presets: [
     '@babel/preset-env',
+    '@babel/preset-typescript',
     {
       targets: {node: '16'},
       // `useBuildIns` and `corejs` configure Babel to only include polyfills for features

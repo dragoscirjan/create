@@ -4,6 +4,7 @@ module.exports = {
   ...require('./base'),
   presets: [
     '@babel/preset-env',
+    '@babel/preset-typescript',
     {
       // The value "> 0.25%, not dead, last 2 versions" tells Babel to target browsers used by more than
       // 0.25% of global users, that are not "dead" (browsers without official support or updates for 24
