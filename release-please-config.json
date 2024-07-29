@@ -1,6 +1,31 @@
 {
   "release-type": "node",
   "packages": {
+    "packages/babel-config": {
+      "release-type": "node",
+      "package-name": "@templ-project/babel-config",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "packages/eslint-config": {
+      "release-type": "node",
+      "package-name": "@templ-project/eslint-config",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "packages/eslint-config-ts": {
+      "release-type": "node",
+      "package-name": "@templ-project/eslint-config-ts",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "packages/prettier-config": {
+      "release-type": "node",
+      "package-name": "@templ-project/prettier-config",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "packages/tsconfig": {
+      "release-type": "node",
+      "package-name": "@templ-project/tsconfig",
+      "changelog-path": "CHANGELOG.md"
+    },
     "packages/create-node": {
       "release-type": "node",
       "package-name": "@templ-project/create-node",
