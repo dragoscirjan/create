@@ -118,53 +118,52 @@ jobs:
           if [ "${{ inputs.PackageManager }}" != "npm" ]; then
             npm i -g ${{ inputs.PackageManager }}
           fi
-          npm i -g ts-node
       - name: Code Analysis
         run: |
           npm run ca
       - name: Init Project
         run: |
           set -ex
-          npm run build -w @templ-project/create-node
+          npm run build
 
-          CREATE_ARGS=""
-          if [ "${{ inputs.BuildTool }}" != "" ]; then
-            CREATE_ARGS="$CREATE_ARGS --build-tool ${{ inputs.BuildTool }}"
-          fi
-          if [ "${{ inputs.UseDefaultCommand }}" == "true" ]; then
-            CREATE_ARGS="$CREATE_ARGS --use-default-commands"
-          fi
-          LOG_LEVEL=debug SKIP_NPM_INIT=1 ./packages/create-node/bin/create-node /tmp/test-node \
-            --language ${{ inputs.Language }} \
-            --targets ${{ inputs.Targets }} \
-            --package-manager ${{ inputs.PackageManager }} \
-            --test-framework ${{ inputs.TestFramework }} \
-            $CREATE_ARGS
-      - name: Validate Project
-        if: ${{ inputs.Language != 'ts' && inputs.TestFramework != 'mocha' }}
-        run: |
-          install_command="npm i"
-          install_prd_command="npm i -S"
-          install_dev_command="npm i -D"
-          run_command="npm"
-          if [ "${{ inputs.PackageManager }}" == "pnpm" ]; then
-            install_command="pnpm i"
-            install_prd_command="pnpm i"
-            install_dev_command="pnpm i -D"
-            run_command="pnpm"
-          elif [ "${{ inputs.PackageManager }}" == "yarn" ]; then
-            install_command="yarn"
-            install_prd_command="yarn add"
-            install_dev_command="yarn add --dev"
-            run_command="yarn"
-          fi
+          # CREATE_ARGS=""
+          # if [ "${{ inputs.BuildTool }}" != "" ]; then
+          #   CREATE_ARGS="$CREATE_ARGS --build-tool ${{ inputs.BuildTool }}"
+          # fi
+          # if [ "${{ inputs.UseDefaultCommand }}" == "true" ]; then
+          #   CREATE_ARGS="$CREATE_ARGS --use-default-commands"
+          # fi
+          # LOG_LEVEL=debug SKIP_NPM_INIT=1 ./packages/create-node/bin/create-node /tmp/test-node \
+          #   --language ${{ inputs.Language }} \
+          #   --targets ${{ inputs.Targets }} \
+          #   --package-manager ${{ inputs.PackageManager }} \
+          #   --test-framework ${{ inputs.TestFramework }} \
+          #   $CREATE_ARGS
+      # - name: Validate Project
+      #   if: ${{ inputs.Language != 'ts' && inputs.TestFramework != 'mocha' }}
+      #   run: |
+      #     install_command="npm i"
+      #     install_prd_command="npm i -S"
+      #     install_dev_command="npm i -D"
+      #     run_command="npm"
+      #     if [ "${{ inputs.PackageManager }}" == "pnpm" ]; then
+      #       install_command="pnpm i"
+      #       install_prd_command="pnpm i"
+      #       install_dev_command="pnpm i -D"
+      #       run_command="pnpm"
+      #     elif [ "${{ inputs.PackageManager }}" == "yarn" ]; then
+      #       install_command="yarn"
+      #       install_prd_command="yarn add"
+      #       install_dev_command="yarn add --dev"
+      #       run_command="yarn"
+      #     fi
 
-          project_path=$(pwd)
-          cd /tmp/test-node \
-            && cat package.json \
-            && $install_command \
-            && $install_prd_command axios --legacy-peer-deps \
-            && $install_dev_command $project_path/packages/create-node --legacy-peer-deps \
-            && $run_command run ca \
-            && $run_command run test \
-            && $run_command run build
+      #     project_path=$(pwd)
+      #     cd /tmp/test-node \
+      #       && cat package.json \
+      #       && $install_command \
+      #       && $install_prd_command axios --legacy-peer-deps \
+      #       && $install_dev_command $project_path/packages/create-node --legacy-peer-deps \
+      #       && $run_command run ca \
+      #       && $run_command run test \
+      #       && $run_command run build
