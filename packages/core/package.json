@@ -1,6 +1,6 @@
 {
   "name": "@templ-project/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Templ Project Core Stuff",
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "type": "module",

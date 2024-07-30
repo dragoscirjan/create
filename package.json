@@ -30,13 +30,13 @@
     "packages/babel-config",
     "packages/eslint-config",
     "packages/eslint-config-ts",
-    "packages/tsconfig"
+    "packages/tsconfig",
+    "packages/core",
+    "packages/code-build",
+    "packages/create-node"
   ],
   "--workspaces": [
-    "packages/core",
     "packages/code-analysis",
-    "packages/code-build",
-    "packages/create-node",
     "packages/create-node-nestjs"
   ],
   "dependencies": {

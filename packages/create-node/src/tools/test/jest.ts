@@ -1,9 +1,17 @@
 /**
- * @link https://kulshekhar.github.io/ts-jest/docs/guides/esm-support/
+ * @link https://jestjs.io/docs/getting-started#using-babel
+ *
+ * @link https://jestjs.io/docs/getting-started#using-typescript
+ * - @link https://kulshekhar.github.io/ts-jest/docs/getting-started/installation#jest-config-file
  */
 
 import PackageJson from "@npmcli/package-json";
-import { AvailableLanguages, logger } from "@templ-project/core";
+import {
+  AvailableLanguages,
+  AvailableTargets,
+  logger,
+  targetIsEsm,
+} from "@templ-project/core";
 import { ProgramOptions } from "../../options.js";
 import { installDevDependencies } from "@templ-project/core";
 import { writeFile } from "fs/promises";
@@ -27,16 +35,16 @@ const jestSetup = async (projectPath: string, options: ProgramOptions) => {
         : []),
       // https://jestjs.io/docs/getting-started#using-typescript
       ...(options.language === AvailableLanguages.Ts
-        ? "ts-jest typescript ts-node @jest/globals".split(" ")
+        ? "ts-jest typescript ts-node".split(" ")
         : []),
-      "jest",
+      ..."jest @jest/globals".split(" "),
     ],
     {
       cwd: projectPath,
     },
   );
 
-  await writeConfigFiles(projectPath);
+  await writeConfigFiles(projectPath, options);
 
   await writeTestFiles(projectPath, options);
 
@@ -45,19 +53,91 @@ const jestSetup = async (projectPath: string, options: ProgramOptions) => {
 
 export default jestSetup;
 
-const writeConfigFiles = async (projectPath: string) => {
-  // await writeFile(path.join(projectPath, "vitest.setup.js"), vitestConfig);
+const writeConfigFiles = async (
+  projectPath: string,
+  options: ProgramOptions,
+) => {
+  const { language, target } = options;
+  if (
+    language === AvailableLanguages.Js &&
+    target.includes(AvailableTargets.Esm) &&
+    target.length === 1
+  ) {
+    // logger.error(
+    //   "Unfortunately we do not support Jest with ESM for now, when writing EcmaScript.",
+    // );
+    // process.exit(1);
+  }
+  await writeJestConfig(projectPath, options);
 
   return new PackageJson().load(projectPath).then((packageJson) =>
     packageJson
       .update({
         scripts: {
           ...packageJson.content.scripts,
-          test: "cross-env NODE_ENV=test vitest run",
+          test: `cross-env ${
+            language === AvailableLanguages.Js && targetIsEsm(target)
+              ? 'NODE_OPTIONS="$NODE_OPTIONS --experimental-vm-modules"'
+              : ""
+          } NODE_ENV=test NO_API_DOC=1 jest --coverage --runInBand --verbose`,
         },
       })
       .save(),
   );
+};
+
+const writeJestConfig = async (
+  projectPath: string,
+  options: ProgramOptions,
+) => {
+  const { language, target } = options;
+
+  if (language === AvailableLanguages.Js && !targetIsEsm(target)) {
+    // TODO: make sure babel.config.js exists
+    writeFile(
+      path.join(projectPath, "babel.config.js"),
+      `module.exports = {
+  presets: [['@babel/preset-env', {targets: {node: 'current'}}]],
+};
+
+`,
+    );
+  }
+
+  const jestConfig = {
+    testEnvironment: "node",
+    transform: {
+      ...(language === AvailableLanguages.Js && !targetIsEsm(target)
+        ? {
+            "^.+.jsx?$": ["babel-jest", {}],
+          }
+        : {}),
+      ...(language === AvailableLanguages.Ts
+        ? {
+            [targetIsEsm(target) ? "^.+\\.tsx?$" : "^.+.tsx?$"]: [
+              "ts-jest",
+              {
+                ...(targetIsEsm(target)
+                  ? {
+                      // @link https://kulshekhar.github.io/ts-jest/docs/getting-started/options/useESM
+                      useESM: true,
+                    }
+                  : {}),
+              },
+            ],
+          }
+        : {}),
+    },
+  };
+
+  const jestConfigJson = `/** ${
+    language === AvailableLanguages.Ts
+      ? '@type {import("ts-jest").JestConfigWithTsJest}'
+      : '@type {import("jest").Config}'
+  } **/
+${targetIsEsm(target) ? "export default" : "module.exports ="} ${JSON.stringify(jestConfig, null, 2)}`;
+
+  await writeFile(path.join(projectPath, "jest.config.js"), jestConfigJson);
 };
 
 const writeTestFiles = async (projectPath: string, options: ProgramOptions) => {
@@ -84,7 +164,8 @@ export default defineConfig({
 
 export const vitestSpecCode = {
   // coffee: '',
-  js: /*js-*/ `import { hello } from "./index";
+  js: /*js-*/ `import {describe, expect, it} from '@jest/globals';
+import { hello } from "./index";
 
 describe("hello", () => {
   it('hello("World") to return "Hello World!"', function () {
@@ -93,7 +174,8 @@ describe("hello", () => {
 });
 
 `,
-  ts: /*ts-*/ `import { hello } from "./index";
+  ts: /*ts-*/ `import {describe, expect, it} from '@jest/globals';
+import { hello } from "./index";
 
 describe("hello", () => {
   it('hello("World") to return "Hello World!"', function () {
@@ -107,7 +189,7 @@ describe("hello", () => {
 export const vitestTestCode = {
   // coffee: '',
   js: /*js-*/ `/* eslint-disable max-lines-per-function */
-import {describe, expect, test} from '@jest/globals';
+import {describe, expect, it, beforeAll, afterAll, afterEach, jest} from '@jest/globals';
 import { writeHello } from "../src";
 
 describe("writeHello", () => {
@@ -137,7 +219,7 @@ describe("writeHello", () => {
 
 `,
   ts: /*ts-*/ `/* eslint-disable max-lines-per-function */
-import {describe, expect, test} from '@jest/globals';
+import {describe, expect, it, beforeAll, afterAll, afterEach, jest} from '@jest/globals';
 import { writeHello } from "../src";
 
 describe("writeHello", () => {
