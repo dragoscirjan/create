@@ -21,7 +21,9 @@ describe("installDependencies", () => {
   it("should call execa with correct arguments for npm", async () => {
     const packageManager = "npm";
     const modules = ["module1", "module2"];
-    const options: Options = {};
+    const options: Options = {
+      stdout: ["pipe", "inherit"],
+    };
 
     await installDependencies(packageManager, modules, options);
 
@@ -35,7 +37,9 @@ describe("installDependencies", () => {
   it("should call execa with correct arguments for yarn", async () => {
     const packageManager = "yarn";
     const modules = ["module1", "module2"];
-    const options: Options = {};
+    const options: Options = {
+      stdout: ["pipe", "inherit"],
+    };
 
     await installDependencies(packageManager, modules, options);
 
@@ -59,7 +63,9 @@ describe("installDevDependencies", () => {
   it("should call execa with correct arguments for npm", async () => {
     const packageManager = "npm";
     const modules = ["module1", "module2"];
-    const options: Options = {};
+    const options: Options = {
+      stdout: ["pipe", "inherit"],
+    };
 
     await installDevDependencies(packageManager, modules, options);
 
@@ -73,7 +79,9 @@ describe("installDevDependencies", () => {
   it("should call execa with correct arguments for yarn", async () => {
     const packageManager = "yarn";
     const modules = ["module1", "module2"];
-    const options: Options = {};
+    const options: Options = {
+      stdout: ["pipe", "inherit"],
+    };
 
     await installDevDependencies(packageManager, modules, options);
 

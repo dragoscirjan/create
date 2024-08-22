@@ -11,6 +11,7 @@ import {
   AvailableTargets,
   logger,
   targetIsEsm,
+  transpileTs,
 } from "@templ-project/core";
 import { ProgramOptions } from "../../options.js";
 import { installDevDependencies } from "@templ-project/core";
@@ -68,6 +69,8 @@ const writeConfigFiles = async (
     // );
     // process.exit(1);
   }
+  await writeBabelConfig(projectPath, options);
+
   await writeJestConfig(projectPath, options);
 
   return new PackageJson().load(projectPath).then((packageJson) =>
@@ -86,7 +89,7 @@ const writeConfigFiles = async (
   );
 };
 
-const writeJestConfig = async (
+const writeBabelConfig = async (
   projectPath: string,
   options: ProgramOptions,
 ) => {
@@ -103,122 +106,71 @@ const writeJestConfig = async (
 `,
     );
   }
+};
+
+const writeJestConfig = async (
+  projectPath: string,
+  options: ProgramOptions,
+) => {
+  const { target } = options;
+
+  return writeFile(
+    path.join(projectPath, "jest.config.js"),
+    transpileTs(options.language, buildJestConfig(options), {
+      mode: targetIsEsm(target) ? "strip" : "cjs",
+    }),
+  );
+};
+
+const buildJestConfig = (options: ProgramOptions): string => {
+  const { language, target } = options;
 
   const jestConfig = {
     testEnvironment: "node",
     transform: {
       ...(language === AvailableLanguages.Js && !targetIsEsm(target)
-        ? {
-            "^.+.jsx?$": ["babel-jest", {}],
-          }
+        ? transformJs
         : {}),
-      ...(language === AvailableLanguages.Ts
-        ? {
-            [targetIsEsm(target) ? "^.+\\.tsx?$" : "^.+.tsx?$"]: [
-              "ts-jest",
-              {
-                ...(targetIsEsm(target)
-                  ? {
-                      // @link https://kulshekhar.github.io/ts-jest/docs/getting-started/options/useESM
-                      useESM: true,
-                    }
-                  : {}),
-              },
-            ],
-          }
-        : {}),
+      ...(language === AvailableLanguages.Ts ? transformTs : {}),
     },
   };
 
-  const jestConfigJson = `/** ${
+  return `/** ${
     language === AvailableLanguages.Ts
       ? '@type {import("ts-jest").JestConfigWithTsJest}'
       : '@type {import("jest").Config}'
   } **/
 ${targetIsEsm(target) ? "export default" : "module.exports ="} ${JSON.stringify(jestConfig, null, 2)}`;
-
-  await writeFile(path.join(projectPath, "jest.config.js"), jestConfigJson);
 };
 
 const writeTestFiles = async (projectPath: string, options: ProgramOptions) => {
   await writeFile(
     path.join(projectPath, "src", `index.spec.${options.language}`),
-    vitestSpecCode[options.language],
+    transpileTs(options.language, jestSpecCode, { mode: "strip" }),
   );
 
   return writeFile(
     path.join(projectPath, "test", `index.test.${options.language}`),
-    vitestTestCode[options.language],
+    transpileTs(options.language, jestTestCode, { mode: "strip" }),
   );
 };
 
-export const vitestConfig = `import { defineConfig } from "vitest/config";
+export const transformJs = { "^.+\\.jsx?$": ["babel-jest", {}] };
 
-export default defineConfig({
-  test: {
-    exclude: ["**/node_modules/**"],
-  },
+export const transformTs = { "^.+\\.tsx?$": ["ts-jest", {}] };
+
+export const jestSpecCode = /*ts-*/ `import {describe, expect, it} from '@jest/globals';
+import { hello } from "./index";
+
+describe("hello", () => {
+  it('hello("World") to return "Hello World!"', function () {
+    expect(hello("World")).toEqual("Hello, World!");
+  });
 });
 
 `;
 
-export const vitestSpecCode = {
-  // coffee: '',
-  js: /*js-*/ `import {describe, expect, it} from '@jest/globals';
-import { hello } from "./index";
-
-describe("hello", () => {
-  it('hello("World") to return "Hello World!"', function () {
-    expect(hello("World")).toEqual("Hello, World!");
-  });
-});
-
-`,
-  ts: /*ts-*/ `import {describe, expect, it} from '@jest/globals';
-import { hello } from "./index";
-
-describe("hello", () => {
-  it('hello("World") to return "Hello World!"', function () {
-    expect(hello("World")).toEqual("Hello, World!");
-  });
-});
-
-`,
-};
-
-export const vitestTestCode = {
-  // coffee: '',
-  js: /*js-*/ `/* eslint-disable max-lines-per-function */
-import {describe, expect, it, beforeAll, afterAll, afterEach, jest} from '@jest/globals';
-import { writeHello } from "../src";
-
-describe("writeHello", () => {
-  let consoleSpy;
-
-  beforeAll(() => {
-    // Spy on console.log and provide a mock implementation
-    consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    // Clear mock call history after each test
-    consoleSpy.mockClear();
-  });
-
-  afterAll(() => {
-    // Restore console.log to its original implementation after all tests
-    consoleSpy.mockRestore();
-  });
-
-  it('writeHello("World") to return "Hello, World!"', () => {
-    writeHello("World");
-    expect(console.log).toHaveBeenCalled();
-    expect(console.log).toHaveBeenCalledWith("Hello, World!");
-  });
-});
-
-`,
-  ts: /*ts-*/ `/* eslint-disable max-lines-per-function */
+export const jestTestCode = /*ts-*/ `/* eslint-disable max-lines-per-function */
 import {describe, expect, it, beforeAll, afterAll, afterEach, jest} from '@jest/globals';
 import { writeHello } from "../src";
 
@@ -248,5 +200,4 @@ describe("writeHello", () => {
   });
 });
 
-`,
-};
+`;

@@ -125,14 +125,8 @@ describe("vitestSetup", () => {
     await vitestSetup(projectPath, options);
     const specFilePath = path.join(projectPath, "src", "index.spec.ts");
     const testFilePath = path.join(projectPath, "test", "index.test.ts");
-    expect(mockedWriteFile).toHaveBeenCalledWith(
-      specFilePath,
-      vitestSpecCode.ts,
-    );
-    expect(mockedWriteFile).toHaveBeenCalledWith(
-      testFilePath,
-      vitestTestCode.ts,
-    );
+    expect(mockedWriteFile).toHaveBeenCalledWith(specFilePath, vitestSpecCode);
+    expect(mockedWriteFile).toHaveBeenCalledWith(testFilePath, vitestTestCode);
   });
 
   it("should log debug messages", async () => {

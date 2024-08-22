@@ -21,7 +21,8 @@ vi.mock("fs/promises", () => ({
   mkdir: vi.fn(),
 }));
 
-vi.mock("@templ-project/core", () => ({
+vi.mock("@templ-project/core", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@templ-project/core")>()),
   installDevDependencies: vi.fn(),
 }));
 
