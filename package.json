@@ -29,7 +29,6 @@
     "packages/prettier-config",
     "packages/babel-config",
     "packages/eslint-config",
-    "packages/eslint-config-ts",
     "packages/tsconfig"
   ],
   "--workspaces": [
