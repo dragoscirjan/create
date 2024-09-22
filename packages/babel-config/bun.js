@@ -1,5 +1,7 @@
 // .babelrc.js
 
+// TODO: must find a better solution for Bun
+
 module.exports = {
   ...require("./base"),
   presets: [
@@ -8,9 +10,9 @@ module.exports = {
       "@babel/preset-env",
       {
         corejs: 3,
-        forceAllTransforms: true,
-        modules: false,
-        targets: { esmodules: true },
+        loose: true,
+        modules: "commonjs",
+        targets: { node: "current" },
         useBuiltIns: "usage",
       },
     ],

@@ -7,11 +7,8 @@ module.exports = {
     [
       "@babel/preset-env",
       {
-        corejs: 3,
-        forceAllTransforms: true,
         modules: false,
-        targets: { esmodules: true },
-        useBuiltIns: "usage",
+        targets: { "deno": "1.20" },
       },
     ],
   ],
