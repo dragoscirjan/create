@@ -1,6 +1,6 @@
 {
   "name": "@templ-project/eslint-config",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Templ Project ESLint Config for ES6+",
   "main": "index.js",
   "exports": {
@@ -8,10 +8,6 @@
     "./ts": "./ts/index.js",
     "./react": "./react/index.js",
     "./react/ts": "./react/ts/index.js",
-    "./8.x": "./8.x/index.js",
-    "./8.x/ts": "./8.x/ts/index.js",
-    "./8.x/react": "./8.x/react/index.js",
-    "./8.x/react/ts": "./8.x/react/ts/index.js",
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -26,17 +22,17 @@
   "eslint": "^7.32.0",
   "dependencies": {
     "@templ-project/babel-config": "^1.0.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-prettier": "^5.2.1"
   },
   "devDependencies": {
-    "@templ-project/prettier-config": "^0.0.2"
+    "@templ-project/prettier-config": "^0.0.3"
   },
-  "peerDependencies": {
+  "--peerDependencies": {
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint": "8.57.0",
-    "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-sonarjs": "0.25.1"
   }
 }

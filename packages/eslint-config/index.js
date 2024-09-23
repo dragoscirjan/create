@@ -1,63 +1,42 @@
-// eslint.config.js
+// .eslintrc.js
 
-import babelParser from '@babel/eslint-parser';
-import recommended from 'eslint:recommended';
-import airbnb from 'eslint-config-airbnb-base';
-import importPlugin from 'eslint-plugin-import';
-import sonarjs from 'eslint-plugin-sonarjs';
-import prettier from 'eslint-config-prettier';
-
-export default [
-  {
-    files: ['**/*.js', '**/*.ts'],
-    languageOptions: {
-      parser: babelParser,
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      parserOptions: {
-        requireConfigFile: false,
-      },
-    },
-    plugins: {
-      import: importPlugin,
-      sonarjs,
-      prettier,
-    },
-    rules: {
-      'consistent-return': 'error',
-      'max-len': ['error', 120],
-      'max-lines-per-function': ['error', 40],
-      'max-params': ['error', 3],
-      'no-else-return': 'warn',
-      'sonarjs/no-invalid-await': 'off', // Correct rule name
-      'space-unary-ops': 'error',
-      curly: ['error', 'all'],
-      indent: ['warn', 2],
-      semi: ['warn', 'always'],
-      'no-use-before-define': 'off',
-      'no-restricted-syntax': 'warn',
-      'no-await-in-loop': 'warn',
-      'no-return-await': 'warn',
-      'no-param-reassign': 'warn',
-    },
-    linterOptions: {
-      reportUnusedDisableDirectives: true,
-    },
+module.exports = {
+  env: {
+    node: true, // Enable Node.js environment
+    es2022: true, // Enable ES2022 globals
   },
-  {
-    // Import the base configurations as presets
-    extends: [
-      recommended,
-      airbnb,
-      'plugin:sonarjs/recommended',
-      prettier,
-    ],
-    settings: {
-      'import/resolver': {
-        node: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        },
-      },
-    },
+  extends: [
+    'eslint:recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'eslint-config-airbnb-base', // TODO: decide whether to use or not
+    'plugin:sonarjs/recommended',
+    'prettier',
+  ],
+  parser: '@babel/eslint-parser',
+  parserOptions: {
+    sourceType: 'module',
+    ecmaVersion: 'latest',
   },
-];
+  plugins: ['sonarjs', 'prettier', 'import'],
+  root: true,
+  rules: {
+    'consistent-return': 2,
+    'import/extensions': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    'max-len': ['error', 120],
+    'max-lines-per-function': ['error', 40],
+    'max-params': ['error', 3],
+    'no-else-return': 1,
+    'sonar/no-invalid-await': 0,
+    'space-unary-ops': 2,
+    curly: ['error', 'all'],
+    indent: [1, 2],
+    semi: [1, 'always'],
+    'no-use-before-define': 0,
+    'no-restricted-syntax': ['warn'],
+    'no-await-in-loop': 'warn',
+    'no-return-await': 'warn',
+    'no-param-reassign': 'warn',
+  },
+};

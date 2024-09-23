@@ -1,47 +1,33 @@
-import baseConfig from '../index'; // Import the base JS ESLint config
-import tsParser from '@typescript-eslint/parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import importPlugin from 'eslint-plugin-import';
-import prettier from 'eslint-config-prettier';
-import sonarjs from 'eslint-plugin-sonarjs';
+// .eslintrc.js
 
-// Base configuration for TypeScript files
-const tsConfig = {
-  files: ['**/*.ts', '**/*.tsx'], // Apply this config to all TypeScript files
-  languageOptions: {
-    parser: tsParser,
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    parserOptions: {
-      project: './tsconfig.json', // Specify the path to your tsconfig file if needed
-    },
-  },
-  plugins: {
-    '@typescript-eslint': tsPlugin,
-    import: importPlugin,
-    sonarjs,
-    prettier,
-  },
+module.exports = {
+  root: true,
   extends: [
-    baseConfig, // Extend from the JS config
-    'plugin:@typescript-eslint/recommended',
+    '@templ-project/eslint-config',
     'plugin:import/typescript',
+    'plugin:@typescript-eslint/recommended',
     'plugin:sonarjs/recommended',
     'prettier',
   ],
+  parser: '@typescript-eslint/parser',
   rules: {
     '@typescript-eslint/object-curly-spacing': 'off',
     '@typescript-eslint/space-infix-ops': 'off',
-    'no-use-before-define': 'off',
-    'no-unused-vars': 'off', // Use the TypeScript rule instead
-    '@typescript-eslint/no-unused-vars': ['error'],
+    'import/no-cycle': 'off',
+    'import/no-unresolved': 'off',
+    'import/no-duplicates': 'off',
+    'import/order': 'off',
   },
   settings: {
+    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
     'import/resolver': {
-      typescript: {}, // Adds support for resolving TypeScript imports
+      typescript: {
+        paths: './tsconfig/types.json',
+        alwaysTryTypes: true,
+      },
     },
   },
 };
-
-// Export the combined ESLint configuration
-export default [baseConfig, tsConfig];
