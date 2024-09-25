@@ -4,11 +4,15 @@
     "types": ["node"],
 
     // Best practices
-    "declaration": true,
+    "declaration": false,
     "declarationMap": false,
     "sourceMap": false,
 
     // Best practices
-    "removeComments": true
+    "removeComments": true,
+
+    // Override to allow emitting compiled files
+    "noEmit": false,
+    "allowImportingTsExtensions": false
   }
 }

@@ -4,8 +4,8 @@
   "description": "Templ Project Prettier Config",
   "main": "index.js",
   "exports": {
-    "./bun.json": "./node18/bun.json",
-    "./deno.json": "./node18/deno.json",
+    "./bun.json": "./bun.json",
+    "./deno.json": "./deno.json",
     "./base.json": "./node18/base.json",
     "./browser.json": "./node18/browser.json",
     "./cjs.json": "./node18/cjs.json",
@@ -31,7 +31,10 @@
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@tsconfig/bun": "^1.0.7",
+    "@tsconfig/deno": "^1.0.11",
     "@tsconfig/node18": "^18.2.4",
-    "@tsconfig/node20": "^20.1.4"
+    "@tsconfig/node20": "^20.1.4",
+    "@tsconfig/node22": "^22.0.0"
   }
 }

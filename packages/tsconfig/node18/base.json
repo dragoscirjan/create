@@ -1,14 +1,16 @@
 {
   "extends": "@tsconfig/node18/tsconfig.json",
+  "files": ["./src/index.ts"],
   "compilerOptions": {
-    "types": ["node"],
+    "lib": ["ES2020", "DOM", "DOM.iterable"],
+    "types": [],
 
     // Bundler mode
     "target": "ES2022",
 
     // Best practices
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
+    "declarationMap": false,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
